@@ -14,4 +14,14 @@ enum EdgeWeightFormat {
   kLowerDiagCol
 };
 
+const std::string kEdgeWeightFormatValues[] = {"FUNCTION", "FULL_MATRIX",
+                                                   "UPPER_ROW", "LOWER_ROW",
+                                                   "UPPER_DIAG_ROW",
+                                                   "LOWER_DIAG_ROW",
+                                                   "UPPER_COL", "LOWER_COL",
+                                                   "UPPER_DIAG_COL",
+                                                   "LOWER_DIAG_COL"};
+
+constexpr int kNumEdgeWeightFormats = sizeof(kEdgeWeightFormatValues) /
+                                     sizeof(char*);
 #endif

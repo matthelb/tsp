@@ -7,4 +7,10 @@ enum NodeCoordType {
   kNoCoords
 };
 
+const std::string kNodeCoordTypeValues[] = {"TWOD_COORDS", "THREED_COORDS",
+                                                "NO_COORDS"};
+
+constexpr int kNumNodeCoordTypes = sizeof(kDisplayDataTypeValues) /
+                                     sizeof(char*);
+
 #endif

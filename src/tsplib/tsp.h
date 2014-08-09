@@ -1,6 +1,7 @@
 #ifndef TSP_TSPLIB_TSP_H_
 #define TSP_TSPLIB_TSP_H_
 
+#include <iostream>
 #include <string>
 
 #include "display_data_type.h"
@@ -12,6 +13,11 @@
 
 class TSP {
  public:
+  TSP();
+  virtual ~TSP();
+
+  bool Parse(std::string file_name);
+
   std::string name() const { return name_; }
   TSPType tsp_type() const { return tsp_type_; }
   std::string comment() const { return comment_; }
@@ -24,6 +30,11 @@ class TSP {
   DisplayDataType display_data_type() const { return display_data_type_; }
 
  private:
+  TSP(const TSP& tsp);
+  void operator=(const TSP& tsp);
+
+  int ParseEnumEntry(std::istream& is, const std::string values[], const int num_values);
+
   std::string name_;
   TSPType tsp_type_;
   std::string comment_;

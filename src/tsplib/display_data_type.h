@@ -7,4 +7,10 @@ enum DisplayDataType {
   kNoDisplay
 };
 
+const std::string kDisplayDataTypeValues[] = {"COORD_DISPLAY", "TWOD_DISPLAY",
+                                                  "NO_DISPLAY"};
+
+constexpr int kNumDisplayDataTypes = sizeof(kDisplayDataTypeValues) /
+                                     sizeof(char*);
+
 #endif
