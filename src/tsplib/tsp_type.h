@@ -13,7 +13,7 @@ enum TSPType {
 };
 
 const std::string kTSPTypeValues[] = {"TSP", "ATSP", "SOP", "HCP", "CVRP",
-                                          "TOUR"};
+                                      "TOUR"};
 
 constexpr int kNumTSPTypes = sizeof(kTSPTypeValues) / sizeof(char*);
 

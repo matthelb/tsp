@@ -1,6 +1,8 @@
 #ifndef TSP_TSPLIB_EDGE_WEIGHT_TYPE_H_
 #define TSP_TSPLIB_EDGE_WEIGHT_TYPE_H_
 
+#include <string>
+
 enum EdgeWeightType {
   kExplicit,
   kEuc2D,
@@ -18,12 +20,11 @@ enum EdgeWeightType {
 };
 
 const std::string kEdgeWeightTypeValues[] = {"EXPLICIT", "EUC_2D", "EUC_3D",
-                                                 "MAX_2D", "MAX_3D", "MAN_2D",
-                                                 "MAN_3D", "CEIL_2D", "GEO",
-                                                 "ATT", "XRAY1", "XRAY2",
-                                                 "SPECIAL"};
+                                             "MAX_2D", "MAX_3D", "MAN_2D",
+                                             "MAN_3D", "CEIL_2D", "GEO", "ATT",
+                                             "XRAY1", "XRAY2", "SPECIAL"};
 
 constexpr int kNumEdgeWeightTypes = sizeof(kEdgeWeightTypeValues) /
-                                     sizeof(char*);
+                                    sizeof(char*);
 
 #endif
