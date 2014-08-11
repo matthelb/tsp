@@ -1,6 +1,7 @@
 #include "tsplib/tsp.h"
 
 #include <fstream>
+#include <sstream>
 
 #include "tsplib/coord/distance_calc_factory.h"
 
@@ -42,6 +43,7 @@ bool TSP::BuildGraph() {
         }
         int distance = distance_calc->Distance(node_coords_[i], node_coords_[j]);
         graph_->SetEdgeWeight(i, j, distance);
+        graph_->SetEdgeWeight(j, i, distance);
       }
     }
     delete distance_calc;
@@ -51,55 +53,67 @@ bool TSP::BuildGraph() {
 
 bool TSP::Parse(string file_name) {
   ifstream is(file_name);
-  string entry_key;
-  is >> entry_key;
-  while (entry_key != "EOF") {
-    if (entry_key == "NAME:") {
-      is >> name_;
-    } else if (entry_key == "TYPE:") {
+  string line;
+  getline(is, line);
+  while (!is.fail() && line != "EOF") {
+    stringstream ss(line);
+    string entry_key;
+    ss >> entry_key;
+    if (entry_key[entry_key.length() - 1] == ':') {
+      entry_key = entry_key.substr(0, entry_key.length() - 1);
+    } else {
+      string colon;
+      ss >> colon;
+      if (!ss.fail() && colon != ":") {
+        return false;
+      }
+    }
+    if (entry_key == "NAME") {
+      ss >> name_;
+    } else if (entry_key == "TYPE") {
       tsp_type_ = static_cast<TSPType>(
-        ParseEnumEntry(is, kTSPTypeValues, kNumTSPTypes)
+        ParseEnumEntry(ss, kTSPTypeValues, kNumTSPTypes)
       );
       if (tsp_type_ == -1) {
         return false;
       }
-    } else if (entry_key == "COMMENT:") {
-      getline(is, comment_);
-    } else if (entry_key == "DIMENSION:") {
-      is >> dimension_;
-    } else if (entry_key == "CAPACITY:") {
-      is >> capacity_;
-    } else if (entry_key == "EDGE_WEIGHT_TYPE:") {
+    } else if (entry_key == "COMMENT") {
+      getline(ss, comment_);
+    } else if (entry_key == "DIMENSION") {
+      ss >> dimension_;
+    } else if (entry_key == "CAPACITY") {
+      ss >> capacity_;
+    } else if (entry_key == "EDGE_WEIGHT_TYPE") {
       edge_weight_type_ = static_cast<EdgeWeightType>(
-        TSP::ParseEnumEntry(is, kEdgeWeightTypeValues, kNumEdgeWeightTypes)
+        TSP::ParseEnumEntry(ss, kEdgeWeightTypeValues, kNumEdgeWeightTypes)
       );
       if (edge_weight_type_ == -1) {
         return false;
       }
-    } else if (entry_key == "EDGE_WEIGHT_FORMAT:") {
+    } else if (entry_key == "EDGE_WEIGHT_FORMAT") {
       edge_weight_format_ = static_cast<EdgeWeightFormat>(
-        TSP::ParseEnumEntry(is, kEdgeWeightFormatValues, kNumEdgeWeightFormats)
+        TSP::ParseEnumEntry(ss, kEdgeWeightFormatValues, kNumEdgeWeightFormats)
       );
       if (edge_weight_format_ == -1) {
         return false;
       }
-    } else if (entry_key == "EDGE_DATA_FORMAT:") {
+    } else if (entry_key == "EDGE_DATA_FORMAT") {
       edge_data_format_ = static_cast<EdgeDataFormat>(
-        TSP::ParseEnumEntry(is, kEdgeDataFormatValues, kNumEdgeDataFormats)
+        TSP::ParseEnumEntry(ss, kEdgeDataFormatValues, kNumEdgeDataFormats)
       );
       if (edge_data_format_ == -1) {
         return false;
       }
-    } else if (entry_key == "NODE_COORD_TYPE:") {
+    } else if (entry_key == "NODE_COORD_TYPE") {
       node_coord_type_ = static_cast<NodeCoordType>(
-        TSP::ParseEnumEntry(is, kNodeCoordTypeValues, kNumNodeCoordTypes)
+        TSP::ParseEnumEntry(ss, kNodeCoordTypeValues, kNumNodeCoordTypes)
       );
       if (node_coord_type_ == -1) {
         return false;
       }
-    } else if (entry_key == "DISPLAY_DATA_TYPE:") {
+    } else if (entry_key == "DISPLAY_DATA_TYPE") {
       display_data_type_ = static_cast<DisplayDataType>(
-        TSP::ParseEnumEntry(is, kDisplayDataTypeValues, kNumDisplayDataTypes)
+        TSP::ParseEnumEntry(ss, kDisplayDataTypeValues, kNumDisplayDataTypes)
       );
       if (display_data_type_ == -1) {
         return false;
@@ -109,7 +123,7 @@ bool TSP::Parse(string file_name) {
         return false;
       }
     }
-    is >> entry_key;
+    getline(is, line);
   }
   is.close();
   return true;
