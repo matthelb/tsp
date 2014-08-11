@@ -16,7 +16,7 @@ int GeoDistance::Distance(const Coord* a, const Coord* b) {
                           b->coordinates()[0], b->coordinates()[1]};
   double latlon[] = {0, 0, 0, 0}; // {lat_a, lon_a, lat_b, lon_b}
   for (int i = 0; i < 4; ++i) {
-    int degrees = DistanceCalc::Nint(coordinates[i]);
+    int degrees = static_cast<int>(coordinates[i]);
     double minutes = coordinates[i] - degrees;
     latlon[i] = pi * (degrees + 5.0 * minutes / 3.0) / 180.0;
   }

@@ -22,3 +22,5 @@
 *.exe
 *.out
 *.app
+
+bin/*

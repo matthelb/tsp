@@ -23,6 +23,15 @@ Graph::~Graph() {
   delete [] edge_matrix_;
 }
 
+int Graph::CanonicalTourLength() const {
+  int length = 0;
+  for (int i = 0; i < num_nodes() - 1; ++i) {
+    length += GetEdgeWeight(i, i + 1);
+  }
+  length += GetEdgeWeight(num_nodes() - 1, 0);
+  return length;
+}
+
 int Graph::GetEdgeWeight(int node_i, int node_j) const {
   if (node_i < 0 || node_i >= num_nodes() || node_j < 0 || node_j >= num_nodes()) {
     return 0;

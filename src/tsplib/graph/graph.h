@@ -11,6 +11,7 @@ class Graph {
 
   int num_nodes() const { return num_nodes_; }
   
+  int CanonicalTourLength() const;
   int GetEdgeWeight(int node_i, int node_j) const;
   bool SetEdgeWeight(int node_i, int node_j, int weight);
  
