@@ -12,6 +12,7 @@ COMPILE_OBJ = $(CXX) $(CXXFLAGS) $(INCLUDE) -c $< -o $@
 MKDIR = if [ ! -d "$(shell dirname $@)" ]; then mkdir -p $(shell dirname $@); fi
 
 SRCS = $(SDIR)/tsplib/tsp.cc \
+			 $(SDIR)/tsplib/edge_weight_type.cc \
 			 $(SDIR)/tsplib/coord/ceil_euclidean_distance.cc \
 			 $(SDIR)/tsplib/coord/coord.cc \
 			 $(SDIR)/tsplib/coord/distance_calc.cc \

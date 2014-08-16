@@ -258,13 +258,22 @@ bool TSP::ParseDisplayDataSection(istream& is) {
 }
 
 bool TSP::ParseNodeCoordSection(istream& is) {
-  if (dimension() == -1 || node_coord_type() == NodeCoordType::kNone ||
-      node_coord_type() == NodeCoordType::kNoCoords) {
+  if (dimension() == -1 || node_coord_type() == NodeCoordType::kNoCoords) {
+    return false;
+  }
+  int coord_dimension = 0;
+  if (node_coord_type() == NodeCoordType::kTwoDCoords) {
+    coord_dimension = 2;
+  } else if (node_coord_type() == NodeCoordType::kThreeDCoords) {
+    coord_dimension = 3;
+  } else {
+    coord_dimension = EdgeWeightTypeDimension(edge_weight_type());
+  }
+  if (coord_dimension == 0) {
     return false;
   }
   node_coords_ = new Coord*[dimension()];
-  return ParseCoords(is, node_coord_type() == NodeCoordType::kTwoDCoords ? 2 : 3, 
-                     node_coords_);
+  return ParseCoords(is, coord_dimension, node_coords_);
 }
 
 bool TSP::ParseRawMatrix(istream& is) {
