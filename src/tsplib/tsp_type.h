@@ -4,6 +4,7 @@
 #include <string>
 
 enum TSPType {
+  kNone,
   kTSP,
   kATSP,
   kSOP,
@@ -12,7 +13,7 @@ enum TSPType {
   kTour
 };
 
-const std::string kTSPTypeValues[] = {"TSP", "ATSP", "SOP", "HCP", "CVRP",
+const std::string kTSPTypeValues[] = {"", "TSP", "ATSP", "SOP", "HCP", "CVRP",
                                       "TOUR"};
 
 constexpr int kNumTSPTypes = sizeof(kTSPTypeValues) / sizeof(char*);

@@ -3,14 +3,15 @@
 
 #include <string>
 
-enum NodeCoordType {
+enum class NodeCoordType {
+  kNone,
   kTwoDCoords,
   kThreeDCoords,
   kNoCoords
 };
 
-const std::string kNodeCoordTypeValues[] = {"TWOD_COORDS", "THREED_COORDS",
-                                            "NO_COORDS"};
+const std::string kNodeCoordTypeValues[] = {"", "TWOD_COORDS",
+                                            "THREED_COORDS", "NO_COORDS"};
 
 constexpr int kNumNodeCoordTypes = sizeof(kNodeCoordTypeValues) /
                                    sizeof(char*);

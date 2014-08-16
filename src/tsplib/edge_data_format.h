@@ -3,12 +3,13 @@
 
 #include <string>
 
-enum EdgeDataFormat {
+enum class EdgeDataFormat {
+  kNone,
   kEdgeList,
   kAdjList
 };
 
-const std::string kEdgeDataFormatValues[] = {"EDGE_LIST", "ADJ_LIST"};
+const std::string kEdgeDataFormatValues[] = {"", "EDGE_LIST", "ADJ_LIST"};
 
 constexpr int kNumEdgeDataFormats = sizeof(kEdgeDataFormatValues) /
                                     sizeof(char*);

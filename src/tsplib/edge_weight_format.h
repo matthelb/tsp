@@ -3,7 +3,8 @@
 
 #include <string>
 
-enum EdgeWeightFormat {
+enum class EdgeWeightFormat {
+  kNone,
   kFunction,
   kFullMatrix,
   kUpperRow,
@@ -16,7 +17,7 @@ enum EdgeWeightFormat {
   kLowerDiagCol
 };
 
-const std::string kEdgeWeightFormatValues[] = {"FUNCTION", "FULL_MATRIX",
+const std::string kEdgeWeightFormatValues[] = {"", "FUNCTION", "FULL_MATRIX",
                                                "UPPER_ROW", "LOWER_ROW",
                                                "UPPER_DIAG_ROW",
                                                "LOWER_DIAG_ROW", "UPPER_COL",

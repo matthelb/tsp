@@ -10,25 +10,25 @@
 DistanceCalc* DistanceCalcFactory::GetDistanceCalc(
   EdgeWeightType edge_weight_type) {
   switch (edge_weight_type) {
-    case kEuc2D:
-    case kEuc3D:
+    case EdgeWeightType::kEuc2D:
+    case EdgeWeightType::kEuc3D:
       return new EuclideanDistance();
-    case kMax2D:
-    case kMax3D:
+    case EdgeWeightType::kMax2D:
+    case EdgeWeightType::kMax3D:
       return new MaxDistance();
-    case kMan2D:
-    case kMan3D:
+    case EdgeWeightType::kMan2D:
+    case EdgeWeightType::kMan3D:
       return new ManhattanDistance();
-    case kCeil2D:
+    case EdgeWeightType::kCeil2D:
       return new CeilEuclideanDistance();
-    case kGeo:
+    case EdgeWeightType::kGeo:
       return new GeoDistance();
-    case kAtt:
+    case EdgeWeightType::kAtt:
       return new PseudoEuclideanDistance();
-    case kExplicit:
-    case kXray1:
-    case kXray2:
-    case kSpecial:
+    case EdgeWeightType::kExplicit:
+    case EdgeWeightType::kXray1:
+    case EdgeWeightType::kXray2:
+    case EdgeWeightType::kSpecial:
     default:
       break;
   }

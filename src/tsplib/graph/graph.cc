@@ -1,6 +1,7 @@
 #include "tsplib/graph/graph.h"
 
 #include <cstring>
+#include <iomanip>
 
 using namespace std;
 
@@ -30,6 +31,18 @@ int Graph::CanonicalTourLength() const {
   }
   length += GetEdgeWeight(num_nodes() - 1, 0);
   return length;
+}
+
+void Graph::DisplayAdjacencyMatrix(ostream& os, int width) const {
+  for (int i = 0; i < num_nodes(); ++i) {
+    for (int j = 0; j < num_nodes(); ++j) {
+      os << setw(width) << GetEdgeWeight(i, j);
+      if (j != num_nodes() - 1) {
+        os << ' ';
+      }
+    }
+    os << endl;
+  }
 }
 
 int Graph::GetEdgeWeight(int node_i, int node_j) const {

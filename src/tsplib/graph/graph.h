@@ -2,6 +2,7 @@
 #define TSP_TSPLIB_GRAPH_GRAPH_H_
 
 #include <cstddef>
+#include <iostream>
 
 class Graph {
  public:
@@ -12,6 +13,7 @@ class Graph {
   int num_nodes() const { return num_nodes_; }
   
   int CanonicalTourLength() const;
+  void DisplayAdjacencyMatrix(std::ostream& os, int width) const;
   int GetEdgeWeight(int node_i, int node_j) const;
   bool SetEdgeWeight(int node_i, int node_j, int weight);
  

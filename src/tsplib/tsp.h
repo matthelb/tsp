@@ -20,6 +20,26 @@ class TSP {
 
   bool BuildGraph();
   bool Parse(std::string file_name);
+  bool ParseStream(std::istream& is);
+
+  std::string GetEdgeDataFormat() const {
+    return kEdgeDataFormatValues[static_cast<int>(edge_data_format())];
+  }
+  std::string GetEdgeWeightFormat() const {
+    return kEdgeWeightFormatValues[static_cast<int>(edge_weight_format())];
+  }
+  std::string GetEdgeWeightType() const {
+    return kEdgeWeightTypeValues[static_cast<int>(edge_weight_type())];
+  }
+  std::string GetDisplayDataType() const {
+    return kDisplayDataTypeValues[static_cast<int>(display_data_type())];
+  }
+  std::string GetNodeCoordType() const {
+    return kNodeCoordTypeValues[static_cast<int>(node_coord_type())];
+  }
+  std::string GetTSPType() const {
+    return kTSPTypeValues[static_cast<int>(tsp_type())];
+  }
 
   std::string name() const { return name_; }
   TSPType tsp_type() const { return tsp_type_; }
@@ -37,19 +57,29 @@ class TSP {
   TSP(const TSP& tsp);
   void operator=(const TSP& tsp);
 
-  static int ParseEnumEntry(std::istream& is, const std::string values[], const int num_values);
+  static int ParseEnumEntry(std::istream& is, const std::string values[],
+                            const int num_values);
+
+  bool ParseCoords(std::istream& is, int coord_dimension, Coord** coords);
+  bool PopulateGraphFromMatrix();
+  bool PopulateGraphFromNodeCoords();
   bool ParseNodeCoordSection(std::istream& is);
+  bool ParseDisplayDataSection(std::istream& is);
+  bool ParseRawMatrix(std::istream& is);
 
   std::string name_;
-  TSPType tsp_type_;
+  TSPType tsp_type_ = TSPType::kNone;
   std::string comment_;
-  int dimension_ = -1;
-  int capacity_ = -1;
-  EdgeWeightType edge_weight_type_;
-  EdgeWeightFormat edge_weight_format_;
-  EdgeDataFormat edge_data_format_;
-  NodeCoordType node_coord_type_;
-  DisplayDataType display_data_type_;
+  int dimension_ = 0;
+  int capacity_ = 0;
+  EdgeWeightType edge_weight_type_ = EdgeWeightType::kNone;
+  EdgeWeightFormat edge_weight_format_ = EdgeWeightFormat::kNone;
+  EdgeDataFormat edge_data_format_ = EdgeDataFormat::kNone;
+  NodeCoordType node_coord_type_= NodeCoordType::kNone;
+  DisplayDataType display_data_type_ = DisplayDataType::kNone;
+
+  int* raw_matrix_ = NULL;
+  Coord** display_data_ = NULL;
   Coord** node_coords_ = NULL;
   Graph* graph_ = NULL;
 };
