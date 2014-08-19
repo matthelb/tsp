@@ -4,12 +4,12 @@
 #include <iostream>
 #include <string>
 
+#include "graph/graph.h"
 #include "tsplib/coord/coord.h"
 #include "tsplib/display_data_type.h"
 #include "tsplib/edge_data_format.h"
 #include "tsplib/edge_weight_format.h"
 #include "tsplib/edge_weight_type.h"
-#include "tsplib/graph/graph.h"
 #include "tsplib/node_coord_type.h"
 #include "tsplib/tsp_type.h"
 
