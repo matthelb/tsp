@@ -5,14 +5,17 @@
 #include "tsplib/edge_weight_type.h"
 
 class DistanceCalcFactory {
-public:
+ public:
+  virtual ~DistanceCalcFactory();
+
   static DistanceCalc* GetDistanceCalc(EdgeWeightType edge_weight_type);
 
-private:
+ private:
   DistanceCalcFactory();
-  ~DistanceCalcFactory();
   DistanceCalcFactory(const DistanceCalcFactory& distance_calc_factory);
+  
   void operator=(const DistanceCalcFactory& distance_calc_factory);
+
 };
 
 #endif
