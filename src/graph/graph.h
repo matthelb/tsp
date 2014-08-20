@@ -16,6 +16,7 @@ class Graph {
   void DisplayAdjacencyMatrix(std::ostream& os, int width) const;
   int GetEdgeWeight(unsigned int node_i, unsigned int node_j) const;
   bool SetEdgeWeight(unsigned int node_i, unsigned int node_j, int weight);
+  bool SetSymmetricEdgeWeight(unsigned int node_i, unsigned int node_j, int weight);
 
  private:
   Graph(const Graph& graph);

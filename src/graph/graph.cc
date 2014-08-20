@@ -58,3 +58,10 @@ bool Graph::SetEdgeWeight(unsigned int node_i, unsigned int node_j, int weight) 
   edge_matrix_[node_i][node_j] = weight;
   return true;
 }
+
+bool Graph::SetSymmetricEdgeWeight(
+  unsigned int node_i, unsigned int node_j, int weight
+) {
+  return SetEdgeWeight(node_i, node_j, weight) &&
+         SetEdgeWeight(node_j, node_i, weight);
+}
