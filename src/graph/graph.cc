@@ -27,7 +27,7 @@ Graph::~Graph() {
 int Graph::CanonicalTourLength() const {
   int length = 0;
   for (unsigned int i = 0; i < num_nodes(); ++i) {
-    length += GetEdgeWeight(i, (i + 1) % (num_nodes() - 1));
+    length += GetEdgeWeight(i, (i + 1) % num_nodes());
   }
   return length;
 }
