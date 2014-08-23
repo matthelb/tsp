@@ -3,7 +3,6 @@
 
 #include <string>
 
-#include "solve/brute_force_search.h"
 #include "solve/tsp_algorithm.h"
 #include "solve/tsp_algorithm_type.h"
 

@@ -5,10 +5,12 @@
 
 enum class TSPAlgorithmType {
   kNone,
-  kBruteForceSearch
+  kBruteForceSearch,
+  kBellmanHeldKarp
 };
 
-const std::string kTSPAlgorithmTypeValues[] = {"", "BRUTE_FORCE_SEARCH"};
+const std::string kTSPAlgorithmTypeValues[] = {"", "BRUTE_FORCE_SEARCH",
+                                               "BELLMAN_HELD_KARP"};
 
 constexpr int kNumTSPAlgorithmTypes = sizeof(kTSPAlgorithmTypeValues) /
                                       sizeof(char*);

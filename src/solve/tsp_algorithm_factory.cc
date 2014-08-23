@@ -1,5 +1,8 @@
 #include "solve/tsp_algorithm_factory.h"
 
+#include "solve/bellman_held_karp.h"
+#include "solve/brute_force_search.h"
+
 using namespace std;
 
 TSPAlgorithmFactory::~TSPAlgorithmFactory() {
@@ -11,6 +14,9 @@ TSPAlgorithm* TSPAlgorithmFactory::GetTSPAlgorithm(
   switch (tsp_algorithm_type) {
     case TSPAlgorithmType::kBruteForceSearch: {
       return new BruteForceSearch();
+    }
+    case TSPAlgorithmType::kBellmanHeldKarp: {
+      return new BellmanHeldKarp();
     }
     default: {
       break;
