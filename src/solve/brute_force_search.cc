@@ -20,7 +20,6 @@ void BruteForceSearch::SearchPermutations(
       if (current_distance < shortest_distance_ || shortest_path_.size() == 0) {
         shortest_path_ = current_path;
         shortest_distance_ = current_distance;
-        cout << current_distance << endl;
       }
     }
     return;
@@ -47,9 +46,10 @@ void BruteForceSearch::SearchPermutations(
 pair<vector<int>, int> BruteForceSearch::OptimalPath(const Graph* graph) {
   Reset(graph);
   vector<int> current_path;
+  current_path.push_back(0);
   int current_distance = 0;
   unordered_set<int> unvisited_nodes;
-  for (unsigned int i = 0; i < this->graph()->num_nodes(); ++i) {
+  for (unsigned int i = 1; i < this->graph()->num_nodes(); ++i) {
     unvisited_nodes.insert(i);
   }
   SearchPermutations(current_path, current_distance, unvisited_nodes);
