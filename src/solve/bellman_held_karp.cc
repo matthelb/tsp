@@ -16,16 +16,15 @@ BellmanHeldKarp::~BellmanHeldKarp() {
 }
 
 pair<vector<int>, int> BellmanHeldKarp::OptimalPath(const Graph* graph) {
-  unsigned int num_subsets = 1 << graph->num_nodes();
-  int** distance = new int*[num_subsets];
-  for (unsigned int i = 0; i < num_subsets; ++i) {
+  unsigned int max_subset = 1 << (graph->num_nodes() - 1);
+  int** distance = new int*[max_subset];
+  for (unsigned int i = 0; i < max_subset; ++i) {
     distance[i] = new int[graph->num_nodes()];
     fill(distance[i], distance[i] + graph->num_nodes(), INT_MAX);
   }
   for (unsigned int i = 0; i < graph->num_nodes(); ++i) {
     distance[0][i] = graph->GetEdgeWeight(0, i);
   }
-  unsigned int max_subset = 1 << (graph->num_nodes() - 1);
   for (unsigned int n = 1; n < graph->num_nodes(); ++n) {
     unsigned int first_subset = (1 << n) - 1;
     for (unsigned int t = 1; t < graph->num_nodes(); ++t) {
