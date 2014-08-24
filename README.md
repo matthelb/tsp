@@ -21,3 +21,21 @@ will build all test executables.
     make test
   
 will build any outdated test executables and run all unit tests.
+
+## Running Executables
+
+### Parse TSP
+
+`parse_tsp` attempts to read in a [TSPLIB formatted file](http://comopt.ifi.uni-heidelberg.de/software/TSPLIB95/). After reading in a properly formatted TSPLIB file, `parse_tsp` will output the information it has properly parsed from the file.
+
+    ./parse_tsp <tsp_file>
+    
+### Solve TSP
+
+`solve_tsp` attemps to solve an instance of the traveling salesman problem as specified by an input TSPLIB file. The algorithm with which `solve_tsp` solves the instance needs to be specified by the user.
+
+    ./solve_tsp <tsp_file> <algorithm>
+    
+A list of supported algorithms can be displayed by running the program with `-algorithms` as the only parameter.
+
+    ./solve_tsp -algorithms
