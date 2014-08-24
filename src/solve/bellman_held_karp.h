@@ -10,7 +10,7 @@ class BellmanHeldKarp : public TSPAlgorithm {
 
   static unsigned int NextBitPermutation(unsigned int curr_permutation);
 
-  std::pair<std::vector<int>, int> OptimalPath(const Graph* graph);
+  Solution ComputeSolution(const Graph* graph);
  private:
   BellmanHeldKarp(BellmanHeldKarp& bellman_held_karp);
   void operator=(BellmanHeldKarp& bellman_held_karp);

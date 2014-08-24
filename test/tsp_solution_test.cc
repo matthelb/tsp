@@ -30,8 +30,8 @@ TEST_F(TSPSolutionTest, BruteForceSearch) {
   tsp_solver_->set_graph(&simple_graph);
   BruteForceSearch brute_force_search;
   tsp_solver_->set_tsp_algorithm(&brute_force_search);
-  std::pair<std::vector<int>, int> optimal_path = tsp_solver_->OptimalPath();
-  EXPECT_EQ(4, optimal_path.second);
+  Solution solution = tsp_solver_->ComputeSolution();
+  EXPECT_EQ(4, solution.distance);
 }
 
 TEST_F(TSPSolutionTest, BellmanHeldKarp) {
@@ -41,15 +41,15 @@ TEST_F(TSPSolutionTest, BellmanHeldKarp) {
   ASSERT_TRUE(tsp->Parse("data/gr17.tsp"));
   ASSERT_TRUE(tsp->BuildGraph());
   tsp_solver_->set_graph(tsp->graph());
-  std::pair<std::vector<int>, int> optimal_path = tsp_solver_->OptimalPath();
-  EXPECT_EQ(2085, optimal_path.second);
+  Solution solution = tsp_solver_->ComputeSolution();
+  EXPECT_EQ(2085, solution.distance);
   delete tsp;
 
   tsp = new TSP();
   ASSERT_TRUE(tsp->Parse("data/gr21.tsp"));
   ASSERT_TRUE(tsp->BuildGraph());
   tsp_solver_->set_graph(tsp->graph());
-  optimal_path = tsp_solver_->OptimalPath();
-  EXPECT_EQ(2707, optimal_path.second);
+  solution = tsp_solver_->ComputeSolution();
+  EXPECT_EQ(2707, solution.distance);
   delete tsp;
 }

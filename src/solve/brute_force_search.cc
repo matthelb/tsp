@@ -43,7 +43,7 @@ void BruteForceSearch::SearchPermutations(
   }
 }
 
-pair<vector<int>, int> BruteForceSearch::OptimalPath(const Graph* graph) {
+Solution BruteForceSearch::ComputeSolution(const Graph* graph) {
   Reset(graph);
   vector<int> current_path;
   current_path.push_back(0);
@@ -53,7 +53,7 @@ pair<vector<int>, int> BruteForceSearch::OptimalPath(const Graph* graph) {
     unvisited_nodes.insert(i);
   }
   SearchPermutations(current_path, current_distance, unvisited_nodes);
-  return make_pair(shortest_path_, shortest_distance_);
+  return Solution(shortest_distance_, shortest_path_);
 }
 
 void BruteForceSearch::Reset(const Graph* graph) {

@@ -12,7 +12,7 @@ class BruteForceSearch : public TSPAlgorithm {
   BruteForceSearch();
   virtual ~BruteForceSearch();
 
-  std::pair<std::vector<int>, int> OptimalPath(const Graph* graph);
+  Solution ComputeSolution(const Graph* graph);
 
  private:
   BruteForceSearch(BruteForceSearch& brute_force_search);

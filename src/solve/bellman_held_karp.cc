@@ -15,7 +15,7 @@ BellmanHeldKarp::BellmanHeldKarp() {
 BellmanHeldKarp::~BellmanHeldKarp() {
 }
 
-pair<vector<int>, int> BellmanHeldKarp::OptimalPath(const Graph* graph) {
+Solution BellmanHeldKarp::ComputeSolution(const Graph* graph) {
   unsigned int max_subset = 1 << (graph->num_nodes() - 1);
   int** distance = new int*[max_subset];
   for (unsigned int i = 0; i < max_subset; ++i) {
@@ -52,11 +52,11 @@ pair<vector<int>, int> BellmanHeldKarp::OptimalPath(const Graph* graph) {
     minimum_distance = min(minimum_distance, distance[subset][t] +
                                              graph->GetEdgeWeight(t, 0));
   }
-  for (int i = 0; i < graph->num_nodes(); ++i) {
+  for (unsigned int i = 0; i < graph->num_nodes(); ++i) {
     delete [] distance[i];
   }
   delete [] distance;
-  return make_pair(vector<int>(), minimum_distance);
+  return Solution(minimum_distance, vector<int>());
 }
 
 unsigned int BellmanHeldKarp::NextBitPermutation(unsigned int curr_permutation) {

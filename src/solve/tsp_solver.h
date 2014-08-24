@@ -1,10 +1,8 @@
 #ifndef TSP_SOLVE_TSP_SOLVER_H_
 #define TSP_SOLVE_TSP_SOLVER_H_
 
-#include <utility>
-#include <vector>
-
 #include "graph/graph.h"
+#include "solve/solution.h"
 #include "solve/tsp_algorithm.h"
 
 class TSPSolver {
@@ -19,7 +17,7 @@ class TSPSolver {
     tsp_algorithm_ = tsp_algorithm;
   }
 
-  std::pair<std::vector<int>, int> OptimalPath();
+  Solution ComputeSolution();
 
  private:
    TSPSolver(const TSPSolver& tsp_solver);

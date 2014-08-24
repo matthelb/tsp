@@ -1,8 +1,6 @@
 #include <cstring>
 #include <fstream>
 #include <iostream>
-#include <utility>
-#include <vector>
 
 #include "solve/tsp_algorithm.h"
 #include "solve/tsp_algorithm_factory.h"
@@ -52,10 +50,10 @@ int main(int argc, char* argv[]) {
   TSPSolver tsp_solver;
   tsp_solver.set_tsp_algorithm(tsp_algorithm);
   tsp_solver.set_graph(tsp_instance.graph());
-  pair<vector<int>, int> optimal_path = tsp_solver.OptimalPath();
-  cout << "Found shortest path length: " << optimal_path.second << endl;
-  cout << "Path:" << endl;
-  for (auto node : optimal_path.first) {
+  Solution solution = tsp_solver.ComputeSolution();
+  cout << "Computed path length: " << solution.distance << endl;
+  cout << "Computed path:" << endl;
+  for (auto node : solution.path) {
     cout << "    " << node << endl;
   }
   return 0;
