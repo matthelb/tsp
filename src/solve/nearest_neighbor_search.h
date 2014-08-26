@@ -16,7 +16,8 @@ class NearestNeighborSearch : public TSPAlgorithm {
 
  private:
   const Graph* graph;
-  int GetSmallestEdgeWeightNode(int node, const std::unordered_set<int> processed_nodes);
+  int GetSmallestEdgeWeightNode(int node,
+                                const std::unordered_set<int> to_process);
   NearestNeighborSearch(const NearestNeighborSearch& nearest_neighbor_search);
   void operator=(const NearestNeighborSearch& nearest_uneighbor_search);
  };

@@ -25,7 +25,6 @@ Solution NearestNeighborSearch::ComputeSolution(const Graph* graph) {
   while(to_process.size() > 1) {
     int begin_node = result_path.back();
     int best_node = NearestNeighborSearch::GetSmallestEdgeWeightNode(begin_node,
-                                                                     processed_nodes,
                                                                      to_process);
     distance += this->graph->GetEdgeWeight(begin_node, best_node);
     result_path.push_back(best_node);
@@ -38,10 +37,9 @@ Solution NearestNeighborSearch::ComputeSolution(const Graph* graph) {
 }
 
 int NearestNeighborSearch::GetSmallestEdgeWeightNode(int node,
-                                                     const unordered_set<int> processed_nodes,
                                                      const unordered_set<int> to_process) {
-  unordered_set<int>::iterator itr = to_process.begin();
-  int min _node = *itr, min = this->graph->GetEdgeWeight(node, min_node);
+  unordered_set<int>::const_iterator itr = to_process.begin();
+  int min_node = *itr, min = this->graph->GetEdgeWeight(node, min_node);
   int test_min = 0;
   ++itr;
   for(; itr != to_process.end(); ++itr) {
