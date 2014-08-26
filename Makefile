@@ -14,6 +14,7 @@ MKDIR = if [ ! -d "$(shell dirname $@)" ]; then mkdir -p $(shell dirname $@); fi
 SRCS = $(SDIR)/graph/graph.cc \
 			 $(SDIR)/solve/bellman_held_karp.cc \
 			 $(SDIR)/solve/brute_force_search.cc \
+			 $(SDIR)/solve/nearest_neighbor_search.cc \
 			 $(SDIR)/solve/tsp_algorithm.cc \
 			 $(SDIR)/solve/tsp_algorithm_factory.cc \
 			 $(SDIR)/solve/tsp_solver.cc \
