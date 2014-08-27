@@ -1,5 +1,8 @@
 #include "tsplib/tsp.h"
 
+#include <cmath>
+#include <cstdlib>
+#include <ctime>
 #include <fstream>
 #include <sstream>
 
@@ -35,6 +38,33 @@ TSP::~TSP() {
   }
 }
 
+TSP* TSP::GenerateRandomTSP(string name, int num_cities,
+                            double bounding_box_max) {
+  TSP* tsp = new TSP();
+  tsp->name_ = name;
+  int seed = time(NULL);
+  srand(seed);
+  stringstream comment_ss;
+  comment_ss <<  "Generated randomly with seed " << seed;
+  tsp->comment_ = comment_ss.str();
+  tsp->tsp_type_ = TSPType::kTSP;
+  tsp->dimension_ = num_cities;
+  tsp->node_coord_type_ = NodeCoordType::kTwoDCoords;
+  tsp->display_data_type_ = DisplayDataType::kNoDisplay;
+  tsp->edge_weight_type_ = EdgeWeightType::kEuc2D;
+  tsp->edge_weight_format_ = EdgeWeightFormat::kFunction;
+  stringstream ss;
+  for (int i = 1; i <= tsp->dimension(); ++i) {
+    ss << i << ' ';
+    for (int j = 0; j < EdgeWeightTypeDimension(tsp->edge_weight_type()); ++j) {
+      ss << (static_cast<double>(rand()) / RAND_MAX * bounding_box_max) << ' ';
+    }
+    ss << "\n";
+  }
+  tsp->ParseNodeCoordSection(ss);
+  return tsp;
+}
+
 bool TSP::BuildGraph() {
   if (graph()) {
     return true;
@@ -44,6 +74,51 @@ bool TSP::BuildGraph() {
     return PopulateGraphFromMatrix();
   } else {
     return PopulateGraphFromNodeCoords();
+  }
+}
+
+void TSP::Export(ostream& os) {
+  os << "NAME : " << name() << endl;
+  os << "TYPE : " << kTSPTypeValues[static_cast<int>(tsp_type())] << endl;
+  os << "COMMENT : " << comment() << endl;
+  os << "DIMENSION : " << dimension() << endl;
+  if (tsp_type() == TSPType::kCVRP) {
+    os << "CAPACITY : " << capacity() << endl;
+  }
+  os << "EDGE_WEIGHT_TYPE : " << kEdgeWeightTypeValues[static_cast<int>(edge_weight_type())] << endl;
+  os << "EDGE_WEIGHT_FORMAT : " << kEdgeWeightFormatValues[static_cast<int>(edge_weight_format())] << endl;
+  if (edge_data_format() != EdgeDataFormat::kNone) {
+    os << "EDGE_DATA_FORMAT : " << kEdgeDataFormatValues[static_cast<int>(edge_data_format())] << endl;
+  }
+  os << "NODE_COORD_TYPE : " << kNodeCoordTypeValues[static_cast<int>(node_coord_type())] << endl;
+  os << "DISPLAY_DATA_TYPE : " << kDisplayDataTypeValues[static_cast<int>(display_data_type())] << endl;
+  if (node_coord_type() != NodeCoordType::kNone &&
+      node_coord_type() != NodeCoordType::kNoCoords) {
+    os << "NODE_COORD_SECTION" << endl;
+    for (int i = 0; i < dimension(); ++i) {
+      os << (i + 1) << ' ';
+      for (int j = 0; j < node_coords_[i]->dimension(); ++j) {
+        os << node_coords_[i]->coordinates()[j] << ' ';
+      }
+    }
+  }
+  if (display_data_type() != DisplayDataType::kNone &&
+      display_data_type() != DisplayDataType::kNoDisplay) {
+    os << "DISPLAY_DATA_SECTION" << endl;
+    for (int i = 0; i < dimension(); ++i) {
+      os << (i + 1) << ' ';
+      for (int j = 0; j < display_data_[i]->dimension(); ++j) {
+        os << display_data_[i]->coordinates()[j] << ' ';
+      }
+    }
+  }
+  if (edge_weight_type() == EdgeWeightType::kExplicit) {
+    os << "EDGE_WEIGHT_SECTION" << endl;
+    int length = GetRawMatrixLength();
+    for (int i = 0; i < length; ++i) {
+      os << raw_matrix_[i] << ' ';
+    }
+    os << endl;
   }
 }
 
@@ -155,6 +230,29 @@ int TSP::ParseEnumEntry(istream& is, const string values[], const int num_values
   return -1;
 }
 
+int TSP::GetRawMatrixLength() const {
+  switch (edge_weight_format()) {
+    case EdgeWeightFormat::kFullMatrix: {
+      return dimension() * dimension();
+    }
+    case EdgeWeightFormat::kUpperRow:
+    case EdgeWeightFormat::kLowerRow:
+    case EdgeWeightFormat::kUpperCol:
+    case EdgeWeightFormat::kLowerCol: {
+      return dimension() * (dimension() - 1) / 2;
+    }
+    case EdgeWeightFormat::kUpperDiagRow:
+    case EdgeWeightFormat::kLowerDiagRow:
+    case EdgeWeightFormat::kUpperDiagCol:
+    case EdgeWeightFormat::kLowerDiagCol: {
+      return dimension() * (dimension() + 1) / 2;
+    }
+    default:
+      break;
+  }
+  return -1;
+}
+
 bool TSP::ParseCoords(istream& is, int coord_dimension, Coord** coords) {
   int i = 0;
   while (i < dimension()) {
@@ -169,7 +267,7 @@ bool TSP::ParseCoords(istream& is, int coord_dimension, Coord** coords) {
       }
       coord->SetCoordinate(j, k);
     }
-    coords[i - 1] = coord;   
+    coords[i - 1] = coord;
   }
   return true;
 }
@@ -184,18 +282,18 @@ bool TSP::PopulateGraphFromMatrix() {
       }
       break;
     }
-    case EdgeWeightFormat::kUpperRow: 
+    case EdgeWeightFormat::kUpperRow:
     case EdgeWeightFormat::kUpperDiagRow:
-    case EdgeWeightFormat::kUpperCol: 
+    case EdgeWeightFormat::kUpperCol:
     case EdgeWeightFormat::kUpperDiagCol: {
       for (int i = 0; i < dimension(); ++i) {
         for (
-          int j = 
+          int j =
             edge_weight_format() == EdgeWeightFormat::kUpperDiagRow ? i : i + 1;
           j < dimension();
           ++j
         ) {
-          int col = edge_weight_format() == EdgeWeightFormat::kUpperDiagRow ? 
+          int col = edge_weight_format() == EdgeWeightFormat::kUpperDiagRow ?
                     j : j - i - 1;
           int weight = raw_matrix_[i * dimension() + col - i * (i + 1) / 2];
           graph_->SetEdgeWeight(i, j, weight);
@@ -204,9 +302,9 @@ bool TSP::PopulateGraphFromMatrix() {
       }
       break;
     }
-    case EdgeWeightFormat::kLowerRow: 
+    case EdgeWeightFormat::kLowerRow:
     case EdgeWeightFormat::kLowerDiagRow:
-    case EdgeWeightFormat::kLowerCol: 
+    case EdgeWeightFormat::kLowerCol:
     case EdgeWeightFormat::kLowerDiagCol: {
       for (int i = 0; i < dimension(); ++i) {
         int cols = edge_weight_format() == EdgeWeightFormat::kLowerDiagRow ? i : i - 1;
@@ -253,7 +351,7 @@ bool TSP::ParseDisplayDataSection(istream& is) {
     return false;
   }
   display_data_ = new Coord*[dimension()];
-  return ParseCoords(is, display_data_type() == DisplayDataType::kTwoDDisplay ? 
+  return ParseCoords(is, display_data_type() == DisplayDataType::kTwoDDisplay ?
                      2 : 3, display_data_);
 }
 
@@ -281,25 +379,9 @@ bool TSP::ParseRawMatrix(istream& is) {
       edge_weight_type() != EdgeWeightType::kExplicit) {
     return false;
   }
-  int length = 0;
-  switch (edge_weight_format()) {
-    case EdgeWeightFormat::kFullMatrix:
-      length = dimension() * dimension();
-      break;
-    case EdgeWeightFormat::kUpperRow:
-    case EdgeWeightFormat::kLowerRow:
-    case EdgeWeightFormat::kUpperCol:
-    case EdgeWeightFormat::kLowerCol:
-      length = dimension() * (dimension() - 1) / 2;
-      break;
-    case EdgeWeightFormat::kUpperDiagRow:
-    case EdgeWeightFormat::kLowerDiagRow:
-    case EdgeWeightFormat::kUpperDiagCol:
-    case EdgeWeightFormat::kLowerDiagCol:
-      length = dimension() * (dimension() + 1) / 2;
-      break;
-    default:
-      return false;
+  int length = GetRawMatrixLength();
+  if (length == -1) {
+    return false;
   }
   raw_matrix_ = new int[length];
   for (int i = 0; i < length; ++i) {

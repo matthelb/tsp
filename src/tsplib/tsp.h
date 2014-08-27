@@ -18,7 +18,11 @@ class TSP {
   TSP();
   virtual ~TSP();
 
+  static TSP* GenerateRandomTSP(std::string name, int num_cities,
+                               double bounding_box_max);
+
   bool BuildGraph();
+  void Export(std::ostream& os);
   bool Parse(std::string file_name);
   bool ParseStream(std::istream& is);
 
@@ -60,6 +64,7 @@ class TSP {
   static int ParseEnumEntry(std::istream& is, const std::string values[],
                             const int num_values);
 
+  int GetRawMatrixLength() const;
   bool ParseCoords(std::istream& is, int coord_dimension, Coord** coords);
   bool PopulateGraphFromMatrix();
   bool PopulateGraphFromNodeCoords();
