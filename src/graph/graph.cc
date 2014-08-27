@@ -10,10 +10,10 @@ Graph::Graph() {
 
 Graph::Graph(unsigned int num_nodes) {
   num_nodes_ = num_nodes;
-  edge_matrix_ = new int*[num_nodes];
+  edge_matrix_ = new double*[num_nodes];
   for (unsigned int i = 0; i < num_nodes; ++i) {
-    edge_matrix_[i] = new int[num_nodes];
-    memset(edge_matrix_[i], 0, num_nodes * sizeof(int));
+    edge_matrix_[i] = new double[num_nodes];
+    memset(edge_matrix_[i], 0, num_nodes * sizeof(double));
   }
 }
 
@@ -24,7 +24,7 @@ Graph::~Graph() {
   delete [] edge_matrix_;
 }
 
-int Graph::CanonicalTourLength() const {
+double Graph::CanonicalTourLength() const {
   int length = 0;
   for (unsigned int i = 0; i < num_nodes(); ++i) {
     length += GetEdgeWeight(i, (i + 1) % num_nodes());
@@ -44,14 +44,14 @@ void Graph::DisplayAdjacencyMatrix(ostream& os, int width) const {
   }
 }
 
-int Graph::GetEdgeWeight(unsigned int node_i, unsigned int node_j) const {
+double Graph::GetEdgeWeight(unsigned int node_i, unsigned int node_j) const {
   if (node_i >= num_nodes() || node_j >= num_nodes()) {
     return 0;
   }
   return edge_matrix_[node_i][node_j];
 }
 
-bool Graph::SetEdgeWeight(unsigned int node_i, unsigned int node_j, int weight) {
+bool Graph::SetEdgeWeight(unsigned int node_i, unsigned int node_j, double weight) {
   if (node_i >= num_nodes() || node_j >= num_nodes()) {
     return false;
   }
@@ -60,7 +60,7 @@ bool Graph::SetEdgeWeight(unsigned int node_i, unsigned int node_j, int weight) 
 }
 
 bool Graph::SetSymmetricEdgeWeight(
-  unsigned int node_i, unsigned int node_j, int weight
+  unsigned int node_i, unsigned int node_j, double weight
 ) {
   return SetEdgeWeight(node_i, node_j, weight) &&
          SetEdgeWeight(node_j, node_i, weight);

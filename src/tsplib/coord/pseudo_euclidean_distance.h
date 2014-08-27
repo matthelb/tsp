@@ -8,9 +8,9 @@ class PseudoEuclideanDistance : public DistanceCalc {
   PseudoEuclideanDistance();
   virtual ~PseudoEuclideanDistance();
 
-  int Distance(const Coord* a, const Coord* b);
+  double Distance(const Coord* a, const Coord* b);
   virtual bool VerifyCoordDimensions(const Coord* a, const Coord* b);
-  
+
  private:
   PseudoEuclideanDistance(
     const PseudoEuclideanDistance& pseudo_euclidean_distance);

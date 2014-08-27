@@ -8,6 +8,6 @@ CeilEuclideanDistance::CeilEuclideanDistance() {
 CeilEuclideanDistance::~CeilEuclideanDistance() {
 }
 
-int CeilEuclideanDistance::Distance(const Coord* a, const Coord* b) {
-  return ceil(EuclideanDistance::DistanceEuc(a, b));
+double CeilEuclideanDistance::Distance(const Coord* a, const Coord* b) {
+  return ceil(EuclideanDistance::Distance(a, b));
 }

@@ -21,7 +21,7 @@ int main(int argc, char* argv[]) {
     cout << "Edge Data Format: " << tsp.GetEdgeDataFormat() << endl;
     cout << "Node Coord Type: " << tsp.GetNodeCoordType() << endl;
     cout << "Display Data Type: " << tsp.GetDisplayDataType() << endl;
-    if (tsp.BuildGraph()) {
+    if (tsp.BuildGraph(true)) {
       cout << "Built Graph" << endl;
       const Graph* graph = tsp.graph();
       graph->DisplayAdjacencyMatrix(cout, 3);

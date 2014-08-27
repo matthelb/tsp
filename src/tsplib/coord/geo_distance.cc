@@ -10,7 +10,7 @@ GeoDistance::GeoDistance() {
 GeoDistance::~GeoDistance() {
 }
 
-int GeoDistance::Distance(const Coord* a, const Coord* b) {
+double GeoDistance::Distance(const Coord* a, const Coord* b) {
   double pi = acos(-1);
   double coordinates[] = {a->coordinates()[0], a->coordinates()[1],
                           b->coordinates()[0], b->coordinates()[1]};

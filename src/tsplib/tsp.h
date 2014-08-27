@@ -21,7 +21,7 @@ class TSP {
   static TSP* GenerateRandomTSP(std::string name, int num_cities,
                                double bounding_box_max);
 
-  bool BuildGraph();
+  bool BuildGraph(bool nearest_int);
   void Export(std::ostream& os);
   bool Parse(std::string file_name);
   bool ParseStream(std::istream& is);
@@ -67,7 +67,7 @@ class TSP {
   int GetRawMatrixLength() const;
   bool ParseCoords(std::istream& is, int coord_dimension, Coord** coords);
   bool PopulateGraphFromMatrix();
-  bool PopulateGraphFromNodeCoords();
+  bool PopulateGraphFromNodeCoords(bool nearest_int);
   bool ParseNodeCoordSection(std::istream& is);
   bool ParseDisplayDataSection(std::istream& is);
   bool ParseRawMatrix(std::istream& is);
@@ -83,7 +83,7 @@ class TSP {
   NodeCoordType node_coord_type_= NodeCoordType::kNone;
   DisplayDataType display_data_type_ = DisplayDataType::kNone;
 
-  int* raw_matrix_ = NULL;
+  double* raw_matrix_ = NULL;
   Coord** display_data_ = NULL;
   Coord** node_coords_ = NULL;
   Graph* graph_ = NULL;

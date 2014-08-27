@@ -65,7 +65,7 @@ TSP* TSP::GenerateRandomTSP(string name, int num_cities,
   return tsp;
 }
 
-bool TSP::BuildGraph() {
+bool TSP::BuildGraph(bool nearest_int) {
   if (graph()) {
     return true;
   }
@@ -73,7 +73,7 @@ bool TSP::BuildGraph() {
   if (edge_weight_type() == EdgeWeightType::kExplicit) {
     return PopulateGraphFromMatrix();
   } else {
-    return PopulateGraphFromNodeCoords();
+    return PopulateGraphFromNodeCoords(nearest_int);
   }
 }
 
@@ -295,7 +295,7 @@ bool TSP::PopulateGraphFromMatrix() {
         ) {
           int col = edge_weight_format() == EdgeWeightFormat::kUpperDiagRow ?
                     j : j - i - 1;
-          int weight = raw_matrix_[i * dimension() + col - i * (i + 1) / 2];
+          double weight = raw_matrix_[i * dimension() + col - i * (i + 1) / 2];
           graph_->SetEdgeWeight(i, j, weight);
           graph_->SetEdgeWeight(j, i, weight);
         }
@@ -310,7 +310,7 @@ bool TSP::PopulateGraphFromMatrix() {
         int cols = edge_weight_format() == EdgeWeightFormat::kLowerDiagRow ? i : i - 1;
         for (int j = 0; j <= cols; ++j) {
           int row = edge_weight_format() == EdgeWeightFormat::kLowerDiagRow ? i : i - 1;
-          int weight = raw_matrix_[row * dimension() + j - (row * dimension() - row * (row + 1) / 2)];
+          double weight = raw_matrix_[row * dimension() + j - (row * dimension() - row * (row + 1) / 2)];
           graph_->SetEdgeWeight(i, j, weight);
           graph_->SetEdgeWeight(j, i, weight);
         }
@@ -324,7 +324,7 @@ bool TSP::PopulateGraphFromMatrix() {
   return true;
 }
 
-bool TSP::PopulateGraphFromNodeCoords() {
+bool TSP::PopulateGraphFromNodeCoords(bool nearest_int) {
   if (node_coords_ == NULL) {
     return false;
   }
@@ -336,7 +336,10 @@ bool TSP::PopulateGraphFromNodeCoords() {
       if (!distance_calc->VerifyCoordDimensions(node_coords_[i], node_coords_[j])) {
         return false;
       }
-      int distance = distance_calc->Distance(node_coords_[i], node_coords_[j]);
+      double distance = distance_calc->Distance(node_coords_[i], node_coords_[j]);
+      if (nearest_int) {
+        distance = DistanceCalc::Nint(distance);
+      }
       graph_->SetEdgeWeight(i, j, distance);
       graph_->SetEdgeWeight(j, i, distance);
     }
@@ -383,7 +386,7 @@ bool TSP::ParseRawMatrix(istream& is) {
   if (length == -1) {
     return false;
   }
-  raw_matrix_ = new int[length];
+  raw_matrix_ = new double[length];
   for (int i = 0; i < length; ++i) {
     is >> raw_matrix_[i];
   }

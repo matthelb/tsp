@@ -8,7 +8,7 @@ class CeilEuclideanDistance : public EuclideanDistance {
   CeilEuclideanDistance();
   virtual ~CeilEuclideanDistance();
 
-  int Distance(const Coord* a, const Coord* b);
+  double Distance(const Coord* a, const Coord* b);
 
  private:
   CeilEuclideanDistance(

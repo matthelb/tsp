@@ -10,7 +10,7 @@ PseudoEuclideanDistance::PseudoEuclideanDistance() {
 PseudoEuclideanDistance::~PseudoEuclideanDistance() {
 }
 
-int PseudoEuclideanDistance::Distance(const Coord* a, const Coord* b) {
+double PseudoEuclideanDistance::Distance(const Coord* a, const Coord* b) {
   double rij = sqrt(
     (pow(a->coordinates()[0] - b->coordinates()[0], 2) +
      pow(a->coordinates()[1] - b->coordinates()[1], 2)) / 10

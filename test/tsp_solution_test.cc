@@ -20,7 +20,7 @@ class TSPSolutionTest : public ::testing::Test {
                        int expected_distance) {
     TSP tsp;
     ASSERT_TRUE(tsp.Parse(file_name));
-    ASSERT_TRUE(tsp.BuildGraph());
+    ASSERT_TRUE(tsp.BuildGraph(true));
     tsp_solver_->set_graph(tsp.graph());
     tsp_solver_->set_tsp_algorithm(tsp_algorithm);
     Solution solution = tsp_solver_->ComputeSolution();

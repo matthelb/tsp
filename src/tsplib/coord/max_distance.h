@@ -8,7 +8,7 @@ class MaxDistance : public DistanceCalc {
   MaxDistance();
   virtual ~MaxDistance();
 
-  int Distance(const Coord* a, const Coord* b);
+  double Distance(const Coord* a, const Coord* b);
 
  private:
   MaxDistance(const MaxDistance& max_distance);

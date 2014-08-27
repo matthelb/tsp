@@ -8,7 +8,7 @@ class GeoDistance : public DistanceCalc {
   GeoDistance();
   virtual ~GeoDistance();
 
-  int Distance(const Coord* a, const Coord* b);
+  double Distance(const Coord* a, const Coord* b);
   virtual bool VerifyCoordDimensions(const Coord* a, const Coord* b);
 
   static constexpr double kRadiusEarth = 6378.388;

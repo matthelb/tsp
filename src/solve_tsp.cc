@@ -21,8 +21,8 @@ int main(int argc, char* argv[]) {
     cout << "Algorithms:" << endl;
     PrintAlgorithms();
     return 1;
-  } else if (argc != 3) {
-    cout << "Usage: " << argv[0] << " <tsp_file> <algorithm>" << endl;
+  } else if (argc != 4) {
+    cout << "Usage: " << argv[0] << " <tsp_file> <algorithm> <nearest_int>" << endl;
     cout << "    For a list of available algorithms and their syntaxes" << endl;
     cout << "    Run: " << argv[0] << " -algorithms" << endl;
     return 1;
@@ -43,7 +43,7 @@ int main(int argc, char* argv[]) {
   if (!tsp_instance.Parse(argv[1])) {
     cout << "Failed to parse " << argv[1] << " as TSPLIB file" << endl;
     return 1;
-  } else if (!tsp_instance.BuildGraph()) {
+  } else if (!tsp_instance.BuildGraph(atoi(argv[1])) == 1) {
     cout << "Failed to build graph for " << argv[1] << endl;
     return 1;
   }

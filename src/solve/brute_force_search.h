@@ -21,11 +21,11 @@ class BruteForceSearch : public TSPAlgorithm {
   const Graph* graph() const { return graph_; }
 
   void Reset(const Graph* graph);
-  void SearchPermutations(std::vector<int> current_path, int current_distance,
+  void SearchPermutations(std::vector<int> current_path, double current_distance,
                            std::unordered_set<int> unvisited_nodes);
 
   const Graph* graph_;
-  int shortest_distance_ = 0;
+  double shortest_distance_ = 0;
   std::vector<int> shortest_path_;
 };
 
