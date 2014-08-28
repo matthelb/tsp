@@ -3,12 +3,14 @@ LDIR = lib
 ODIR = obj
 SDIR = src
 TDIR = test
-INCLUDE += -Isrc
+CAIROINCLUDE = $(shell pkg-config --cflags --libs cairomm-1.0)
+INCLUDE += -Isrc $(CAIROINCLUDE)
 
 CXX=g++
 CXXFLAGS=-Wall -g -std=c++11 -Wextra -pthread
 
 COMPILE_OBJ = $(CXX) $(CXXFLAGS) $(INCLUDE) -c $< -o $@
+
 MKDIR = if [ ! -d "$(shell dirname $@)" ]; then mkdir -p $(shell dirname $@); fi
 
 SRCS = $(SDIR)/graph/graph.cc \
@@ -43,10 +45,10 @@ test: tests
 ## Distributed Executables
 
 $(BDIR)/parse_tsp: $(OBJS) $(SDIR)/parse_tsp.cc
-	$(CXX) $(CXXFLAGS) $(INCLUDE) $^ -o $@
+	$(CXX) $(CXXFLAGS) $(INCLUDE) $^ -o $@ $(CAIROINCLUDE)
 
 $(BDIR)/solve_tsp: $(OBJS) $(SDIR)/solve_tsp.cc
-	$(CXX) $(CXXFLAGS) $(INCLUDE) $^ -o $@
+	$(CXX) $(CXXFLAGS) $(INCLUDE) $^ -o $@ $(CAIROINCLUDE)
 
 ###
 
