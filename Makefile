@@ -31,7 +31,7 @@ SRCS = $(SDIR)/graph/graph.cc \
 
 OBJS = $(patsubst $(SDIR)%.cc, $(ODIR)%.o, $(SRCS))
 
-all: $(BDIR)/parse_tsp $(BDIR)/solve_tsp $(BDIR)/generate_tsp
+all: $(BDIR)/parse_tsp $(BDIR)/solve_tsp $(BDIR)/generate_tsp $(BDIR)/simulate_tsp
 
 tests: $(BDIR)/tsp_distance_calc_test $(BDIR)/tsp_solution_test
 
@@ -48,6 +48,9 @@ $(BDIR)/solve_tsp: $(OBJS) $(SDIR)/solve_tsp.cc
 	$(CXX) $(CXXFLAGS) $(INCLUDE) $^ -o $@
 
 $(BDIR)/generate_tsp: $(OBJS) $(SDIR)/generate_tsp.cc
+	$(CXX) $(CXXFLAGS) $(INCLUDE) $^ -o $@
+
+$(BDIR)/simulate_tsp: $(OBJS) $(SDIR)/simulate_tsp.cc
 	$(CXX) $(CXXFLAGS) $(INCLUDE) $^ -o $@
 
 ###

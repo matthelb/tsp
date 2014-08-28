@@ -2,6 +2,7 @@
 #define TSP_TSPLIB_TSP_H_
 
 #include <iostream>
+#include <random>
 #include <string>
 
 #include "graph/graph.h"
@@ -19,12 +20,15 @@ class TSP {
   virtual ~TSP();
 
   static TSP* GenerateRandomTSP(std::string name, int num_cities,
-                               double bounding_box_max);
+                                double min_coord, double max_coord,
+                                std::mt19937& random_gen);
 
   bool BuildGraph(bool nearest_int);
   void Export(std::ostream& os);
   bool Parse(std::string file_name);
   bool ParseStream(std::istream& is);
+  bool ReplaceCoordRandomly(double min_coord, double max_coord,
+                            std::mt19937& random_gen);
 
   std::string GetEdgeDataFormat() const {
     return kEdgeDataFormatValues[static_cast<int>(edge_data_format())];

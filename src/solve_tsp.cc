@@ -54,7 +54,7 @@ int main(int argc, char* argv[]) {
   cout << "Computed path length: " << solution.distance << endl;
   cout << "Computed path:" << endl;
   for (auto node : solution.path) {
-    cout << "    " << node << endl;
+    cout << "    " << node + 1 << endl;
   }
   return 0;
 }

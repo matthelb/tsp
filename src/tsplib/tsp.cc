@@ -4,6 +4,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <fstream>
+#include <random>
 #include <sstream>
 
 #include "tsplib/coord/distance_calc_factory.h"
@@ -39,35 +40,28 @@ TSP::~TSP() {
 }
 
 TSP* TSP::GenerateRandomTSP(string name, int num_cities,
-                            double bounding_box_max) {
+                            double min_coord, double max_coord,
+                            mt19937& random_gen) {
   TSP* tsp = new TSP();
   tsp->name_ = name;
-  int seed = time(NULL);
-  srand(seed);
-  stringstream comment_ss;
-  comment_ss <<  "Generated randomly with seed " << seed;
-  tsp->comment_ = comment_ss.str();
   tsp->tsp_type_ = TSPType::kTSP;
   tsp->dimension_ = num_cities;
   tsp->node_coord_type_ = NodeCoordType::kTwoDCoords;
   tsp->display_data_type_ = DisplayDataType::kNoDisplay;
   tsp->edge_weight_type_ = EdgeWeightType::kEuc2D;
   tsp->edge_weight_format_ = EdgeWeightFormat::kFunction;
-  stringstream ss;
-  for (int i = 1; i <= tsp->dimension(); ++i) {
-    ss << i << ' ';
-    for (int j = 0; j < EdgeWeightTypeDimension(tsp->edge_weight_type()); ++j) {
-      ss << (static_cast<double>(rand()) / RAND_MAX * bounding_box_max) << ' ';
-    }
-    ss << "\n";
+  tsp->node_coords_ = new Coord*[tsp->dimension()];
+  for (int i = 0; i < tsp->dimension(); ++i) {
+    tsp->node_coords_[i] = Coord::GenerateRandomCoord(
+        EdgeWeightTypeDimension(tsp->edge_weight_type()), min_coord, max_coord,
+        random_gen);
   }
-  tsp->ParseNodeCoordSection(ss);
   return tsp;
 }
 
 bool TSP::BuildGraph(bool nearest_int) {
   if (graph()) {
-    return true;
+    delete graph_;
   }
   graph_ = new Graph(dimension());
   if (edge_weight_type() == EdgeWeightType::kExplicit) {
@@ -217,6 +211,21 @@ bool TSP::ParseStream(istream& is) {
     }
   }
   return !name().empty();
+}
+
+bool TSP::ReplaceCoordRandomly(double min_coord, double max_coord,
+                               mt19937& random_gen) {
+  if (node_coords_) {
+    uniform_int_distribution<int> uniform_dist(0, dimension() - 1);
+    int replaced_coord = uniform_dist(random_gen);
+    delete node_coords_[replaced_coord];
+    node_coords_[replaced_coord] = Coord::GenerateRandomCoord(
+        EdgeWeightTypeDimension(edge_weight_type()), min_coord, max_coord,
+        random_gen);
+    return true;
+  } else {
+    return false;
+  }
 }
 
 int TSP::ParseEnumEntry(istream& is, const string values[], const int num_values) {

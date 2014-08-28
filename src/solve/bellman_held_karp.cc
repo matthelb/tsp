@@ -52,7 +52,7 @@ Solution BellmanHeldKarp::ComputeSolution(const Graph* graph) {
     minimum_distance = min(minimum_distance, distance[subset][t] +
                                              graph->GetEdgeWeight(t, 0));
   }
-  for (unsigned int i = 0; i < graph->num_nodes(); ++i) {
+  for (unsigned int i = 0; i < max_subset; ++i) {
     delete [] distance[i];
   }
   delete [] distance;
