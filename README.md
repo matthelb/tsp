@@ -32,10 +32,23 @@ will build any outdated test executables and run all unit tests.
     
 ### Solve TSP
 
-`solve_tsp` attemps to solve an instance of the traveling salesman problem as specified by an input TSPLIB file. The algorithm with which `solve_tsp` solves the instance needs to be specified by the user.
+`solve_tsp` attemps to solve an instance of the traveling salesman problem as specified by an input TSPLIB file. The algorithm with which `solve_tsp` solves the instance needs to be specified by the user. Also, the user must specify whether or not distances will be rounded to the nearest integer when a TSPLIB file requires edge weights to be calculated with functions (e.g. EUC_2D, GEO, etc.). All files that are part of the default TSPLIB distribution require nearest int rounding to compute their published optimal solutions. A `1` indicates that nearest int rounding should be used and a `0` indicates that double floating point precision should be used.
 
-    ./solve_tsp <tsp_file> <algorithm>
+    ./solve_tsp <tsp_file> <algorithm> <nearest_int>
     
 A list of supported algorithms can be displayed by running the program with `-algorithms` as the only parameter.
 
     ./solve_tsp -algorithms
+
+### Generate TSP
+
+`generate_tsp` randomly generates a TSP instance and exports the instance to a TSPLIB formatted file. Minimum and maximum values for the cities' coordinates must be specified with the `min_coord` and `max_coord` parameters.
+
+    ./generate_tsp <tsp_name> <number_of_cities> <min_coord> <max_coord> <output_file>
+    
+### Simulate TSP
+
+`simulate_tsp` runs a specified number of simulations where the optimal path for a randomly generated TSP instance is computed, a city in the instance is deleted uniformly at random, and a new city is added with new coordinates generated uniformly at random. Minimum and maximum values for the cities' coordinates must be specified with the `min_coord` and `max_coord` parameters.
+
+    ./simulate_tsp <number_of_cities> <min_coord> <max_coord> <trials>
+    
