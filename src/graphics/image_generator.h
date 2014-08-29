@@ -21,17 +21,17 @@ private:
   void operator=(const ImageGenerator& image_generator);
 
   std::pair<double, double>* scale_coordinates(const std::pair<double, double>
-                                               coordinates,
-                                               double offsetX,
-                                               double offsetY);
+                                               coordinates);
 
-  void draw_graph(std::vector<std::pair<double, double>> coordinates, 
-                  double offsetX, double offsetY,
-                  Cairo::RefPtr<Cairo::Context> cr);
+  void draw_graph(std::vector<std::pair<double, double>> coordinates);
   int width;
   int height;
   double min_coord;
   double max_coord;
+  Cairo::RefPtr<Cairo::Context> cr;
+  Cairo::RefPtr<Cairo::ImageSurface> surface;
+  double offsetX;
+  double offsetY;
   std::string directory;
 };
 
