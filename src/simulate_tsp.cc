@@ -9,6 +9,7 @@
 #include "solve/bellman_held_karp.h"
 #include "solve/tsp_solver.h"
 #include "tsplib/tsp.h"
+#include "graphics/image_generator.h"
 
 using namespace std;
 
@@ -39,6 +40,7 @@ int main(int argc, char* argv[]) {
   solver.set_tsp_algorithm(&bhk);
   mt19937 random_gen(time(NULL));
   vector<double> differences(trials, 0);
+  
   for (int i = 0; i < trials; ++i) {
     TSP* tsp = TSP::GenerateRandomTSP("", num_cities, min_coord, max_coord,
                                       random_gen);
