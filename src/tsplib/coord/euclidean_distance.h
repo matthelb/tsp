@@ -8,10 +8,7 @@ class EuclideanDistance : public DistanceCalc {
   EuclideanDistance();
   virtual ~EuclideanDistance();
 
-  virtual int Distance(const Coord* a, const Coord* b);
-
- protected:
-  virtual double DistanceEuc(const Coord* a, const Coord* b);
+  virtual double Distance(const Coord* a, const Coord* b);
 
  private:
   EuclideanDistance(const EuclideanDistance& euclidean_distance);

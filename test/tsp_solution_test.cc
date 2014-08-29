@@ -16,6 +16,17 @@ class TSPSolutionTest : public ::testing::Test {
     delete tsp_solver_;
   }
 
+  void TestTSPInstance(std::string file_name, TSPAlgorithm* tsp_algorithm,
+                       int expected_distance) {
+    TSP tsp;
+    ASSERT_TRUE(tsp.Parse(file_name));
+    ASSERT_TRUE(tsp.BuildGraph(true));
+    tsp_solver_->set_graph(tsp.graph());
+    tsp_solver_->set_tsp_algorithm(tsp_algorithm);
+    Solution solution = tsp_solver_->ComputeSolution();
+    EXPECT_EQ(expected_distance, solution.distance);
+  }
+
   TSPSolver* tsp_solver_ = NULL;
 };
 
@@ -36,20 +47,6 @@ TEST_F(TSPSolutionTest, BruteForceSearch) {
 
 TEST_F(TSPSolutionTest, BellmanHeldKarp) {
   BellmanHeldKarp bellman_held_karp;
-  tsp_solver_->set_tsp_algorithm(&bellman_held_karp);
-  TSP* tsp = new TSP();
-  ASSERT_TRUE(tsp->Parse("data/gr17.tsp"));
-  ASSERT_TRUE(tsp->BuildGraph());
-  tsp_solver_->set_graph(tsp->graph());
-  Solution solution = tsp_solver_->ComputeSolution();
-  EXPECT_EQ(2085, solution.distance);
-  delete tsp;
-
-  tsp = new TSP();
-  ASSERT_TRUE(tsp->Parse("data/gr21.tsp"));
-  ASSERT_TRUE(tsp->BuildGraph());
-  tsp_solver_->set_graph(tsp->graph());
-  solution = tsp_solver_->ComputeSolution();
-  EXPECT_EQ(2707, solution.distance);
-  delete tsp;
+  TestTSPInstance("data/tsp/gr17.tsp", &bellman_held_karp, 2085);
+  TestTSPInstance("data/tsp/gr21.tsp", &bellman_held_karp, 2707);
 }

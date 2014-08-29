@@ -8,7 +8,7 @@ class DistanceCalc {
   DistanceCalc();
   virtual ~DistanceCalc();
 
-  virtual int Distance(const Coord* a, const Coord* b) = 0;
+  virtual double Distance(const Coord* a, const Coord* b) = 0;
   virtual bool VerifyCoordDimensions(const Coord* a, const Coord* b);
 
   static int Nint(double d);

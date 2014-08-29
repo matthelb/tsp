@@ -2,7 +2,7 @@
 
 #include <algorithm>
 #include <bitset>
-#include <climits>
+#include <cfloat>
 #include <cmath>
 #include <cstring>
 #include <iostream>
@@ -17,10 +17,10 @@ BellmanHeldKarp::~BellmanHeldKarp() {
 
 Solution BellmanHeldKarp::ComputeSolution(const Graph* graph) {
   unsigned int max_subset = 1 << (graph->num_nodes() - 1);
-  int** distance = new int*[max_subset];
+  double** distance = new double*[max_subset];
   for (unsigned int i = 0; i < max_subset; ++i) {
-    distance[i] = new int[graph->num_nodes()];
-    fill(distance[i], distance[i] + graph->num_nodes(), INT_MAX);
+    distance[i] = new double[graph->num_nodes()];
+    fill(distance[i], distance[i] + graph->num_nodes(), DBL_MAX);
   }
   for (unsigned int i = 0; i < graph->num_nodes(); ++i) {
     distance[0][i] = graph->GetEdgeWeight(0, i);
@@ -45,14 +45,14 @@ Solution BellmanHeldKarp::ComputeSolution(const Graph* graph) {
       } while (curr_subset < max_subset);
     }
   }
-  int minimum_distance = INT_MAX;
+  double minimum_distance = DBL_MAX;
   int base_set = (1 << (graph->num_nodes() - 1)) - 1;
   for (unsigned int t = 1; t < graph->num_nodes(); ++t) {
     unsigned int subset = base_set & ~(1 << (t - 1));
     minimum_distance = min(minimum_distance, distance[subset][t] +
                                              graph->GetEdgeWeight(t, 0));
   }
-  for (unsigned int i = 0; i < graph->num_nodes(); ++i) {
+  for (unsigned int i = 0; i < max_subset; ++i) {
     delete [] distance[i];
   }
   delete [] distance;

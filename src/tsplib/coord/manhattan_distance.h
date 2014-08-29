@@ -8,8 +8,8 @@ class ManhattanDistance : public DistanceCalc {
   ManhattanDistance();
   virtual ~ManhattanDistance();
 
-  int Distance(const Coord* a, const Coord* b);
-  
+  double Distance(const Coord* a, const Coord* b);
+
  private:
   ManhattanDistance(const ManhattanDistance& manhattan_distance);
   void operator=(const ManhattanDistance& manhattan_distance);
