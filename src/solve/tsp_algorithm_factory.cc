@@ -2,6 +2,7 @@
 
 #include "solve/bellman_held_karp.h"
 #include "solve/brute_force_search.h"
+#include "solve/nearest_neighbor_search.h"
 
 using namespace std;
 
@@ -17,6 +18,9 @@ TSPAlgorithm* TSPAlgorithmFactory::GetTSPAlgorithm(
     }
     case TSPAlgorithmType::kBellmanHeldKarp: {
       return new BellmanHeldKarp();
+    }
+    case TSPAlgorithmType::kNearestNeighborSearch: {
+      return new NearestNeighborSearch();
     }
     default: {
       break;

@@ -1,0 +1,13 @@
+/* This file is part of cairomm. */
+
+/* Defined when the --enable-api-exceptions configure argument was given */
+#undef CAIROMM_EXCEPTIONS_ENABLED
+
+/* Major version number of cairomm. */
+#undef CAIROMM_MAJOR_VERSION
+
+/* Minor version number of cairomm. */
+#undef CAIROMM_MINOR_VERSION
+
+/* Micro version number of cairomm. */
+#undef CAIROMM_MICRO_VERSION

@@ -1,0 +1,13 @@
+Building cairomm-1.0 with Visual Studio .NET 2010
+
+* You will need Visual Studio 2010 (MSVC 10.0).  See the MSVC_Net2005 folder for building with Visual Studio .NET 2005 (MSVC 8.0) or the MSVC_Net2008 folder for building with Visual Studio .NET 2008 (MSVC 9.0).
+* Install the latest Win32 GTK+ Development files from ftp://ftp.gnome.org/pub/GNOME/binaries/win32/gtk+/ and add the paths to headers and import libraries to Visual Studio
+* Load the MSVC_Net2010/cairomm.sln solution.
+* Build the entire solution.
+* Run the tests.
+
+Cedric Gustin
+08/18/2006
+
+Armin Burgmeier
+09/29/2010

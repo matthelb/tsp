@@ -1,0 +1,12 @@
+Examples:
+
+  surfaces: demonstrates how to use various surface types
+  text: various examples of drawing text
+
+
+These examples are built automatically as part of cairomm, and you can
+easily try them out if you are building from source. If cairomm has been
+installed on your system, you can compile an example program with
+
+    g++ `pkg-config --cflags --libs cairomm-1.0` main.cc
+

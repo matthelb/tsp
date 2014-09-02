@@ -1,0 +1,6 @@
+quartz_font.lo: quartz_font.cc ../cairomm/quartz_font.h \
+ /usr/include/cairo/cairo-features.h
+
+../cairomm/quartz_font.h:
+
+/usr/include/cairo/cairo-features.h:

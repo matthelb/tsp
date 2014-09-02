@@ -1,0 +1,301 @@
+1.10.0 (stable):
+
+* Documentation: Context::arc(): Correct the documentation, as in the C
+  documentation.
+  (Murray Cumming) Bug #31345 (Christopher Head)
+
+1.9.8 (unstable):
+
+* Surface:
+  - added create() for creating a sub-surface representing a rectangle on a
+    target surface
+  - PDF versioning API: get_versions(), restrict_to_version(),
+    version_to_string()
+  - add get_device()
+  - add new surface type enum values
+* Device
+  - add acquire() and release() functions
+  - Add Device::Lock convenience class
+* Region
+  - UNSTABLE API CHANGE: Fix do_union(), subtract(), intersect() to throw
+    exceptions instead of returning error statuses to be consistent with the
+    rest of the cairomm API
+  - add xor() functions
+  - add API for creating a region from a list of rectangles
+  - implement copy()
+* Documentation:
+  - Context::arc(): Fix bug #31345 (Christopher Head) about bad math in arc()
+    documentation. (Murray Cumming)
+  - Add documentation for Device class
+  - Add documentation for Region class
+
+1.9.6 (unstable):
+
+* Context: Added in_clip().
+* Surface: Added get_mime_data(), set_mime_data(), unset_mime_data().
+  (Murray Cumming)
+* Build: Added support for Windows 64-bit and Visual Studio 2010.
+  (Armin Burgmeier)
+
+1.9.4 (unstable):
+
+* Added Device.
+  (Murray Cumming)
+
+1.9.2 (unstable):
+
+* Context:
+  - set_dash(): Make the dashes parameter const.
+  - device_to_user(), device_to_user_distance(), user_to_device(),
+  user_to_device_distance(): Deprecate the non-const versions, adding const
+  versions.
+  (Murray Cumming)
+* Cleanup of most -Weffc++ warnings. Bug #28246.
+  (Ian Britten)
+
+1.9.1 (unstable):
+
+* Added Region.
+  (Murray Cumming)
+* Context: Don't allow this to be copied.
+  (Daniel Elstner)
+* Build:
+  - Fix the MSVC build.
+  (Armin Burgmeier)
+  - Fix the 64-bit build.
+  (Augusto Jun Devegil)
+  - Actually install cairomm-xlib-xrender-1.0.pc.
+  (Daisuke Nishikawa)
+
+1.8.4:
+
+* move to new mm-common build infrastructure
+* Contributors for this release:
+     1  Christopher Harvey
+     4  Daniel Elstner
+     4  David King
+     1  Jonathon Jongsma
+
+1.8.2:
+
+* Fix accidental ABI breakage from 1.8.0.  All users are urged to please upgrade
+  from 1.8.0 to 1.8.2 as soon as possible
+
+1.8.0:
+
+* No notable changes since 1.7.2
+
+1.7.2 (UNSTABLE):
+
+* API Changes (all API changes are in unstable API introduced in 1.7.x)
+  * UserFontFace is not implemented with virtual functions rather than by
+    registering callbacks
+  * Cairo::scaled_matrix() -> Cairo::scaling_matrix() to match other matrix
+    convenience functions
+* Bugfixes
+  * Incorrect refcounting on ScaledFont
+  * build fixes for Mac OSX
+* Contributors for this release:
+     1	Armin Burgmeier
+     1	Dave Evans
+    22	Jonathon Jongsma
+
+
+1.7.0 (UNSTABLE):
+
+ * API Changes
+   * ScaledFont: Change fontface constructor parameter to be a RefPtr
+     * This is an API break, but the old interface was essentially unusably
+       broken
+   * Cairo::Matrix now inherits from cairo_matrix_t
+     * Previously, we had used Cairo::Matrix throughout our API, but
+       Cairo::Matrix was just a typedef for cairo_matrix_t
+     * This could be considered an API change, but the new Cairo::Matrix still
+       is-a cairo_matrix_t even if it's not exactly a cairo_matrix_t.  This
+       change does not break ABI either, as there are no data members or virtual
+       functions.  So I believe this is a safe change, but feedback is appreciated.
+     * Provides a much more C++-friendly API for handling matrices
+     * Also added a set of standalone 'generator' functions for generating
+       starting matrices:
+       * Cairo::identity_matrix(), rotation_matrix(), translation_matrix(),
+         scaled_matrix().  This allows for convenient use such as:
+           cr->set_matrix(Cairo::identity_matrix());
+         rather than something like what was required before:
+           Cairo::Matrix identity_matrix;
+           cairo_matrix_init_identity(&identity_matrix);
+           cr->set_matrix(identity_matrix);
+   * Pattern: get/set_matrix() functions were using a cairo_matrix_t parameter in
+     the API.  This is the only place where we used this type and so it was
+     inconsistent with every other matrix-related API in cairomm.  Previously
+     this wasn't really an issue since cairo_matrix_t and Cairo::Matrix were
+     typedefed to the same type.  However, with the the change to Cairo::Matrix
+     mentioned above, this because a much bigger issue.
+     * This is an ABI-compatible change, but it is a minor API change that could
+       result in some warnings or compile problems in some situations`
+ * New API (some of these are new in cairo 1.8, some are older API that were
+   not wrapped in cairomm previously)
+   * Add Context::get/set_scaled_font()
+   * add Context::show_text_glyphs()
+   * add Context::get_font_options()
+   * Add Surface::has_show_text_glyphs()
+   * Add Surface::get_content() + test
+   * Added Surface::get_fallback_resolution()
+   * Add ScaledFont::text_to_glyphs()
+   * Add PsSurface::get_eps()
+   * Add missing Win32Surface API: create_with_ddb(), create_with_dib(), and get_image()
+   * Add Win32PrintingSurface
+   * Vastly improved font support
+     * ToyFontFace
+     * UserFontFace
+     * Add Freetype font support (FtFontFace, etc)
+     * Add win32 font support (Win32FontFace, etc)
+     * Add quartz font support (QuartzFontFace, etc)
+     * Add ScaledFont::get_scale_matrix()
+ * Fix API inconsistencies by adding overloads and deprecating old versions
+   * Deprecated FontFace::extents() in favor of FontFace::get_extents()
+   * Deprecated FontFace::text_extents() in favor of FontFace::get_text_extents()
+   * Deprecated FontFace::glyph_extents() in favor of FontFace::get_glyph_extents()
+   * Add sigc::slot versions of all of the functions that take a
+     cairo_write_func_t or cairo_read_func_t
+     * This adds a new dependency on libsigc++, but offers a much more flexible
+       and C++-like solution
+     * Old API using cairo_write_func_t / cairo_read_func_t still exist, but are
+       deprecated in favor of the new API
+   * Add a default value for the font_options parameter of the ScaledFont constructor
+ * Added new macros for determining library version:
+   * CAIROMM_MAJOR_VERSION, CAIROMM_MINOR_VERSION, and CAIROMM_MICRO_VERSION
+ * Add a bunch of extra .pc files for additional functionality
+   * like cairo, create convenience .pc files for using some of the optional
+     features.  For example, cairomm-ft-1.0, cairomm-pdf-1.0, cairomm-xlib-1.0, etc.
+ * Numerous windows build improvements
+ * Added a *lot* of automated tests
+
+1.6.2:
+
+ * Fix build on OSX when both Quartz and Xlib surfaces are enabled (Benjamin
+   Reed)
+ * updated the windows build (Armin Burgmeier)
+ * Fixed a bug where an exception message would often report "Success" when it
+   should have reported an error message
+ * Added ability to get the error status code from an exception:
+   Cairo::logic_error::get_status_code()
+ * Added new elements to the surface type enumeration
+
+1.6.0:
+
+ * wrap cairo_format_stride_for_width().  All new cairo 1.6 API should now be
+   implemented in cairomm
+
+1.5.0 (UNSTABLE):
+
+ * Unstable release wrapping new API in cairo 1.5 series
+ * Bugfixes
+   - Bug #14559: build failure in exception.cc on Solaris with Sun Workshop C++
+   - Bug #14558: cairomm 1.4.6 context.cc needs math.h on Solaris
+
+1.4.6:
+
+ * Bugfixes:
+   - Bug #11972: Cannot build cairomm with Quartz enabled
+
+1.4.4:
+
+ * Added the --enable-api-exceptions=yes/no configure option, to allow
+   cairomm to build when exceptions are disabled. For instance, when using
+   CXXFLAGS=-fno-exceptions with g++.
+
+1.4.2:
+
+ * Bugfixes:
+   - Bug #11596: Fixed broken shared library versioning (Dave Beckett)
+   - Bug #8511: RefPtr: refcounting broken with cast_*() methods (Murray
+     Cumming)
+
+1.4.0:
+
+ * Wrapped new API added in cairo 1.4
+ * Added support for Quartz surfaces
+ * ability to use dynamic casting for surfaces and patterns returned from
+   Context::get_target(), Context::get_source(), etc.
+ * Various build and bug fixes
+
+1.2.4:
+
+ * Fixed an error that prevented Cairo::RefPtr<>::cast_static() and
+   Cairo::RefPtr<>::cast_dynamic() from compiling.
+
+1.2.2:
+
+* Fixed an issue when compiling on windows with MSVC
+
+1.2.0:
+
+* This is the first release that guarantees API and ABI stability
+* Changed API:
+  - Context::clear_path() is now Context::begin_new_path()
+  - Context::new_sub_path() is now Context::begin_new_sub_path()
+* new API:
+  - Win32Surface::get_dc()
+  - Win32Surface::create() for device-independent bitmaps
+* Bugfixes
+  - fixed a memory leak where C++ wrapper objects were not being destroyed
+* Fixes for compiling with MSVC (also includes project and resource files for
+  Visual Studio 2005.  See the MSVC/ directory)
+
+1.1.10:
+
+* API:
+  - Wrap new API from cairo 1.2
+  - Wrap ScaledFont
+* Improved Documentation
+* Build fixes
+
+0.6.0:
+
+* API:
+  - enumerations are now wrapped within the Cairo namespace.  So, for example,
+    CAIRO_FORMAT_ARGB32 becomes Cairo::FORMAT_ARGB32
+* Examples: added simple text example translated from Cairo.
+* Bugfixes for the Glitz and Windows backends.
+* Build and installation improvements (Danilo Piazzalunga)
+
+0.5.0:
+
+* Surface:
+  - Created derived classes for PDF, PS, SVG, Glitz,
+  X11 and Win32 surfaces, which are only available if your copy
+  of cairo supports those surfaces. The X11 and Win32 Surface headers
+  must be #included explicitly.
+  (Jonathon Jongsma)
+  - Added write_to_png() and write_to_png_stream(), available when PNG
+  support is available in Cairo.
+  (Jonathon Jongsma)
+* Examples: Added PNG, PDF, PS, and SVG Surface examples.
+  (Jonathon Jongsma)
+* Added API documentation generation with doxygen (Jonathon Jongsma)
+
+0.4.0:
+
+* Add Cairo::RefPtr<> and use all reference-counted
+  objects via it. Use the static create() methods
+  instead of new for these classes.
+* Context:
+  - Change set_dash(void) to unset_dash().
+  - Change rotate_deg() to rotate_degrees().
+  - Change identity_matrix() to set_identity_matrix().\
+  - Change new_path() to clear_path().
+* FontFace: Remove get/set_user_data(), because it seems useless.
+
+0.3.0:
+
+* Context:
+  - Change mask_surface() to mask() and
+    set_source_surface() to set_source().
+  - Add typedef for Matrix, but a real Matrix
+  class would be nice.
+* Pattern: Created hierarchy of classes.
+* Check for errors in constructors.
+* Exception: Rename to logic_error, and throw
+  std::bad_alloc or std::io_base::failure instead
+  when appropriate.
+  (Murray Cumming)

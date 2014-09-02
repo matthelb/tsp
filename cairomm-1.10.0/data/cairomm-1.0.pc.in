@@ -1,0 +1,19 @@
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+libdir=@libdir@
+datarootdir=@datarootdir@
+datadir=@datadir@
+includedir=@includedir@
+
+docdir=${datarootdir}/doc/@CAIROMM_MODULE_NAME@
+doxytagfile=${docdir}/reference/@CAIROMM_MODULE_NAME@.tag
+htmlrefdir=${docdir}/reference/html
+htmlrefpub=http://www.cairographics.org/documentation/cairomm/reference
+
+Name: cairomm
+Description: C++ binding for the cairo graphics library
+Version: @PACKAGE_VERSION@
+URL: http://www.cairographics.org/cairomm/
+Requires: @CAIROMM_MODULES@
+Libs: -L${libdir} -lcairomm-@CAIROMM_API_VERSION@
+Cflags: -I${includedir}/@CAIROMM_MODULE_NAME@ -I${libdir}/@CAIROMM_MODULE_NAME@/include

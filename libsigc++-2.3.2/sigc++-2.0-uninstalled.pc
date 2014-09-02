@@ -1,0 +1,9 @@
+doxytagfile=${pc_top_builddir}/docs/reference/libsigc++-2.0.tag
+htmlrefpub=http://library.gnome.org/devel/libsigc++/unstable/
+
+Name: libsigc++
+Description: Typesafe signal and callback system for C++, not installed
+Version: 2.3.2
+URL: http://libsigc.sourceforge.net/
+Libs: ${pc_top_builddir}/sigc++/libsigc-2.0.la
+Cflags: -I${pc_top_builddir} -I${pc_top_builddir}/.
