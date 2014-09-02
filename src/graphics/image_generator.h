@@ -13,8 +13,8 @@ public:
                  std::string directory);
   ~ImageGenerator();
   void generate_image(std::string filename,
-                      std::vector<std::pair<double, double>> beforeCoordinates,
-                      std::vector<std::pair<double, double>> afterCoordinates);
+                      const std::vector<std::pair<double, double>> beforeCoordinates,
+                      const std::vector<std::pair<double, double>> afterCoordinates);
 
 private:
   ImageGenerator(const ImageGenerator& image_generator);

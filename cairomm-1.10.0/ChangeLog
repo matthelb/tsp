@@ -1,0 +1,2188 @@
+1.10.0:
+
+2010-11-03  Murray Cumming  <murrayc@murrayc.com>
+
+	Context::arc(): Correct the documentation, as in the C documentation.
+
+	* cairomm/context.h: arc(): Update the documentation based on the latest
+	version of the cairo_arc() documentation, which was apparently fixed since
+	we last wrote the C++ documentation based on it.
+	This fixes bug #31345 (Christopher Head) about bad math in arc()
+	documentation.
+
+1.9.6:
+
+2010-09-29  Armin Burgmeier  <armin@arbur.net>
+
+	Added support for 64 bit and Visual Studio 2010.
+
+	* MSVC_Net2008/.cvsignore:
+	* MSVC_Net2005/examples/png-file/png-file.vcproj:
+	* MSVC_Net2008/examples/png-file/png-file.vcproj: Removed.
+
+	* MSVC_Net2005/README:
+	* MSVC_Net2005/cairomm.sln:
+	* MSVC_Net2005/cairomm/cairomm.vcproj:
+	* MSVC_Net2005/examples/image-surface/image-surface.vcproj:
+	* MSVC_Net2005/examples/pdf-surface/pdf-surface.vcproj:
+	* MSVC_Net2005/examples/ps-surface/ps-surface.vcproj:
+	* MSVC_Net2005/examples/svg-surface/svg-surface.vcproj:
+	* MSVC_Net2005/examples/text-rotate/text-rotate.vcproj:
+	* MSVC_Net2005/examples/toy-text/toy-text.vcproj:
+	* MSVC_Net2005/examples/user-font/user-font.vcproj:
+	* MSVC_Net2005/gendef/gendef.vcproj:
+	* MSVC_Net2008/README:
+	* MSVC_Net2008/cairomm.sln:
+	* MSVC_Net2008/cairomm/cairomm.vcproj:
+	* MSVC_Net2008/examples/image-surface/image-surface.vcproj:
+	* MSVC_Net2008/examples/pdf-surface/pdf-surface.vcproj:
+	* MSVC_Net2008/examples/ps-surface/ps-surface.vcproj:
+	* MSVC_Net2008/examples/svg-surface/svg-surface.vcproj:
+	* MSVC_Net2008/examples/text-rotate/text-rotate.vcproj:
+	* MSVC_Net2008/examples/toy-text/toy-text.vcproj:
+	* MSVC_Net2008/examples/user-font/user-font.vcproj:
+	* MSVC_Net2008/gendef/gendef.vcproj:
+	* MSVC_Net2010/README:
+	* MSVC_Net2010/cairomm.sln:
+	* MSVC_Net2010/cairomm/cairomm.rc.in:
+	* MSVC_Net2010/cairomm/cairomm.vcxproj:
+	* MSVC_Net2010/cairomm/cairomm.vcxproj.filters:
+	* MSVC_Net2010/examples/image-surface/image-surface.vcxproj:
+	* MSVC_Net2010/examples/image-surface/image-surface.vcxproj.filters:
+	* MSVC_Net2010/examples/pdf-surface/pdf-surface.vcxproj:
+	* MSVC_Net2010/examples/pdf-surface/pdf-surface.vcxproj.filters:
+	* MSVC_Net2010/examples/ps-surface/ps-surface.vcxproj:
+	* MSVC_Net2010/examples/ps-surface/ps-surface.vcxproj.filters:
+	* MSVC_Net2010/examples/svg-surface/svg-surface.vcxproj:
+	* MSVC_Net2010/examples/svg-surface/svg-surface.vcxproj.filters:
+	* MSVC_Net2010/examples/text-rotate/text-rotate.vcxproj:
+	* MSVC_Net2010/examples/text-rotate/text-rotate.vcxproj.filters:
+	* MSVC_Net2010/examples/toy-text/toy-text.vcxproj:
+	* MSVC_Net2010/examples/toy-text/toy-text.vcxproj.filters:
+	* MSVC_Net2010/examples/user-font/user-font.vcxproj:
+	* MSVC_Net2010/examples/user-font/user-font.vcxproj.filters:
+	* MSVC_Net2010/filelist.am:
+	* MSVC_Net2010/gendef/gendef.cc:
+	* MSVC_Net2010/gendef/gendef.vcxproj:
+	* MSVC_Net2010/gendef/gendef.vcxproj.filters:
+	* Makefile.am:
+	* configure.ac: Added support for 64 bit and Visual Studio 2010.
+
+2010-09-10  Murray Cumming  <murrayc@murrayc-desktop>
+
+	Context, Surface: Add some new methods.
+
+	* cairomm/context.[h|cc]: Added in_clip().
+	* cairomm/surface.[h|cc]: Added get_mime_data(), set_mime_data(),
+  unset_mime_data().
+
+1.9.4:
+
+2010-09-07  Murray Cumming  <murrayc@murrayc.com>
+
+	Added Device class.
+
+	* cairomm/device.[h|cc]: Added these files, wrapping cairo_device_t.
+  * cairomm/filelist.am:
+  * cairomm/cairomm.h: Mention the new file.
+
+1.9.2:
+
+2010-09-02  Murray Cumming  <murrayc@murrayc.com>
+
+	Context: set_dash(): Make the dashes parameter const.
+
+	* cairomm/context.[h|cc]: set_dash(): Add versions that take a const
+  vector parameter, deprecating the old versions.
+
+2010-09-02  Murray Cumming  <murrayc@murrayc.com>
+
+	Context: Make some methods const, deprecating the non-const versions.
+
+	* cairomm/context.[h|cc]: device_to_user(, device_to_user_distance(),
+  user_to_device(), user_to_device_distance(): Deprecate the non-const versions,
+  adding const versions.
+
+2010-06-10  Ian Britten  <britten@caris.com>
+
+	Cleanup of most -Weffc++ warnings. Bug #28246.
+
+	* cairomm/fontface.h (FontFace::FontFace):
+	* cairomm/path.h (Path::Path):
+	* cairomm/pattern.h (Pattern::Pattern):
+	* cairomm/scaledfont.h (ScaledFont::ScaledFont):
+	* cairomm/surface.h (Surface::Surface): Declare a private copy
+	constructor and assignment operator in order to explicitly prevent
+	objects from being copied by value.  That was never valid, and not
+	disallowing it seems to have been merely an oversight.
+
+	* cairomm/fontoptions.cc:
+	* cairomm/scaledfont.cc: Initialize member(s) in initialization list.
+
+	* cairomm/scaledfont.h: Declared ~ScaledFont() virtual
+
+1.9.1:
+
+2010-07-06  Murray Cumming  <murrayc@murrayc.com>
+
+	Add Region, wrapping cairo_region_t, new in cairo 1.10.
+
+	* cairomm/region.[h|cc]: Added this class, wrapping it like other
+    reference-counted types, such as Pattern.
+    * cairomm/cairomm.h: Add an include of it here.
+    * cairomm/filelist.am: Mention the new files here.
+
+2010-06-07  Daniel Elstner  <danielk@openismus.com>
+
+	Disallow copying of Cairo::Context objects
+
+	* cairomm/context.h (Cairo::Context): Declare a private copy
+	constructor and assignment operator in order to explicitly prevent
+	objects from being copied by value.  That was never valid, and not
+	disallowing it seems to have been merely an oversight.
+
+2010-06-07  Daniel Elstner  <danielk@openismus.com>
+
+	Do not unnecessarily cast booleans to pointers
+
+	* cairomm/fontface.cc (USER_DATA_KEY_DEFAULT_TEXT_TO_GLYPHS): Put
+	dummy object into an anonymous namespace and make it static.
+	(UserFontFace::text_to_glyphs): Do not cast a boolean to a pointer
+	in order to indicate state via the font face's user data.  There are
+	fairly safe alternative casts to do this, but it is much simpler to
+	just take the address of any existing object to get a non-0 pointer.
+	(UserFontFace::UserFontFace): Remove unnecessary casts.
+
+2009-10-26  Armin Burgmeier  <armin@arbur.net>
+
+	* MSVC_Net2005/cairomm/cairomm.rc.in:
+	* MSVC_Net2008/cairomm/cairomm.rc.in: Replaced GENERIC_MAJOR_VERSION
+	et al. by CAIROMM_MAJOR_VERSION, so that they are properly replaced
+	during configure.
+
+	* MSVC_Net2005/examples/image-surface/image-surface.vcproj:
+	* MSVC_Net2005/examples/pdf-surface/pdf-surface.vcproj:
+	* MSVC_Net2005/examples/ps-surface/ps-surface.vcproj:
+	* MSVC_Net2005/examples/svg-surface/svg-surface.vcproj:
+	* MSVC_Net2005/examples/text-rotate/text-rotate.vcproj:
+	* MSVC_Net2005/examples/toy-text/toy-text.vcproj:
+	* MSVC_Net2005/examples/user-font/user-font.vcproj:
+	* MSVC_Net2008/examples/image-surface/image-surface.vcproj:
+	* MSVC_Net2008/examples/pdf-surface/pdf-surface.vcproj:
+	* MSVC_Net2008/examples/ps-surface/ps-surface.vcproj:
+	* MSVC_Net2008/examples/svg-surface/svg-surface.vcproj:
+	* MSVC_Net2008/examples/text-rotate/text-rotate.vcproj:
+	* MSVC_Net2008/examples/toy-text/toy-text.vcproj:
+	* MSVC_Net2008/examples/user-font/user-font.vcproj: Added
+	$(SolutionDir)/cairomm to the include search paths, so that
+	cairommconfig.h is found even if configure did not run.
+
+	* cairomm/fontface.cc: MSVC does not allow to reinterpret_cast a bool
+	to void*, so use an int instead.
+
+	* cairomm/context.cc:
+	* examples/surfaces/image-surface.cc:
+	* examples/surfaces/pdf-surface.cc:
+	* examples/surfaces/ps-surface.cc:
+	* examples/surfaces/svg-surface.cc:
+	* examples/text/text-rotate.cc: Define _USE_MATH_DEFINES before
+	including anything, to make sure we get the defines even if math.h
+	is included indirectly via another header.
+
+2010-06-07  Augusto Jun Devegili  <monipol@gmx.com>
+
+	Put ifdefs around 32-bit-only API, to fix the build on 64-bit machines.
+
+	* cairomm/quartz_font.[h|cc]: Use #ifndef __LP64__, as cairo does.
+
+2010-06-07  Daisuke Nishikawa  <caffeine@m13.alpha-net.ne.jp>
+
+	Actually install cairomm-xlib-xrender-1.0.pc.
+
+	* configure.ac: Fix a typo in the check for xlib-xrender support in
+    cairo. Fixes bug #27066.
+
+2010-01-28  Daniel Elstner  <danielk@openismus.com>
+
+    Clean up configure.ac and add silent rules support
+
+    * configure.ac (AC_INIT): Specify correct URLs for bug reports and the
+    project home page.
+    (AM_SILENT_RULES): Call macro if defined.
+    (MM_PREREQ): Require mm-common 0.8.
+    (BOOST_UNIT_TEST_FRAMEWORK_STATIC_LIB): Rewrite the fragile shell code
+    of the boost check.
+
+1.8.4:
+
+2009-10-19  Jonathon Jongsma <jjongsma@gnome.org>
+
+    bump to 1.8.4, update NEWS
+
+2009-08-13  Jonathon Jongsma <jjongsma@gnome.org>
+
+    Don't force tests to be enabled when CAIROMM_DEVEL is defined
+
+    This was hacked in to ensure that I always built with tests enabled, but the
+    boost configure detection scripts are broken right now on my setup, so this just
+    hinders my ability to get things done.  remove it.
+
+2009-08-13  Daniel Elstner  <danielk@openismus.com>
+
+	Distribute mm-common documentation utilities
+
+	* docs/Makefile.am (dist_noinst_DATA): List the utility scripts
+	installed by mm-common-prepare here, so they will be distributed.
+
+2009-08-13  Daniel Elstner  <danielk@openismus.com>
+
+	Add missing call to MM_CONFIG_DOCTOOL_DIR
+
+	* configure.ac: Call MM_CONFIG_DOCTOOL_DIR([docs]) to indicate to
+	mm-common-prepare that this module cannot depend on the utilities
+	shipped with glibmm, and needs its own copies.
+
+2009-08-13  Daniel Elstner  <danielk@openismus.com>
+
+	Fix left-over cairomm/cairommconfig.h includes
+
+	* cairomm/cairomm.h: Remove directory prefix from cairommconfig.h
+	include statement.
+	* cairomm/context.cc: Include <cmath> unconditionally instead of
+	conditionally including <math.h>.
+	* examples/surfaces/*.cc: ditto,
+	* examples/text/text-rotate.cc: ditto.
+
+2009-08-13  Daniel Elstner  <danielk@openismus.com>
+
+	Review and clean up after build overhaul
+
+	* autogen.sh: Pass --enable-maintainer-mode to ./configure since the
+	automatic rebuild of the reference documentation is only enabled in
+	maintainer mode.  AM_MAINTAINER_MODE is already in configure.ac.
+	* configure.ac (AC_CONFIG_HEADERS): Prepend build/config.h to the
+	list of header files, because the first file in the list has its .in
+	file generated by autoheader, and will thus include every AC_DEFINE
+	from every Autoconf macro that is used.  The macros defined in the
+	installed cairommconfig.h header should be namespaced and limited to
+	meta information about the installed cairomm library.
+	Also move cairommconfig.h to the top-level directory, in order to
+	avoid the need to add the cairomm/ subdirectory to the include path.
+	(PKG_CHECK_MODULES): Collapse the checks for optional cairo modules
+	into a loop, and use PKG_CHECK_EXISTS() instead of the full-blown
+	PKG_CHECK_MODULES().  Also, be a bit cleverer about the lists of .pc
+	files and module names generated along the way.
+	(AC_CONFIG_FILES): List all potentially installed files literally,
+	instead of creating the list of output files dynamically.  This is
+	much simpler and also gets us free shipping.  Remove data/Makefile.
+	* cairommconfig.h.in: Add file to repository, as it should not be
+	autogenerated.  Of the content, keep only the CAIROMM_ namespaced
+	macros.
+	* cairomm/context*.cc: Remove cairomm/ prefix from cairommconfig.h
+	include statements.  This was already wrong before, but moving the
+	file around made it visible.
+	* Makefile.am: Clean up a bit.
+	(DIST_SUBDIRS): Have Automake figure it out automatically.
+	(cairomm_include_HEADERS): Remove, as cairomm/cairomm.h is already
+	installed in cairomm/Makefile.am.
+	(nodist_cairomm_libinclude_HEADERS): Relocate cairommconfig.h to
+	the top-level directory.
+	(nodist_pkgconfig_DATA): Use $(CAIROMM_INSTALL_PC) substitution from
+	configure.ac to install the appropriate pkg-config data files.
+	* cairomm/Makefile.am: Rewrite without using compile-binding.am, as
+	it is not really the appropriate tool for the cairomm job.
+	* cairomm/filelist.am (cairomm_cc): Rename from $(files_extra_cc).
+	(cairomm_public_h): Rename variable from $(files_extra_h) and remove
+	cairommconfig.h from the list.
+	(cairomm_private_h): Rename variable from $(files_extra_ph).
+	* docs/Makefile.am (doc_input): Adjust variable names.
+	(dist_noinst_DATA): Add reference/cairomm.css to the list.
+	(pubdocbase): Define for completeness.
+	(htmlrefpub): Correct documentation URL.
+	* docs/Doxyfile.in: Strip trailing whitespace from every line.
+	(STRIP_FROM_PATH), (STRIP_FROM_INC_PATH), (INCLUDE_PATH): Do not
+	strip the cairomm/ subdirectory prefix from the displayed filenames.
+	(EXCLUDE): Remove list of files to exclude, since the list of input
+	files is specified explicitly with the new build organization.
+	(EXPAND_AS_DEFINED): Expand version number macros, although at the
+	moment they are probably not used anywhere in the public headers.
+	* data/cairomm-*.pc.in: Use @PACKAGE_VERSION@ instead of @VERSION@.
+	* data/cairomm-1.0.pc.in (htmlrefpub): Correct documentation URL.
+	(Cflags): Add missing -I${libdir}/@CAIROMM_MODULE_NAME@/include.
+	* data/Makefile.am: Delete now unused build file.
+	* docs/reference/Makefile.am: Delete left-over build file.
+
+2009-08-12  David King  <davidk@openismus.com>
+
+	* MSVC_Net2005/**/Makefile.am:
+	* MSVC_Net2008/**/Makefile.am: Remove recursive build files.
+	* MSVC_Net2005/filelist.am:
+	* MSVC_Net2008/filelist.am: Recursively list all files that should go
+	into the distribution.
+	* configure.ac (AC_CONFIG_FILES): Remove all Makefile outputs to the
+	MSVC subdirectories.
+	 (AC_CONFIG_COMMANDS): Copy the configuration header files into the
+	MSVC subdirectories by making config.status execute custom
+	configuration commands. This is easier than doing it at the Makefile
+	level, where it was previously implemented.
+	* Makefile.am: Include the filelist.am files from the MSVC
+	subdirectories.
+	 (SUBDIRS): Remove MSVC_Net200[58] directories from the list.
+	 (dist_noinst_DATA): Distribute the MSVC project files.
+	 (DISTCLEANFILES): Include the copied configuration header files in a
+	 distclean.
+
+2009-08-12  David King  <davidk@openismus.com>
+
+	* .gitignore: Add new generated documentation files.
+	* Makefile.am: Remove old documentation generation build.
+	* configure.ac:
+	* docs/reference/Makefile.am: Remove, with switch to non-recursive
+	documentation build.
+	* data/cairomm-1.0.pc.in:
+	* docs/Makefile.am: Switch to new documentation build infrastructure
+	from mm-common.
+	* docs/reference/Doxyfile.in: Modernise and disable several unused
+	features of the Doxygen output.
+
+2009-08-12  David King  <davidk@openismus.com>
+
+	* .gitignore: Add INSTALL, mm-common *.am files and .dirstamp.
+	* Makefile.am: Change VERSION to PACKAGE_VERSION. Begin transition
+	to use of new build infrastructure.
+	* cairomm/Makefile.am: Simplify by moving significant portions to
+	toplevel Makefile.am.
+	* cairomm/filelist.am: List of files for libcairomm. Move private
+	source files to files_extra_cc.
+	* configure.ac: Use MM_INIT_MODULE and remove example subdirectory
+	Makefile.am.
+	* examples/surfaces/Makefile.am:
+	* examples/text/Makefile.am: Remove.
+	* examples/Makefile.am: Convert examples tree to non-recursive
+	build, with single, slimmer Makefile.am.
+
+2009-08-11  David King  <davidk@openismus.com>
+
+	* autogen.sh: Replace with a simple wrapper around mm-common-prepare
+	and autoreconf.
+	* build/*.m4: Move from m4 directory.
+	* Makefile.am: Rename m4 directory to build.
+	* configure.ac: Rename from configure.in, as it is recommended by
+	Autoconf developers and currently required by mm-common-prepare. Major
+	update to take advantage of mm-common build infrastructure.
+	* INSTALL: Remove from repository, using GNU install instructions
+	instead.
+	* cairomm/Makefile.am: Remove unnecessary win32 conditionals.
+
+2009-07-07  Christopher Harvey <chris@basementcode.com>
+
+	* cairomm/context.h
+
+	Added some documentation to the rel_* functions in the Context class
+	about their behavior when there is no current point.
+
+2009-07-05  Jānis Rukšāns <thedogfarted@gmail.com>
+
+	Reviewed by Jonathon Jongsma
+
+	* cairomm/context.cc:
+	* cairomm/context.h:
+	* cairomm/pattern.cc:
+	* cairomm/pattern.h:
+	* cairomm/scaledfont.cc:
+	* cairomm/scaledfont.h: Restore 1.6.x ABI / API that was
+	  unintentionally broken by the matrix changes in the 1.8.x series
+
+2009-01-26  Jonathon Jongsma  <jonathon@quotidian.org>
+
+	* NEWS:
+	* configure.in: bump version for 1.8.0
+
+2009-01-20  Jonathon Jongsma  <jonathon@quotidian.org>
+
+	* cairomm/surface.h: fixed the documentation for ImageSurface::create() to
+	match the cairo C documentation (it must have changed since we initially
+	copied the documentation -- it'd really be nice to have a way to automatically
+	generate the C++ documentation...)
+
+2008-12-20  Jonathon Jongsma  <jonathon@quotidian.org>
+
+	* configure.in:
+	* tests/test-matrix.cc:
+	* tests/test-user-font.cc: fix some test build issues that were causing
+	distcheck to fail
+
+2008-12-20  Jonathon Jongsma  <jonathon@quotidian.org>
+
+	* NEWS:
+	* configure.in: update for release
+
+2008-12-20  Jonathon Jongsma  <jonathon@quotidian.org>
+
+	* cairomm/matrix.cc:
+	* cairomm/matrix.h: change free convenience function 'scaled_matrix()' to
+	'scaling_matrix()' to better match the other names (e.g.
+	'translation_matrix()').  This API was added in 1.7.x so while it is an API
+	change, it doesn't affect any stable API.
+
+2008-12-20  Armin Burgmeier  <armin@openismus.com>
+
+	* cairomm/pattern.h: Forward-declared Matrix as a class instead of as
+	a struct, to prevent MSVC from complaining about "'Cairo::Matrix' :
+	type name first seen using 'struct' now seen using 'class'".
+
+	* MSVC_Net2005/examples/png_file:
+	* MSVC_Net2008/examples/png_file: Removed, as the corresponding
+	example has been removed.
+
+	* MSVC_Net2005/cairomm/cairomm.vcproj:
+	* MSVC_Net2008/cairomm/cairomm.vcproj: Link against libsigc++, added
+	matrix.h, win32_font.h, matrix.cc and win32_font.cc to the project.
+
+	* MSVC_Net2005/examples/pdf-surface/pdf-surface.vcproj:
+	* MSVC_Net2005/examples/ps-surface/ps-surface.vcproj:
+	* MSVC_Net2005/examples/svg-surface/svg-surface.vcproj:
+	* MSVC_Net2005/examples/pdf-surface/pdf-surface.vcproj:
+	* MSVC_Net2008/examples/ps-surface/ps-surface.vcproj:
+	* MSVC_Net2008/examples/svg-surface/svg-surface.vcproj:
+	* MSVC_Net2008/examples/text-rotate/text-rotate.vcproj:
+	* MSVC_Net2008/examples/text-rotate/text-rotate.vcproj: Adapt path to
+	source files.
+
+	* MSVC_Net2005/examples/image-surface/image-surface.vcproj:
+	* MSVC_Net2005/examples/image-surface/Makefile.am:
+	* MSVC_Net2005/examples/toy-text/toy-text.vcproj:
+	* MSVC_Net2005/examples/toy-text/Makefile.am:
+	* MSVC_Net2005/examples/user-font/user-font.vcproj:
+	* MSVC_Net2005/examples/user-font/Makefile.am:
+	* MSVC_Net2005/examples/Makefile.am: Added MSVC2005 projects for these
+	examples.
+
+	* MSVC_Net2008/examples/image-surface/image-surface.vcproj:
+	* MSVC_Net2008/examples/image-surface/Makefile.am:
+	* MSVC_Net2008/examples/toy-text/toy-text.vcproj:
+	* MSVC_Net2008/examples/toy-text/Makefile.am:
+	* MSVC_Net2008/examples/user-font/user-font.vcproj:
+	* MSVC_Net2008/examples/user-font/Makefile.am:
+	* MSVC_Net2008/examples/Makefile.am: Added MSVC2008 projects for these
+	examples.
+
+	* MSVC_Net2005/cairomm.sln:
+	* MSVC_Net2008/cairomm.sln: Added the new example projects to the
+	corresponding solution.
+
+	* configure.in: Create Makefiles in the newly added directories.
+
+2008-12-15  Jonathon Jongsma  <jonathon@quotidian.org>
+
+	* cairomm/scaledfont.h: revert the virtual destructor since it's unnecessary
+	and an ABI change.  The ScaledFont subclasses don't have any virtual functions
+	or any subclass-specific data that needs to be cleaned up, so a virtual
+	destructor is not really necessary here.
+	* tests/test-scaled-font.cc: a little paranoia test just to ensure that the
+	base destructor is called correctly reducing the ref count when we delete a
+	FtFontFace
+
+2008-12-14  Jonathon Jongsma  <jonathon@quotidian.org>
+
+	* cairomm/fontface.cc: fixed a bug in UserFont where I was incorrectly using a
+	function static variable and so it was not returning negative numbers for
+	num_glyphs when I expected it to
+	* tests/Makefile.am:
+	* tests/test-font-face.cc:
+	* tests/test-user-font.cc: Added tests for UserFontFace
+
+2008-12-14  Jonathon Jongsma  <jonathon@quotidian.org>
+
+	* cairomm/scaledfont.cc: actually fix a reference-counting issue with
+	ScaledFont::get_font_face() that I thought I had fixed in b1d01ff7
+	* tests/test-scaled-font.cc: add a test for the get_font_face() bug
+
+2008-12-12  Jonathon Jongsma  <jonathon@quotidian.org>
+
+	* configure.in: bump version since we forgot to do it after release
+
+2008-12-12  Jonathon Jongsma  <jonathon@quotidian.org>
+
+	* cairomm/types.h: add cross-reference links to the cairo manual for all types
+	that are just typedefs of C structs
+
+2008-12-12  Jonathon Jongsma  <jonathon@quotidian.org>
+
+	* .gitignore: ignore the new example executable names
+	* examples/text/Makefile.am: normalize the text-rotate example
+	executable name
+	* examples/text/text-rotate.cc: print a message to the terminal explaining
+	that a file was written
+
+2008-12-12  Jonathon Jongsma  <jonathon@quotidian.org>
+
+	* cairomm/surface.h: add the surface examples to the doxygen documentation
+
+2008-12-12  Jonathon Jongsma  <jonathon@quotidian.org>
+
+	Restructure the examples directory so that there aren't so many subdirs, which
+	tends to slow down builds since they can't be done in parallel.  Also
+	'standardize' the executable names a bit more and give the source files
+	meaningful names rather than 'main.cc' or similar
+
+	* configure.in:
+	* examples/.cvsignore: Removed.
+	* examples/Makefile.am:
+	* examples/README:
+	* examples/pdf-surface/.cvsignore: Removed.
+	* examples/pdf-surface/Makefile.am: Removed.
+	* examples/png_file/.cvsignore: Removed.
+	* examples/png_file/Makefile.am: Removed.
+	* examples/ps-surface/.cvsignore: Removed.
+	* examples/ps-surface/Makefile.am: Removed.
+	* examples/surfaces/image-surface.cc: Renamed from examples/png_file/main.cc.
+	* examples/surfaces/pdf-surface.cc: Renamed from examples/pdf-surface/main.cc.
+	* examples/surfaces/ps-surface.cc: Renamed from examples/ps-surface/main.cc.
+	* examples/surfaces/svg-surface.cc: Renamed from examples/svg-surface/main.cc.
+	* examples/svg-surface/.cvsignore: Removed.
+	* examples/svg-surface/Makefile.am: Removed.
+
+2008-12-12  Jonathon Jongsma  <jonathon@quotidian.org>
+
+	* cairomm/fontface.h: add more documentation about UserFontFace, including a
+	warning about needing to keep the UserFontFace wrapper around as long as we're
+	rendering text with that face.
+	Include the user-font.cc and toy-text.cc examples in the doxygen reference
+	documentation
+	* docs/reference/Doxyfile.in: set EXAMPLE_PATH
+
+2008-12-11  Jonathon Jongsma  <jonathon@quotidian.org>
+
+	* examples/text/user-font.cc: enhanced the UserFontFace example quite a bit so
+	that it shows a few different virtual functions and actually draws different
+	sized boxes for different characters
+
+2008-12-11  Jonathon Jongsma  <jonathon@quotidian.org>
+
+	* cairomm/fontface.h: fix up a lot of the documentation for UserFontFace since
+	it was redesigned to use virtual functions rather than callbacks
+
+2008-12-07  Jonathon Jongsma  <jonathon@quotidian.org>
+
+	* examples/text/Makefile.am:
+	* examples/text/user-font.cc: Added a very simple example of using a
+	UserFontFace to draw text
+
+2008-12-07  Jonathon Jongsma  <jonathon@quotidian.org>
+
+	* cairomm/fontface.cc: Fix the default implementation of UserFontFace::init()
+	to set up the font extents parameter correctly according to the documentation
+
+2008-12-07  Jonathon Jongsma  <jonathon@quotidian.org>
+
+	* cairomm/fontface.cc: 'fix' the text_to_glyphs implementation so that the
+	default virtual function will be bypassed and the unicode_to_glyph will be
+	called instead.  This is done in the C implementation by passing a negative
+	value for the num_glyphs output parameter, but since we're using a std::vector
+	for the glyphs, it's not possible to return a negative value.  So I'm using an
+	ugly hack that will set a boolean flag the first time the default
+	text_to_glyphs vfunc is called (which implies that that function has not been
+	reimplemented in a derived class), and if we check that boolean flag and it is
+	set, we will pass a negative value down to the C caller
+
+2008-12-07  Jonathon Jongsma  <jonathon@quotidian.org>
+
+	* cairomm/fontface.cc:
+	* cairomm/fontface.h: Change UserFontFace implementation to a vfunc-based
+	implementation rather than requiring people to supply callbacks at runtime as
+	sigc::slot objects.  This was requested by Ian Britten on the mailing list and
+	was my original plan but ran into issues in my original implementation.  This
+	isn't a fully-working implementation yet, but I think I can overcome the
+	issues now, so I'm moving forward on the redesign.
+	* tests/test-font-face.cc: disable UserFontFace tests for now
+
+2008-12-05  Jonathon Jongsma  <jonathon@quotidian.org>
+
+	* cairomm/scaledfont.cc: Fix an error in ScaledFont::get_font_face() where
+	we were releasing a reference we didn't hold.
+	Also fix a rather severe memory leak where we weren't calling
+	cairo_scaled_font_destroy in the ScaledFont destructor.  I added a virtual
+	destructor to ScaledFont, which theoretically changes ABI, but I don't see how
+	anybody could be using ScaledFont in cairomm currently without serious memory
+	leaks, so I think it's worthwhile to make this change
+
+2008-11-14  Jonathon Jongsma  <jonathon@quotidian.org>
+
+	* cairomm/win32_surface.cc:
+	* cairomm/win32_surface.h: fix a bunch of compile errors in the win32 surface
+	as reported by Paul Goins <general vultaire.net>
+
+2008-11-14  Jonathon Jongsma  <jonathon@quotidian.org>
+
+	* configure.in: support the --with-boost=[boost_path] option for specifying
+	the install path of boost libraries
+
+2008-10-30  Dave Evans <devans@macports.org>
+
+	* cairomm/fontface.h:
+	* cairomm/surface.h: fix compile in mac osx by undefining the 'nil' symbol
+	before including any sigc++ headers.  In the future this should become
+	necessary if sigc++ headers do this directly, but for now work around it in
+	cairomm
+
+2008-10-29  Jonathon Jongsma  <jonathon@quotidian.org>
+
+	* Makefile.am: distribute autogen.sh with the tarballs
+
+2008-10-25  Jonathon Jongsma  <jonathon@quotidian.org>
+
+	* configure.in:
+	* data/Makefile.am:
+	* tests/Makefile.am: fix some distcheck failures (pkg-config files and
+	unit-test-generated images were not removed on distclean)
+
+2008-10-25  Jonathon Jongsma  <jonathon@quotidian.org>
+
+	* NEWS: explicitly mention that 1.7.0 is an unstable release
+
+2008-10-22  Jonathon Jongsma  <jonathon@quotidian.org>
+
+	* NEWS: add news for 1.7.x release
+
+2008-10-22  Jonathon Jongsma  <jonathon@quotidian.org>
+
+	* cairomm/matrix.h: add a link to the cairo reference for cairo_matrix_t
+	* docs/reference/Doxyfile.in: don't generate docs for the members of the
+	Cairo::Private namespace
+
+2008-10-22  Jonathon Jongsma  <jonathon@quotidian.org>
+
+	* configure.in: bump version to 1.7.0
+
+2008-10-22  Jonathon Jongsma  <jonathon@quotidian.org>
+
+	* cairomm/context.cc:
+	* cairomm/context.h: add an overloaded get_matrix() function that returns a
+	copy of the matrix for convenience
+	* tests/test-context.cc: excercise the API
+
+2008-10-22  Jonathon Jongsma  <jonathon@quotidian.org>
+
+	* .gitignore:
+	* Makefile.am:
+	* configure.in: moved pkgconfig files to a data subdirectory, and consolidated
+	all dependency checks into one PKG_CHECK_MODULES call so that we don't have
+	duplicate libs or flags in the compiler command line due to checking all of
+	teh deps individually and then aggregating them
+	* data/Makefile.am: Added.
+	* data/cairomm-1.0.pc.in: Renamed from cairomm-1.0.pc.in.
+	* data/cairomm-ft-1.0.pc.in: Renamed from cairomm-ft-1.0.pc.in.
+	* data/cairomm-pdf-1.0.pc.in: Renamed from cairomm-pdf-1.0.pc.in.
+	* data/cairomm-png-1.0.pc.in: Renamed from cairomm-png-1.0.pc.in.
+	* data/cairomm-ps-1.0.pc.in: Renamed from cairomm-ps-1.0.pc.in.
+	* data/cairomm-quartz-1.0.pc.in: Renamed from cairomm-quartz-1.0.pc.in.
+	* data/cairomm-quartz-font-1.0.pc.in: Renamed from cairomm-quartz-font-1.0.pc.in.
+	* data/cairomm-quartz-image-1.0.pc.in: Renamed from cairomm-quartz-image-1.0.pc.in.
+	* data/cairomm-svg-1.0.pc.in: Renamed from cairomm-svg-1.0.pc.in.
+	* data/cairomm-win32-1.0.pc.in: Renamed from cairomm-win32-1.0.pc.in.
+	* data/cairomm-win32-font-1.0.pc.in: Renamed from cairomm-win32-font-1.0.pc.in.
+	* data/cairomm-xlib-1.0.pc.in: Renamed from cairomm-xlib-1.0.pc.in.
+	* data/cairomm-xlib-xrender-1.0.pc.in: Renamed from cairomm-xlib-xrender-1.0.pc.in.
+
+2008-10-22  Jonathon Jongsma  <jonathon@quotidian.org>
+
+	* cairomm/pattern.cc:
+	* cairomm/pattern.h: Fix broken get/set_matrix() API that was using the C
+	cairo_matrix_t type instead of Cairo::Matrix.  This should be an
+	ABI-compatible change since Cairo::Matrix is ABI-compatible with
+	cairo_matrix_t, however it is a minor API change that could result in some
+	compile warnings for existing code
+
+2008-10-15  Jonathon Jongsma  <jonathon@quotidian.org>
+
+	* configure.in: add all of the _LIBS and _CFLAGS for those features that are
+	supported (e.g. FT, PNG, PDF, etc) to the cairomm build flags/libs.
+
+2008-10-15  Jonathon Jongsma  <jonathon@quotidian.org>
+
+	* configure.in: bump required cairo version to 1.8.0
+
+2008-10-09  Armin Burgmeier  <armin@openismus.com>
+
+	* MSVC_Net2005/cairomm/cairomm.vcproj: Changed output file names to
+	cairomm-vc80-1_0.dll or cairomm-vc80-d-1_0.dll, respectively.
+
+	* MSVC_Net2008/cairomm.sln:
+	* MSVC_Net2008/cairomm.rc.in:
+	* MSVC_Net2008/Makefile.am:
+	* MSVC_Net2008/*/*.vcproj: Added necesseary files for a Visual Studio
+	2008 build.
+
+	* configure.in:
+	* Makefile.am: Added the VS 2008 project files to the distribution.
+
+2008-10-10  Jonathon Jongsma  <jonathon@quotidian.org>
+
+	* configure.in:
+	* Makefile.am:
+	* cairomm-**.pc.in:
+	Add a bunch of extra .pc files for additional functionality
+
+	This is done in a bit of a brute-force method at the moment.  I have .pc.in
+	templates for all possible files.  Then I check the underlying cairo-XXX.p
+	files and if those exist, I generate the corresponding cairomm-XXX.pc file
+	It's not the prettiest solution, but it seems to work.
+	So now, if you want to just use base cairo functionality, check for cairom
+	but if you want to use other functionality that requires that you link you
+	application against other libraries (e.g. freetype, xlib, etc), you should
+	for cairomm-ft-1.0, cairomm-xlib-1.0, etc.
+
+2008-10-07  Jonathon Jongsma  <jonathon@quotidian.org>
+
+	* configure.in: add library version numbers to the cairommconfig.h file:
+	CAIROMM_MAJOR_VERSION, CAIROMM_MINOR_VERSION, and CAIROMM_MICRO_VERSION
+
+2008-10-07  Jonathon Jongsma  <jonathon@quotidian.org>
+
+	* cairomm/context.cc:
+	* cairomm/context.h: remove has_show_text_glyphs() (moved to Surface)
+	* cairomm/surface.cc:
+	* cairomm/surface.h: added has_show_text_glyphs() (moved from Context)
+	* cairomm/enums.h: removed LcdFilter enum, added a TextClusterFlags enum
+	* cairomm/fontface.cc:
+	* cairomm/fontface.h: changed the 'backwards' bool argument of
+	SlotTextToGlyphs to use TextClusterFlags instead.  Same general change for the
+	C callback text_to_glyphs_cb
+	* cairomm/fontoptions.cc:
+	* cairomm/fontoptions.h: remove get/set_lcd_filter() since it was removed from
+	cairo just before the 1.8 release
+	* cairomm/scaledfont.cc:
+	* cairomm/scaledfont.h: changed the 'backwards' bool argument of
+	text_to_glyphs() to use TextClusterFlags instead
+	* tests/test-context.cc:
+	* tests/test-font-face.cc:
+	* tests/test-font-options.cc:
+	* tests/test-scaled-font.cc:
+	* tests/test-surface.cc: update tests for API changes
+
+2008-10-05  Jonathon Jongsma  <jonathon@quotidian.org>
+
+	* cairomm/matrix.cc:
+	* cairomm/matrix.h: Add documentation for newly-wrapped matrix functions.
+	Also, changed how the cairo_matrix_init_XXX() functions are wrapped.
+	Initially I had basically wrapped them directly (as Matrix::init_XXX()),
+	however, on the advice of Chong Kai Xiong (descender) on IRC, I have moved
+	these into standalone 'generator' functions:
+		- scaled_matrix()
+		- translation_matrix()
+		- rotation_matrix()
+		- identity_matrix()
+	* tests/test-font-face.cc:
+	* tests/test-matrix.cc: modify the tests for the change in API.  The new API
+	does make things much more comfortable to use.
+
+2008-09-14  Murray Cumming  <murrayc@murrayc.com>
+
+	* cairomm/fontface.h: Improve (and complete) the documenation for
+	the set_*_func() methods.
+	* cairomm/fontoptions.h:
+	* cairomm/scaledfont.h:
+	* cairomm/context.h: Corrected some @param Doxygen syntax.
+
+2008-09-14  Murray Cumming  <murrayc@murrayc.com>
+
+	* cairomm/fontface.[h|cc]: Simplify the code by using slots without
+	new and delete.
+
+2008-09-14  Murray Cumming  <murrayc@murrayc.com>
+
+	* cairomm/fontface.[h|cc]: Remove the useless/awkward get_*_func()
+	methods. We do not have them in gtkmm either.
+
+2008-09-14  Murray Cumming  <murrayc@murrayc.com>
+
+	* cairomm/*.h: Added many missing . to documentation,
+	and corrected some whitespace.
+
+2008-09-12  Jonathon Jongsma  <jonathon@gnome.org>
+
+	* cairomm/Makefile.am:
+	* cairomm/cairomm.h:
+	* cairomm/context.h:
+	* cairomm/matrix.cc: Added.
+	* cairomm/matrix.h: Added.
+	* cairomm/scaledfont.cc:
+	* cairomm/scaledfont.h:
+	* cairomm/types.h:
+	* tests/Makefile.am:
+	* tests/test-font-face.cc:
+	* tests/test-matrix.cc: Added.
+	Inherit Cairo::Matrix from cairo_matrix_t instead of just using a typedef.
+	cairo_matrix_* functions are now member functions of Matrix.  This should
+	retain ABI compatibility while adding a more convenient C++ API.
+
+2008-09-12  Jonathon Jongsma  <jonathon@gnome.org>
+
+	* cairomm/win32_surface.cc:
+	* cairomm/win32_surface.h: add the Win32PrintingSurface type
+
+2008-09-10  Jonathon Jongsma  <jjongsma@gnome.org>
+
+	* cairomm/context.cc:
+	* cairomm/surface.cc: style fixups: use cobj() instead of using m_cobject
+	directly whenever possible
+
+2008-09-10  Jonathon Jongsma  <jjongsma@gnome.org>
+
+	* cairomm/win32_surface.cc:
+	* cairomm/win32_surface.h: add Win32Surface::create_with_ddb (and an alias for
+	create_with_dib()), and Win32Surface::get_image()
+
+2008-09-10  Jonathon Jongsma  <jjongsma@gnome.org>
+
+	* cairomm/surface.cc:
+	* cairomm/surface.h:
+	* tests/test-surface.cc: added Surface::get_fallback_resolution() + test
+
+2008-09-10  Jonathon Jongsma  <jjongsma@gnome.org>
+
+	* cairomm/surface.cc:
+	* cairomm/surface.h:
+	* tests/test-surface.cc: add Surface::get_content() + test
+
+2008-09-10  Jonathon Jongsma  <jjongsma@gnome.org>
+
+	* cairomm/scaledfont.cc:
+	* cairomm/scaledfont.h:
+	* tests/test-scaled-font.cc: add ScaledFont::get_scale_matrix() + test
+
+2008-09-10  Jonathon Jongsma  <jjongsma@gnome.org>
+
+	* cairomm/surface.cc:
+	* cairomm/surface.h:
+	* tests/test-surface.cc: add PsSurface::get_eps()
+
+2008-09-10  Jonathon Jongsma  <jjongsma@gnome.org>
+
+	* cairomm/context.cc:
+	* cairomm/context.h:
+	* tests/test-context.cc: add Context::has_show_text_glyphs() + test
+
+2008-09-10  Jonathon Jongsma  <jjongsma@gnome.org>
+
+	* cairomm/surface.cc:
+	* cairomm/surface.h:
+	* tests/test-surface.cc: change the names of the stream creation functions to
+	'create_for_stream()' in order to avoid ambiguous template overload issues (I
+	was getting compile failures when passing a literal string for the std::string
+	parameter of the normal create() function)
+
+2008-09-10  Jonathon Jongsma  <jjongsma@gnome.org>
+
+	* cairomm/context.cc:
+	* cairomm/context.h:
+	* tests/test-context.cc: add Context::get_font_options() and tests for it.
+
+2008-09-10  Jonathon Jongsma  <jjongsma@gnome.org>
+
+	* cairomm/Makefile.am:
+	* cairomm/quartz_font.cc: Added.
+	* cairomm/quartz_font.h: Added.
+	* docs/reference/Doxyfile.in:
+	Added QuartzFontFace class
+
+2008-09-10  Jonathon Jongsma  <jjongsma@gnome.org>
+
+	* cairomm/win32_font.h: fix header protection guards
+
+2008-09-10  Jonathon Jongsma  <jjongsma@gnome.org>
+
+	* tests/test-font-face.cc: add a test to use the Win32FontFace API written by
+	Armin Burgmeier
+
+2008-09-10  Armin Burgmeier  <armin@arbur.net>
+
+	* cairomm/win32_font.h:
+	* cairomm/win32_font.cc: Fixed the build on Windows.
+
+	* cairomm/context.cc: Use &vec[0] instead of vec.data(), since
+	the latter seems not to be available everywhere.
+
+	* cairomm/fontface.cc: Added #ifdef CAIRO_HAS_FT_FONT around the code
+	using FtFontFace, to fix the build with disabled FreeType.
+
+2008-09-10  Jonathon Jongsma  <jjongsma@gnome.org>
+
+	* cairomm/Makefile.am:
+	* cairomm/win32_font.cc: Added.
+	* cairomm/win32_font.h: Added.
+	* docs/reference/Doxyfile.in: add support for win32 fonts.  Note that I don't
+	have a win32 platform to test with, so I haven't actually compiled this to
+	verify that it works correctly
+
+2008-09-10  Jonathon Jongsma  <jjongsma@gnome.org>
+
+	* cairomm/cairomm.h: update, add missing includes
+
+2008-09-09  Jonathon Jongsma  <jjongsma@gnome.org>
+
+	* cairomm/fontface.cc:
+	* cairomm/fontface.h:
+	* cairomm/fontoptions.cc:
+	* cairomm/fontoptions.h:
+	* cairomm/scaledfont.cc:
+	* cairomm/scaledfont.h:
+	* docs/reference/Doxyfile.in:
+	* tests/test-font-face.cc: add freetype font support
+
+2008-09-09  Jonathon Jongsma  <jjongsma@gnome.org>
+
+	* cairomm/fontface.cc: use vector::empty() rather than ::size()
+
+2008-09-03  Jonathon Jongsma  <jjongsma@gnome.org>
+
+	* cairomm/fontface.cc:
+	* cairomm/fontface.h: Add the text_to_glyphs function API to UserFontFace
+	* tests/test-font-face.cc: added tests for the new API
+
+2008-08-27  Armin Burgmeier  <armin@arbur.net>
+
+	* MSVC_Net2005/cairomm/cairomm.rc.in: Replaced #include "afxres.h" by
+	#include <windows.h> which does the job equally well, and allows
+	compilation with the freely available Visual Studio Express compiler.
+	Bug #17322.
+
+2008-08-24  Jonathon Jongsma  <jjongsma@gnome.org>
+
+	* cairomm/enums.h:
+	* cairomm/fontoptions.h: add documentation for all remainting FontOptions API
+	and the enums that are used for them
+
+2008-08-24  Jonathon Jongsma  <jjongsma@gnome.org>
+
+	* cairomm/enums.h: add LcdFilter enum
+	* cairomm/fontoptions.cc:
+	* cairomm/fontoptions.h: add get/set_lcd_filter() API
+	* tests/Makefile.am:
+	* tests/test-font-options.cc: Added.
+	* .gitignore: ignore new test executable
+
+2008-08-22  Jonathon Jongsma  <jonathon.jongsma@collabora.co.uk>
+
+	* cairomm/context.cc:
+	* cairomm/context.h: added Context::show_text_glyphs()
+	* cairomm/Makefile.am:
+	* cairomm/fontface.cc:
+	* cairomm/fontface.h:
+	* cairomm/scaledfont.cc:
+	* cairomm/scaledfont.h:
+	* tests/test-font-face.cc:
+	* cairomm/types.h: rearranged some types slightly and moved them to a new file
+	since I was getting circular dependencies with a lot of the basic struct types
+	that are used by multiple classes
+
+2008-08-22  Jonathon Jongsma  <jonathon.jongsma@collabora.co.uk>
+
+	* cairomm/scaledfont.h: add default value for the font_options parameter of
+	the ScaledFont constructor
+	* tests/test-scaled-font.cc: add test to excercise the change
+
+2008-08-22  Jonathon Jongsma  <jjongsma@gnome.org>
+
+	* cairomm/scaledfont.cc:
+	* cairomm/scaledfont.h: add text_to_glyphs() function
+	* tests/Makefile.am:
+	* tests/test-scaled-font.cc: Added.
+	* .gitignore: ignore new test executable
+
+2008-08-22  Jonathon Jongsma  <jjongsma@gnome.org>
+
+	* cairomm/context.cc:
+	* cairomm/context.h: add get/set_scaled_font() that was missed previously
+
+2008-08-21  Jonathon Jongsma  <jjongsma@gnome.org>
+
+	* tests/test-surface.cc: fix the image surface tests that create a file from a
+	png stream to return a valid PNG stream so they don't throw an exception on
+	creation.
+
+2008-08-19  Jonathon Jongsma  <jjongsma@gnome.org>
+
+	* cairomm/surface.cc:
+	* cairomm/surface.h: add sigc::slot versions of all of the functions that take
+	a cairo_write_func_t or cairo_read_func_t
+	* tests/Makefile.am: add a couple basic tests for the surfaced slot functions
+
+2008-08-18  Jonathon Jongsma  <jjongsma@gnome.org>
+
+	* cairomm/fontface.h: Add a bunch of documentation for the new FontFace API
+
+2008-08-18  Jonathon Jongsma  <jjongsma@gnome.org>
+
+	* cairomm/scaledfont.h: fix all of the TODOS by providing alternate functions
+	that begin with get_ to provide consistency with other parts of cairomm (and
+	glibmm, etc).
+
+2008-08-14  Jonathon Jongsma  <jjongsma@gnome.org>
+
+	* cairomm/context.h: move some text-related typedefs into the fontface
+	header since they're needed for new user font API and that's really where they
+	should be owned.  context.h includes fontface.h, so there should not be any
+	breakage for people who were just including context.h
+	* cairomm/enums.h: add user font type to font type enum
+	* cairomm/fontface.cc:
+	* cairomm/fontface.h: add UserFontFace class.  This class has a set of
+	callbacks that can be used to do certain things.  In order to do this in a
+	flexible way, I have added libsigc++ as a dependency of cairo to achieve this
+	* configure.in: add check for libsigc++
+	* tests/test-font-face.cc: add tests for UserFontFace
+
+2008-08-15  Jonathon Jongsma  <jjongsma@gnome.org>
+
+	* cairomm/scaledfont.h:
+	* cairomm/scaledfont.cc: the static ::create() function took a FontFace by
+	reference rather than by RefPtr, which means the API was essentially unusably
+	broken.  So this is an API break, but I don't see any other option.
+
+2008-08-14  Jonathon Jongsma  <jjongsma@gnome.org>
+
+	* .gitignore: added new files to ignore
+	* cairomm/fontface.cc:
+	* cairomm/fontface.h: implement the ToyFontFace class
+	* configure.in:
+	* examples/Makefile.am:
+	* examples/text/Makefile.am: Renamed from examples/text-rotate/Makefile.am.
+	* examples/text/text-rotate.cc: Renamed from examples/text-rotate/text-rotate.cc.
+	* examples/text/toy-text.cc: Added.
+	* tests/Makefile.am:
+	* tests/test-font-face.cc: Added.  excercise the functionality of
+	ToyFontFace slightly
+
+2008-08-14  Jonathon Jongsma  <jjongsma@gnome.org>
+
+	* m4/ax_boost_test_exec_monitor.m4: added this file which was forgotten
+	earlier.  I'm not entirely sure if it's necessary, but just in case...
+
+2008-08-13  Jonathon Jongsma  <jjongsma@gnome.org>
+
+	* configure.in: post-release bump
+
+2008-08-13  Jonathon Jongsma  <jjongsma@gnome.org>
+
+	* NEWS:
+	* configure.in: update for 1.6.2 release
+
+2008-08-13  Jonathon Jongsma  <jjongsma@gnome.org>
+
+	* configure.in: fix boost unit test detection (hack stolen from Dodji from
+	nemiver)
+	* tests/Makefile.am: explicitly link against the static unit test lib.  This
+	should fix the test build on (at least) Ubuntu Hardy, where previously I was
+	getting an undefined reference to main()
+
+2008-08-13  Jonathon Jongsma  <jjongsma@gnome.org>
+
+	* cairomm/enums.h: update to include new surface types.  Remove an unnecessary
+	cairo version check since we depend on a higher version of cairo for other
+	stuff anyway
+
+2008-08-13  Jonathon Jongsma  <jjongsma@gnome.org>
+
+	* cairomm/exception.cc:
+	* cairomm/exception.h: renamed get_status() to get_status_code() to make the
+	name a little bit more clear
+
+2008-08-09  Armin Burgmeier  <armin@arbur.net>
+
+	* MSVC_Net2005/cairomm/cairomm.rc.in: Removed #include "resource.h"
+	since there is no resource.h, and it works well without that include.
+
+	* MSVC_Net2005/cairomm/Makefile.am: Copy cairommconfig.h from
+	cairomm/, so it is available to the visual studio project.
+
+	* MSVC_Net2005/cairomm/cairomm.vcproj: Added
+	cairomm/context_surface_win32.cc to the project.
+
+	* Makefile.am:
+	* configure.in: Adapt build files.
+
+2008-08-09  Armin Burgmeier  <armin@arbur.net>
+
+	* cairomm/context_surface_xlib.cc: Check for CAIRO_HAS_XLIB_SURFACE
+	instead of CAIRO_HAS_WIN32_SURFACE.
+
+2008-08-07  Murray Cumming  <murrayc@murrayc.com>
+
+	* MSVC/: Renamed to MSVC_Net2008, ready to be patched by Armin
+	or Cedric.
+
+2008-04-25  Jonathon Jongsma  <jjongsma@gnome.org>
+
+	* cairomm/context.h: removed extra unused function declarations
+
+2008-04-25  Benjamin Reed <rangerrick@befunk.com>
+
+	* cairomm/Makefile.am, cairomm/context.cc, cairomm/context.h,
+	cairomm/context_private.h, cairomm/context_surface_quartz.cc,
+	cairomm/context_surface_xlib.h, cairomm/context_surface_win32.cc: separate
+	calls to possibly-conflicting platform surface constructors.  Bug #15712
+
+== 1.6.0 ==
+
+2008-04-11  Jonathon Jongsma  <jjongsma@gnome.org>
+
+	* NEWS:
+	* configure.in: update for 1.6.0 release
+
+2008-04-11  Jonathon Jongsma  <jjongsma@gnome.org>
+
+	* cairomm/surface.cc:
+	* cairomm/surface.h: wrap cairo_format_stride_for_width() as a static
+	function in Cairo::ImageSurface
+
+2008-04-11  Murray Cumming  <murrayc@murrayc.com>
+
+	* Add autoheader to autogen.sh, to create cairommconfig.h.in, to fix
+	the build for me.
+
+2008-03-23  Murray Cumming  <murrayc@murrayc.com>
+
+	* cairomm/enums.h (FONT_TYPE_ATSUI, FONT_TYPE_QUARTZ):
+	Change the definition of FONT_TYPE_ATSUI from CAIRO_FONT_TYPE_ATSUI to
+	CAIRO_FONT_TYPE_QUARTZ (the same numerical value) and document it as
+	deprecated. The others should be documented too.
+	Added FONT_TYPE_QUARTZ.
+
+== 1.5.0 ==
+
+2008-03-10  Jonathon Jongsma  <jjongsma@gnome.org>
+
+	* configure.in: bump cairo requirement to at least 1.5.10
+	* NEWS: update for 1.5.0 release
+
+2008-03-10  Jonathon Jongsma  <jjongsma@gnome.org>
+
+	* cairomm/Makefile.am: install the new cairommconfig.h header and make sure
+	that the .in file is distributed
+
+2008-03-10  Jonathon Jongsma  <jjongsma@gnome.org>
+
+	* cairomm/exception.cc: include <string> to fix the build on solaris which
+	apparently doesn't include string from their exception header (Tim Mooney).
+	Fixes bug #14559
+
+2008-02-19  Tim Mooney  <enchanter@users.sourceforge.net>
+
+	* configure.in: Added check, defining HAVE_MATH_H.
+	* cairomm/context.cc:
+	* examples/pdf-surface/main.cc:
+	* examples/png_file/main.cc:
+	* examples/ps-surface/main.cc:
+	* examples/svg-surface/main.cc:
+	* examples/text-rotate/text-rotate.cc: Added includes of math.h to
+	fix the build with Sun Workshop 12. Bug #14558.
+
+2008-01-30  Jonathon Jongsma  <jjongsma@gnome.org>
+
+	* cairomm/context.cc:
+	* cairomm/context.h: add new has_current_point() API to deal with the fact
+	that cairo_get_current_point() changed from a void to a cairo_status_t
+	return type, and we don't necessarily want to throw an exception here or it
+	could break existing applications.  But this could be reconsidered
+
+2008-01-30  Jonathon Jongsma  <jjongsma@gnome.org>
+
+	* cairomm/xlib_surface.cc:
+	* cairomm/xlib_surface.h: add new get_xrender_format() function (new in
+	1.5.8) and add missing static create_with_xrender_format() function
+	* docs/reference/Doxyfile.in: add CAIRO_HAS_XLIB_XRENDER_SURFACE feature so
+	that new xrender API shows up in docs
+
+2008-01-30  Jonathon Jongsma  <jjongsma@gnome.org>
+
+	* configure.in: bump cairo requirement to 1.5.8
+	* cairomm/context.cc:
+	* cairomm/context.h: add get_path_extents function, new in 1.5.8
+
+2008-01-30  Jonathon Jongsma  <jjongsma@gnome.org>
+
+	* configure.in: enable people with CAIROMM_DEVEL variable set to explicitly
+	deisable automated tests
+	* m4/ax_boost_unit_test_framework.m4: update to slightly newer boost
+	unittest checking scripts
+
+2007-11-10  Jonathon Jongsma  <jjongsma@gnome.org>
+
+	* cairomm/surface.cc:
+	* cairomm/surface.h: add new PsSurface API: set_eps(), restrict_to_level(),
+	get_levels(), level_to_string()
+
+2007-11-10  Jonathon Jongsma  <jjongsma@gnome.org>
+
+	* cairomm/surface.cc:
+	* cairomm/surface.h: add Surface::copy_page() and Surface::show_page()
+
+2007-11-10  Jonathon Jongsma  <jjongsma@gnome.org>
+
+	* configure.in: bump version and minimum cairo version so that we can start
+	implementing the 1.5.x features
+
+== 1.4.6 ==
+
+2007-11-10  Jonathon Jongsma  <jjongsma@gnome.org>
+
+	* docs/reference/Doxyfile.in: update doxygen config file since my version of
+	doxygen now complains that there are obsolete config keys
+
+2007-11-10  Jonathon Jongsma  <jjongsma@gnome.org>
+
+	* NEWS: update news for 1.4.6 release
+	* configure.in: bumped version
+
+2007-08-13  Murray Cumming  <murrayc@murrayc.com>
+
+	* cairomm/context.cc: Add #include <cairomm/quartz_surface.h>
+	to fix the build on MacOS. Thanks to Elias N (Bug #11972).
+
+== 1.4.4 ==
+
+2007-07-21  Murray Cumming  <murrayc@murrayc.com>
+
+	* m4/reduced.m4: Added, containing CAIROMM_ARG_ENABLE_API_EXCEPTIONS().
+	* configure.in: Use CAIROMM_ARG_ENABLE_API_EXCEPTIONS() to add a
+	--enable-api-exceptions=yes/no option.
+	Used to generate a cairomm/cairommconfig.h config file, which
+	defines (or not) CAIROMM_EXCEPTIONS_ENABLED.
+	* cairomm/cairommconfig.h.in: Added, used to generate cairommconfig.h
+	* cairomm/private.cc:
+	* cairomm/private.h: Use ifdef to replace throw_exception() with an empty
+	implementation when exceptions are disabled.
+	This allows cairomm to be built when using CXXFLAGS=-fno-exceptions.
+
+2007-07-14  Jonathon Jongsma  <jjongsma@gnome.org>
+
+	* configure.in: post-release version number bump
+
+=== 1.4.2 ===
+
+2007-07-14  Jonathon Jongsma  <jjongsma@gnome.org>
+
+	* NEWS: updated for 1.4.2 release
+	* configure.in: bumped version to 1.4.2
+
+2007-06-14  Dave Beckett  <dave@dajobe.org>
+
+	* configure.in: Update the GENERIC_LIBRARY_VERSION correctly
+	Was: 1:0:0 in 1.2.4
+	current: interfaces were added, increment to 2
+	revision: set to zero since current was incremented
+	age: increment since interfaces were added
+	Changed to: 2:0:1
+
+2007-06-14  Murray Cumming  <murrayc@murrayc.com>
+
+	* cairomm/refptr.h: Added RefPtr(object, refcount) constructor
+	for use in cast_*(), so that the casted RefPtr shares the same
+	refcount, avoiding an early deletion. I do not like making
+	this constructor public, but I do not see another way.
+
+=== 1.4.0 ===
+
+2007-07-12  Jonathon Jongsma  <jjongsma@gnome.org>
+
+	* Makefile.am: add doc-publish target and make release-publish depend on
+	this.  This automatically uploads the new API documentation on release
+	* docs/reference/Makefile.am: upload the html documentation and a tarball of
+	the documentation to the cairographics.org site
+
+2007-07-12  Jonathon Jongsma  <jjongsma@gnome.org>
+
+	* docs/reference/Makefile.am: hacky workaround to get distcheck to pass
+
+2007-07-10  Jonathon Jongsma  <jjongsma@gnome.org>
+
+	* NEWS: Update NEWS for release
+	* configure.in: bump version for release
+
+2007-07-10  Jonathon Jongsma  <jjongsma@gnome.org>
+
+	* cairomm/context.cc: add ability to use dynamic casting with the return
+	values from more functions, including:
+		Context::get_target()
+		Context::get_target() const
+		Context::get_source()
+		Context::get_source() const
+		Context::get_group_target()
+		Context::get_group_target() const
+		Context::pop_group()
+	* tests/test-context.cc: a few additional tests to verify the const /
+	non-const versions both work with dynamic casting.
+
+2007-07-10  Jonathon Jongsma  <jjongsma@gnome.org>
+
+	* docs/reference/cairomm.css: Improve the documentation style a little bit
+	to make it more readable
+	* docs/reference/Doxyfile.in: build the reference doc for the new
+	QuartzSurface class
+
+2007-07-10  Jonathon Jongsma  <jjongsma@gnome.org>
+
+	* cairomm/context.cc:
+	* cairomm/context.h: add alternate API for set_dash() which takes a
+	std::vector argument instead of the slightly unexpected std::valarray
+	argument
+	* tests/test-context.cc: test that both API work correctly and compile
+	correctly without any problems
+
+2007-07-04  Jonathon Jongsma  <jjongsma@gnome.org>
+
+	* tests/test-context.cc: add some tests for matrix transformations and
+	user-to-device coordinate mappings.  The matrix transformation 'test' does
+	nothing more than call the functions to excercise them a bit, but it's
+	causing an unexpected exception to be triggered when calling
+	Context::set_matrix().  The odd thing is that exception.what() results in
+	'success' being printed.  This requires further investigation
+	Also used BOOST_CHECK_EQUAL in most places instead of BOOST_CHECK to get
+	more meaningful failure messages.
+
+2007-07-04  Jonathon Jongsma  <jjongsma@gnome.org>
+
+	* cairomm/private.cc: add missing 'break;' on the I/O error case statement
+
+2007-07-04  Jonathon Jongsma  <jjongsma@gnome.org>
+
+	* cairomm/context.cc: when getting the source pattern of a Cairo::Context,
+	check which type of Pattern it is so that we create the correct C++ wrapper.
+	Without this, RefPtr<>::cast_dynamic() doesn't seem to work as we would
+	expect it to.
+	* tests/test-context.cc: improve the Context::get_source() /
+	Context::set_source () tests now that dynamic casting works correctly
+
+2007-07-04  Jonathon Jongsma  <jjongsma@gnome.org>
+
+	* examples/pdf-surface/main.cc:
+	* examples/png_file/main.cc:
+	* examples/ps-surface/main.cc:
+	* examples/svg-surface/main.cc:
+	* examples/text-rotate/text-rotate.cc:
+	* tests/test-context.cc: fix a bunch of minor compile errors when compiling
+	with -Werror
+
+2007-07-04  Jonathon Jongsma  <jjongsma@gnome.org>
+
+	* configure.in: enable extra compiler warnings and -Werror if the
+	CAIROMM_DEVEL environment variable is set to 'on'.  This caught the
+	following mistake.
+	* cairomm/pattern.cc: forgot to return the ColorStop vector
+
+2007-07-04  Jonathon Jongsma  <jjongsma@gnome.org>
+
+	* cairomm/context.cc: fix a FIXME to match the style of
+	ScaledFont::glyph_extents since MSVC (and possibly other compilers) complain
+	when allocating an array on the stack and the size of the array is not a
+	compile-time constante
+
+2007-04-16  Hugo Vincent  <hugo.vincent@gmail.com>
+
+	* Added QuartzSurface for MacOS X (when cairo is built with Quartz support),
+	similar to the existing Win32Surface and XlibSurface. These allow use of
+	platform-specific features and data structures.
+
+2007-03-23  Jonathon Jongsma  <jjongsma@gnome.org>
+
+	* Makefile.am:
+	* autogen.sh:
+	* configure.in:
+	* m4/ax_boost_base.m4:
+	* m4/ax_boost_unit_test_framework.m4: Add some basic test infrastructure.
+	It's disabled by default, and must be explicitly enabled by passing
+	--enable-tests to configure (or by setting the CAIROMM_DEVEL environment
+	variable to "on").  It uses the boost unit test framework, but this should
+	not be required unless you've explicitly enabled tests.  If tests are
+	enabled, you can easily run them with 'make check'
+	* tests/Makefile.am:
+	* tests/test-context.cc: added the beginning of a test for Cairo::Context.
+	Most of these tests are really very interesting.  Basically what I'm trying
+	to do is a) test some basic behaviors, and b) excercise the functionality a
+	little bit.  One of the tests currently fails due to a RefPtr::cast_dynamic
+	failure, so I have to see what's going on there.
+
+2007-03-22  Murray Cumming  <murrayc@murrayc@murrayc.com>
+
+	* cairomm/enums.h: Restored FORMAT_RGB16_565 and marked it as deprecated.
+	Note that CAIRO_FORMAT_RGB16_565 has not really been removed from cairo.
+	It has just moved from the enum to a #define in cairo-deprecated.
+	* cairomm/context.cc:
+	* cairomm/context.h: Made get_dash() const.
+	Renamed clip_extents() to get_clip_extents(), to match the other get_*_extents() methods
+	(in Context, if not in other classes), and made it const.
+	Made copy_clip_rectangle_list() const.
+	* cairomm/pattern.cc:
+	* cairomm/pattern.h: Make the RadialGradient::get_radial_circles(), LinearGradient::get_linear_points(),
+	and Gradient::get_color_stops() methods const.
+	Added a non-const method overload of get_surface().
+	Correc the get_color_stops() implementation to match the declaration.
+
+2007-03-22  Jonathon Jongsma  <jjongsma@gnome.org>
+
+	* cairomm/context.cc: Minor comment cleanups
+	* cairomm/pattern.cc: get the gradient stops by reference parameter instead
+	of returning by value.  This saves an extra copy of the vector.
+
+2007-03-21  Jonathon Jongsma  <jjongsma@gnome.org>
+
+	* cairomm/context.cc:
+	* cairomm/context.h:
+	* cairomm/enums.h:
+	* cairomm/pattern.cc:
+	* cairomm/pattern.h:
+	* configure.in: Add initial support for new cairo 1.4.x API.  It will
+	probably still need quite a bit of work, but I wanted to commit what I have
+	now so that it doesn't keep sitting in my working directory.
+	(Extra note from Murray:
+	This was:
+	- Pattern::create_rgba() - a new method overload with 4 args, including alpha.
+	- SurfacePattern::get_surface()
+	- Gradient::get_color_stops() (with a new ColorStop struct)
+	- LinearGradient::get_linear_points()
+	- RadialGradient::get_radial_circles()
+	- Context::clip_extents()
+	- Context::copy_clip_rectangle_list()
+	- Context::get_dash()
+	- SURFACE_TYPE_OS2 was added
+	- FORMAT_RGB16_565 was removed (but that is not allowed, so I'll fix that.)
+
+2007-02-01  Jonathon Jongsma  <jonathon.jongsma@gmail.com>
+
+	* configure.in: Fixes for building on Cygwin from
+	yselkowitz@users.sourceforge.net.  Closes bug #9726
+
+2007-01-28  Jonathon Jongsma  <jonathon.jongsma@gmail.com>
+
+	* configure.in: bump rev to 1.2.5
+
+2007-01-28  Jonathon Jongsma  <jonathon.jongsma@gmail.com>
+
+	* docs/reference/Doxyfile.in: fixes building the cairomm documentation where
+	builddir != srcdir.  Patch from yselkowitz@users.sourceforge.net for bug
+	#9727
+
+1.2.4:
+
+2007-01-17  Jonathon Jongsma  <jonathon.jongsma@gmail.com>
+
+	* NEWS: updated news for 1.2.4 release
+	* configure.in: bumped version to 1.2.4
+
+2006-09-27  Murray Cumming  <murrayc@murrayc.com>
+
+	* cairomm/refptr.h: cast_static() and cast_dynamic():
+	Use the refcount_() accessor instead of the member variable,
+	to avoid compilation errors, as we already do in the
+	templated copy constructor.
+
+1.2.2:
+
+2006-08-21  Jonathon Jongsma  <jonathon.jongsma@gmail.com>
+
+	* NEWS: update for 1.2.2
+	* configure.in: bump to next even number (1.2.2)
+
+2006-08-21  Cedric Gustin  <cedric.gustin@gmail.com>
+
+	* cairomm/win32_surface.cc: Explicitly cast Cairo::Format to
+	cairo_format_t.
+
+2006-08-20  Jonathon Jongsma  <jonathon.jongsma@gmail.com>
+
+	* Makefile.am: fix up the release announcement template to explain what
+	cairomm is at the top of the email before telling where to get it.
+	* configure.in: post-release bump (1.2.1)
+
+1.2.0:
+
+2006-08-20  Jonathon Jongsma  <jonathon.jongsma@gmail.com>
+
+	* NEWS: Update information about new stuff in 1.2.0
+	* configure.in: bump the release version number to 1.2.0 and the shared
+	library version number to 1:0:0 since interfaces were changed and added and
+	we're now guaranteeing API/ABI stability
+
+2006-08-20  Jonathon Jongsma  <jonathon.jongsma@gmail.com>
+
+	* examples/pdf-surface/.cvsignore:
+	* examples/png_file/.cvsignore:
+	* examples/ps-surface/.cvsignore:
+	* examples/svg-surface/.cvsignore: added image files produced by the example
+	programs to .cvsignore
+
+2006-08-19  Jonathon Jongsma  <jonathon.jongsma@gmail.com>
+
+	* Makefile.am: get rid of the concept of a snapshot.  It doesn't really make
+	that much sense for cairomm, honestly, since we're just a simple wrapper
+	library.
+
+2006-08-19  Jonathon Jongsma  <jonathon.jongsma@gmail.com>
+
+	* MSVC/examples/.cvsignore:
+	* MSVC/examples/Makefile.am:
+	* MSVC/examples/pdf-surface/.cvsignore:
+	* MSVC/examples/pdf-surface/Makefile.am:
+	* MSVC/examples/pdf-surface/pdf-surface.vcproj:
+	* MSVC/examples/png_file/.cvsignore:
+	* MSVC/examples/png_file/Makefile.am:
+	* MSVC/examples/png_file/png_file.vcproj:
+	* MSVC/examples/ps-surface/.cvsignore:
+	* MSVC/examples/ps-surface/Makefile.am:
+	* MSVC/examples/ps-surface/ps-surface.vcproj:
+	* MSVC/examples/svg-surface/.cvsignore:
+	* MSVC/examples/svg-surface/Makefile.am:
+	* MSVC/examples/svg-surface/svg-surface.vcproj:
+	* MSVC/examples/text-rotate/.cvsignore:
+	* MSVC/examples/text-rotate/Makefile.am:
+	* MSVC/examples/text-rotate/text-rotate.vcproj:
+	* MSVC/gendef/.cvsignore:
+	* MSVC/gendef/Makefile.am:
+	* MSVC/gendef/gendef.cc:
+	* MSVC/gendef/gendef.vcproj: added a bunch of MSVC / windows-specific things
+	that got missed last time.
+
+2006-08-18  Jonathon Jongsma  <jonathon.jongsma@gmail.com>
+
+	* cairomm/win32_surface.cc:
+	* cairomm/win32_surface.h: add some missing win32 API that I had overlooked:
+	cairo_win32_surface_get_dc() and cairo_win32_surface_create_with_dib(),
+	updated documentation for standard Win32Surface::create() function.
+
+2006-08-18  Cedric Gustin  <cedric.gustin@gmail.com>
+
+	* cairomm/context.cc: Define M_PI for MSVC.
+	* cairomm/scaledfont.cc: Allocate glyph_array as a synamic array
+	as MSVC does not like non-const arguments as array size.
+	* examples/pdf-surface/main.cc, examples/png_file/main.cc,
+	examples/ps-surface/main.cc, examples/svg-surface/main.cc,
+	examples/text-rotate/text-rotate.cc: Define M_PI for MSVC.
+	* configure.in, Makefile.am: Generate Makefiles in the MSVC
+	subdirectories.
+	* .cvsignore: Added Eclipse .project to the list of ignored files.
+	* MSVC/*: Added project and resource files for Visual Studio 2005.
+
+2006-08-18  Jonathon Jongsma  <jonathon.jongsma@gmail.com>
+
+	* cairomm/context.cc:
+	* cairomm/context.h: API CHANGE: some API was changed to maintain a closer
+	similarity to the underlying cairo API (while also attempting to avoid
+	confusion with the C++ 'new' keyword) in preparation for freezing the
+	cairomm API.  Two functions are affected:
+		- Context::clear_path() -> Context::begin_new_path()
+		- Context::new_sub_path() -> Context::begin_new_sub_path()
+	* configure.in: bump the libtool version to indicate API change
+
+2006-08-15  Jonathon Jongsma  <jonathon.jongsma@gmail.com>
+
+	* cairomm/context.cc: remove another TODO.  I looked at cairo_append_path,
+	and it just copies the data from the supplied path and appends that to the
+	current path -- it doesn't modify the passed in path -- so it can stay
+	const.
+
+2006-08-15  Jonathon Jongsma  <jonathon.jongsma@gmail.com>
+
+	* cairomm/context.h: remove a FIXME that was resolved on the mailing list
+
+2006-07-11  Murray Cumming  <murrayc@murrayc.com>
+
+	* cairomm/refptr.h: unref(): Only delete the refcount int when the refcount has
+	reached 0, instead of deleting it every time. Thanks valgrind.
+
+2006-07-11  Murray Cumming  <murrayc@murrayc.com>
+
+	* cairomm/refptr.h: From-C-object Constructor: Added documentation explaining
+	how/when to use it and when to do an extra reference(). This will help us,
+	though it should rarely be necessary for an application developer to understand
+	it.
+	Made pCppRefcount_ mutable, so that refcount_() can be a const method so that
+	the templated constructor compiles.
+	Added class documentation to explain why we even want to use this class.
+
+2006-07-05  Jonathon Jongsma  <jonathon.jongsma@gmail.com>
+
+	* cairomm/refptr.h: copy constructors: initialize the pCppRefcount_ member
+	variable, using a public refcount_() method when necessary to access a
+	different RefPtr<> specialization.
+
+2006-07-11  Murray Cumming  <murrayc@murrayc.com>
+
+	* cairomm/refptr.h: Use an int to reference-count the C++ object, and
+	only reference/unreference the object (and hence the underlying C object)
+	when receiving/deleting the C++ object. Without this, we never delete
+	the C++ object. Fixes bug #7442.
+
+2006-07-09  Jonathon Jongsma  <jonathon.jongsma@gmail.com>
+
+	* NEWS: add NEWS for 1.1.10 release
+	* configure.in: bump version to 1.1.12
+
+2006-07-05  Jonathon Jongsma  <jonathon.jongsma@gmail.com>
+
+	* Makefile.am: Ooops, I had accidentally removed dependency info for
+	release-publish target
+
+2006-07-05  Murray Cumming  <murrayc@murrayc.com>
+
+	* cairomm/context.h:
+	* cairomm/fontface.h:
+	* cairomm/pattern.h:
+	* cairomm/surface.cc:
+	* cairomm/surface.h:
+	* cairomm/xlib_surface.cc:
+	* cairomm/xlib_surface.h: Fix the generic text about reference-counted
+	objects, because we no longer use copy constructors for this. And some
+	pedantic white space changes.
+
+2006-07-05  Murray Cumming  <murrayc@murrayc.com>
+
+	* cairomm/scaledfont.cc:
+	* cairomm/scaledfont.h: create(): Make the font_matrix and ctm
+	parameters const (they are now const in the C API too). Maybe the font
+	parameter should be const, but maybe there is a reason that it is not
+	const in the C API. Pass FontOptions by const reference instead of
+	by value.
+	glyph_extents(): Pass the vector by const reference instead of by
+	value.
+	I would prefere to make all the extents() functions use return values
+	instead of output parameters, but I suppose this might be slightly
+	less efficient in some circumstances.
+
+2006-07-05  Murray Cumming  <murrayc@murrayc.com>
+
+	* cairomm/cairomm.h:
+	* cairomm/context.h:
+	* cairomm/path.h:
+	* cairomm/scaledfont.h:
+	* cairomm/surface.h:
+	* cairomm/win32_surface.h:
+	* cairomm/xlib_surface.h: Use @ instead of \ for doxygen
+	commands, to be consistent with gtkmm, which uses it because it is the
+	same as JavaDoc, with which some people are already familiar.
+
+2006-07-04  Jonathon Jongsma  <jonathon.jongsma@gmail.com>
+
+	* Makefile.am: add ability to do snapshot releases to the
+	cairographics.org/snapshots/ directory in addition to official releases
+	* configure.in: bumped the revision to 1.1.10 in preparation for a snapshot
+	release of the 1.2 API
+	* docs/reference/Makefile.am: fixed some distcheck errors
+
+2006-07-04  Jonathon Jongsma  <jonathon.jongsma@gmail.com>
+
+	* .cvsignore, cairomm/.cvsignore: ignore some autotools files and *.swp
+	files (from vim)
+
+2006-07-04  Jonathon Jongsma  <jonathon.jongsma@gmail.com>
+
+	* cairomm/scaledfont.cc, cairomm/scaledfont.h: wrap ScaledFont, including
+	new API for cairo 1.2
+	* cairomm/Makefile.am: add scaledfont.* to list of sources
+
+2006-07-04  Jonathon Jongsma  <jonathon.jongsma@gmail.com>
+
+	* cairomm/surface.h: Remove comments stating that PDF, PS, and SVG are
+	experimental surfaces.  As of 1.2.0, these three surfaces are officially
+	supported by the cairo library.
+
+2006-07-04  Jonathon Jongsma  <jonathon.jongsma@gmail.com>
+
+	* cairomm/xlib_surface.h: add a bit more documentation for the new
+	XlibSurface API
+
+2006-07-04  Jonathon Jongsma  <jonathon.jongsma@gmail.com>
+
+	* cairomm/surface.cc, cairomm/surface.h: added SvgSurface::get_versions()
+	and SvgSurface::version_to_string() API.  They're implemented as static
+	members right now.
+
+2006-06-30  Jonathon Jongsma  <jonathon.jongsma@gmail.com>
+
+	* configure.in: bumped cairomm version to 0.7.0 and bumped cairo requirement
+	to 1.2.0
+
+2006-06-30  Jonathon Jongsma  <jonathon.jongsma@gmail.com>
+
+	* cairomm/xlib_surface.cc, cairomm/xlib_surface.h: add new get_height() and
+	get_width() API to XlibSurface
+
+2006-06-27  Jonathon Jongsma  <jonathon.jongsma@gmail.com>
+
+	* cairomm/enums.h: Added enum types to support the new get_type() and SVG
+	Version API
+	* cairomm/fontface.cc, cairomm/fontface.h: add new get_type() API
+	* cairomm/pattern.cc, cairomm/pattern.h: add new get_type() API
+	* cairomm/surface.cc, cairomm/surface.h: add new get_type() API and
+	SvgSurface::restrict_to_version() API
+
+2006-06-26  Jonathon Jongsma  <jonathon.jongsma@gmail.com>
+
+	* cairomm/surface.cc, cairomm/surface.h: add new PsSurface and PdfSurface
+	API: set_size, dsc_comment, dsc_begin_setup, dsc_begin_page_setup
+	* cairomm/xlib_surface.cc, cairomm/xlib_surface.h: add new XlibSurface API:
+	get_display, get_drawable, get_screen, get_visual, get_depth
+
+2006-06-26  Jonathon Jongsma  <jonathon.jongsma@gmail.com>
+
+	* cairomm/surface.cc:
+	* cairomm/surface.h: Added new Surface and ImageSurface API from 1.1.x
+	snapshots
+
+2006-06-23  Jonathon Jongsma  <jonathon.jongsma@gmail.com>
+
+	* cairomm/context.cc:
+	* cairomm/context.h: added Context::new_sub_path() and new push/pop group
+	API.
+
+2006-06-23  Jonathon Jongsma  <jonathon.jongsma@gmail.com>
+
+	* cairomm/enums.h: fix stupid error from last commit
+
+2006-06-23  Jonathon Jongsma  <jonathon.jongsma@gmail.com>
+
+	* cairomm/enums.h: add new FORMAT_RGB16_565 format
+
+2006-06-12  Jonathon Jongsma  <jonathon.jongsma@gmail.com>
+
+	* configure.in: bump required cairo version to >= 1.1.7
+	* cairomm/surface.cc, cairomm/surface.h: update to new cairo API
+	cairo_surface_set_fallback_resolution
+
+2006-05-10  Jonathon Jongsma  <jonathon.jongsma@gmail.com>
+
+	* docs/reference/cairomm.css: minor documentation stylesheet fix
+
+2006-05-08  Jonathon Jongsma  <jonathon.jongsma@gmail.com>
+
+	* cairomm/context.h:
+	* cairomm/path.h: added some preliminary documentation explaining that the
+	caller is responsible for freeing Path objects returned from
+	Context::copy_path() and Context::copy_path_flat().
+
+2006-05-08  Jonathon Jongsma  <jonathon.jongsma@gmail.com>
+
+	* cairomm/cairomm.h: Add doxygen API introduction test here.
+	* docs/reference/Doxyfile.in:
+	* docs/reference/Makefile.am:
+	* docs/reference/cairomm-header.html:
+	* docs/reference/cairomm.css:
+	* docs/reference/introduction.h: fix up some documentation presentation
+	issues that turned up with newer versions of doxygen.
+
+2006-05-08  Jonathon Jongsma  <jonathon.jongsma@gmail.com>
+
+	* configure.in: remove check for perl since we're not using any of the
+	gmmproc stuff for cairomm
+	* docs/reference/Makefile.am: add documentation dependency on all of the
+	headers in the cairomm/ directory so that if a header changes the
+	documentation will be rebuilt.
+
+2006-04-20  Murray Cumming  <murrayc@murrayc.com>
+
+	* cairomm/context.cc:
+	* cairomm/context.h: mask(pattern) and mask(surface): Make the parameter
+	const, because I am fairly sure that the C function does not change it.
+
+2006-04-06  Jonathon Jongsma  <jonathon.jongsma@gmail.com>
+
+	* Makefile.am: Add a brief description of cairomm to the release
+	announcement template
+
+2006-04-04  Jonathon Jongsma  <jonathon.jongsma@gmail.com>
+
+	* docs/reference/Doxyfile.in:
+	* docs/reference/Makefile.am: A couple minor build fixes to make distcheck
+	happy
+
+2006-04-04  Jonathon Jongsma  <jonathon.jongsma@gmail.com>
+
+	* NEWS: add news for 0.6.0 release
+	* configure.in: bump version to 0.6.0
+
+2006-04-03  Jonathon Jongsma  <jonathon.jongsma@gmail.com>
+
+	* examples/text-rotate/text-rotate.cc: protect PNG functions with #ifdef in
+	case cairo wasn't compiled with PNG support
+
+2006-03-31  Danilo Piazzalunga  <danilopiazza@gmail.com>
+
+	* Makefile.am:
+	* docs/Makefile.am:
+	* docs/reference/Makefile.am: add convenience targets for cleaning and
+	rebuilding documentation (doc-clean and doc-rebuild).
+
+2006-03-30  Danilo Piazzalunga  <danilopiazza@gmail.com>
+
+	* configure.in: enable documentation even if doxygen and/or graphviz
+	are missing, so the docs will be installed when building a release.
+	* docs/reference/Makefile.am: don't remove html directory with `make clean`,
+	so that users of the tarball releases don't destroy the pre-built
+	documentation when running make clean. Change to maintainer-clean
+
+2006-03-29  Jonathon Jongsma  <jonathon.jongsma@gmail.com>
+
+	* configure.in: added tests for doxygen and graphviz which displays a
+	warning if the user has --enable-docs set but doesn't have doxygen or
+	graphviz installed.
+
+2006-03-28  Danilo Piazzalunga  <danilopiazza@gmail.com>
+
+	* cairomm/enums.h: Stop using CAIRO_EXTEND_PAD, as it only exists
+	in the 1.1.1 development branch.
+
+2006-03-14  Jonathon Jongsma  <jonathon.jongsma@gmail.com>
+
+	* configure.in:
+	* examples/Makefile.am:
+	* examples/text-rotate/.cvsignore:
+	* examples/text-rotate/Makefile.am:
+	* examples/text-rotate/text-rotate.cc: Added another basic example,
+	borrowed from a test-case in cairo.  This one is just a simple example of
+	using text in cairomm
+
+2006-03-14  Jonathon Jongsma  <jonathon.jongsma@gmail.com>
+
+	* cairomm/fontface.h:
+	* cairomm/fontoptions.h:
+	* cairomm/path.h:
+	* cairomm/pattern.h: include <cairo.h> instead of <cairo/cairo.h> since it
+	didn't want to compile on windows without these
+	* cairomm/win32_surface.cc:
+	* cairomm/win32_surface.h: Move the include of cairo-win32.h from the
+	source file to the header since the declaration of create() needs the HDC
+	type definition.
+	With these changes, cairomm should compile the Win32Surface cleanly with
+	mingw on Microsoft Windows
+
+2006-03-12  Danilo Piazzalunga  <danilopiazza@gmail.com>
+
+	* autogen.sh: Allow overriding aclocal, automake, autoconf and libtoolize
+	using environment variables. Taken from cairo's autogen.sh.
+
+2006-03-06  Jonathon Jongsma  <jonathon.jongsma@gmail.com>
+
+	* cairomm/*.cc, *.h: add vim modelines to set proper indentation for
+	cairomm when using vim
+
+2006-02-28  Jonathon Jongsma  <jonathon.jongsma@gmail.com>
+
+	* cairomm/context.cc:
+	* cairomm/context.h:
+	* cairomm/enums.h:
+	* cairomm/fontoptions.cc:
+	* cairomm/fontoptions.h:
+	* cairomm/pattern.cc:
+	* cairomm/pattern.h:
+	* cairomm/surface.h: wrapped all of the enum types with cairomm
+	types within the Cairo namespace, so now (for example) the values for
+	Cairo::Format are something like Cairo::FORMAT_ARGB32 instead of the base
+	cairo types like CAIRO_FORMAT_ARGB_32.
+	* examples/png_file/main.cc: fixed example to work with the new namespaced
+	enum types
+
+2006-02-27  Jonathon Jongsma  <jonathon.jongsma@gmail.com>
+
+	* cairomm/exception.h:
+	* docs/reference/Doxyfile.in:
+	* docs/reference/Makefile.am: hide some of the private types and functions
+	from the Doxygen API reference documentation
+
+2006-02-27  Stefan Kersten  <steve@k-hornz.de>
+
+	* cairomm/surface.cc: fix an extra trailing parentheses in
+	GlitzSurface::create()
+
+2006-02-22  Danilo Piazzalunga  <danilopiazza@gmail.com>
+
+	* examples/README: Write some basic information about each example
+
+2006-02-22  Jonathon Jongsma  <jonathon.jongsma@gmail.com>
+
+	* docs/reference/Makefile.am: add target for publishing the API reference
+	to cairographics.org
+
+2006-02-20  Danilo Piazzalunga  <danilopiazza@gmail.com>
+
+	* Makefile.am: Include MAINTAINERS in distribution. Fixes Bug #5982
+
+2006-02-17  Danilo Piazzalunga  <danilopiazza@gmail.com>
+
+	* COPYING: Use the text from the Library GPL 2.0, which is the actual
+	license of cairomm. Fixes Bug #5934
+
+2006-02-17  Danilo Piazzalunga  <danilopiazza@gmail.com>
+
+	* autogen.sh:
+	* cairomm/cairomm.h:
+	* cairomm/context.cc:
+	* cairomm/context.h:
+	* cairomm/enums.h:
+	* cairomm/exception.cc:
+	* cairomm/exception.h:
+	* cairomm/fontface.cc:
+	* cairomm/fontface.h:
+	* cairomm/fontoptions.cc:
+	* cairomm/fontoptions.h:
+	* cairomm/path.cc:
+	* cairomm/path.h:
+	* cairomm/pattern.cc:
+	* cairomm/pattern.h:
+	* cairomm/private.cc:
+	* cairomm/private.h:
+	* cairomm/refptr.h:
+	* cairomm/surface.cc:
+	* cairomm/surface.h:
+	* cairomm/win32_surface.cc:
+	* cairomm/win32_surface.h:
+	* cairomm/xlib_surface.cc:
+	* cairomm/xlib_surface.h: Update FSF's postal address in GPL/LGPL
+	comment headings.  Fixes Bug #5933
+
+2006-02-17  Danilo Piazzalunga  <danilopiazza@gmail.com>
+
+	* examples/*/.cvsignore: Bug #5927: added .cvsignore files to examples
+	directories
+
+2006-02-17  Danilo Piazzalunga  <danilopiazza@gmail.com>
+
+	* AUTHORS:
+	* INSTALL:
+	* README:
+	* cairomm/exception.cc:
+	* cairomm/exception.h: Remove lingering references to libxml++
+
+2006-02-17  Danilo Piazzalunga  <danilopiazza@gmail.com>
+
+	* configure.in: Bug #5929: Output files in docs subdir only if
+	--enable-docs is set.  This prevents configure from generating files which
+	are not cleaned up when --disable-docs is used.
+	Use AC_CONFIG_FILES and AC_OUTPUT as recommended.
+
+2006-02-16  Jonathon Jongsma  <jonathon.jongsma@gmail.com>
+
+	* docs/reference/Doxyfile.in:
+	* docs/reference/cairomm.css: added some style customisations to the API
+	doc so that it fits in with the overall Cairo style a bit better
+
+2006-02-16  Jonathon Jongsma  <jonathon.jongsma@gmail.com>
+
+	* AUTHORS:
+	* MAINTAINERS: Add my information to the Maintainers and authors file
+
+0.5.0:
+
+2006-02-09  Jonathon Jongsma  <jonathon.jongsma@gmail.com>
+
+	* docs/reference/Makefile.am: added a 'html' target to satisfy the dist
+	rule
+
+2006-02-08  Jonathon Jongsma  <jonathon.jongsma@gmail.com>
+
+	* cairomm/context.h: Added a lot of documentation for the Cairo::Context
+	class taken from the cairo docs.  It's not complete, but the basics are all
+	covered now.
+	* docs/reference/Makefile.am: make use of existing Makefile variable
+	* NEWS: update for 0.5.0 release
+
+2006-02-07  Jonathon Jongsma  <jonathon.jongsma@gmail.com>
+
+	* Makefile.am: add docs/ subdir
+	* configure.in: added an --enable-docs switch to the configure script
+	(enabled by default), and added AC_OUTPUT directives for the documentation
+	Makefiles, etc.
+	* docs/.cvsignore:
+	* docs/Makefile.am:
+	* docs/reference/.cvsignore:
+	* docs/reference/Doxyfile.in:
+	* docs/reference/Makefile.am:
+	* docs/reference/introduction.h: Added infrastructure to build and install
+	the API documentation for cairomm (based on libxml++ makefiles).
+
+2006-01-27  Jonathon Jongsma  <jonathon.jongsma@gmail.com>
+
+	* .cvsignore:
+	* cairomm/.cvsignore: update .cvsignore files
+	* cairomm/surface.cc:
+	* cairomm/surface.h: change Surface::create function to take a
+	RefPtr<Surface> instead of Surface&
+
+2006-01-27  Murray Cumming  <murrayc@murrayc.com>
+
+	* examples/pdf-surface/Makefile.am: Remove extra LDADD that was breaking
+	the distcheck.
+
+2006-01-26  Murray Cumming  <murrayc@murrayc.com>
+
+	* examples/ps-surface/main.cc:
+	* examples/svg-surface/main.cc: Correct the text of the messages.
+
+2006-01-25  Jonathon Jongsma  <jonathon.jongsma@gmail.com>
+
+	* configure.in:
+	* examples/Makefile.am:
+	* examples/pdf-surface/:
+	* examples/ps-surface/:
+	* examples/svg-surface/: add examples for additional surfaces
+
+2006-01-24  Murray Cumming  <murrayc@murrayc.com>
+
+	* cairomm/Makefile.am:
+	* cairomm/surface.cc:
+	* cairomm/surface.h:
+	* cairomm/xlib_surface.cc:
+	* cairomm/xlib_surface.h:
+	* cairomm/win32_surface.cc:
+	* cairomm/win32_surface.h: Moved XlibSurface and
+	Win32Surface into separate files, not #included by
+	the main cairomm.h file, so that developers do not need to
+	suffer the Xlib.h or Windows namespace pollution unless they really need to.
+	For instance, this fixes the gtkmm 2.9 build which was broken by the
+	Display struct in Xlib.h.
+
+2006-01-15  Jonathon Jongsma  <jonathon.jongsma@gmail.com>
+
+	* cairomm/surface.cc:
+	* cairomm/surface.h: backwards-incompatible API change for the Surface
+	types.  Cairo::Surface is now a base class for all of the other surface
+	types, and should not be used directly.  New Surface types include
+	ImageSurface, XlibSurface, Win32Surface, PdfSurface, PsSurface,
+	SvgSurface, and GlitzSurface.
+	Modified Surface::write_to_png() and Surface::write_to_png_stream() so
+	that they throw exceptions like the other functions instead of returning a
+	cairo_status_t value.
+	Added API documentation for all Surface classes and all member functions
+	of the Surface class heirarchy.
+	* examples/png_file/Makefile.am: added generated PNG file to CLEANFILES
+	* examples/png_file/main.cc: updated the PNG example to use the new
+	ImageSurface class instead of using the Surface class directly.
+	* cairomm/*: Renamed the Cairo::Status type to Cairo::ErrorStatus since it
+	conflicts with a #define Status in XLib and is not used exposed in the API
+	anyway.
+
+2006-01-06  Jonathon Jongsma  <jonathon.jongsma@gmail.com>
+
+	* cairomm/surface.cc:
+	* cairomm/surface.h: Added implementation of write_to_png() and
+	write_to_png_stream() when PNG support is available in the base cairo
+	library
+	* examples/png_file/*: Added an example of creating an image surface and
+	saving it to a png image file
+	* examples/Makefile.am: add new example directory to SUBDIRS list
+	* configure.in: added output declaration for examples/png_file/Makefile
+	* examples/makefile.am_fragment: fix leftover libxml boilerplate
+
+2006-01-03  Jonathon Jongsma  <jonathon.jongsma@gmail.com>
+
+	* cairomm/surface.cc: added missing implementations for reference() and
+	unreference() functions
+
+0.4.0:
+
+2005-12-17  Murray Cumming  <murrayc@murrayc.com>
+
+	* cairomm/Makefile.am:
+	* cairomm/refptr.h: Add shared
+	reference-counting smartpointer, using
+	the reference-count in the object. A copy
+	of the tried and tested glibmm RefPtr.
+	* cairomm/context.cc:
+	* cairomm/context.h:
+	* cairomm/fontface.cc:
+	* cairomm/fontface.h:
+	* cairomm/pattern.cc:
+	* cairomm/pattern.h:
+	* cairomm/surface.cc:
+	* cairomm/surface.h: Make constructors protected
+	and add public static create() methods that return
+	instances in RefPtr<>s. This allows reference-counted
+	objects to be clearly const or non-const, and allows
+	casting between related types.
+
+2005-12-17  Murray Cumming  <murrayc@murrayc.com>
+
+	* cairomm/context.cc:
+	* cairomm/context.h: Change set_dash(void) to
+	unset_dash(). Change rotate_deg() to
+	rotate_degrees(). Change identity_matrix() to
+	set_identity_matrix(). Change new_path() to
+	clear_path().
+	* cairomm/fontface.cc:
+	* cairomm/fontface.h: Comment-out
+	get/set_user_data(), because it seems useless.
+
+0.3.0:
+
+2005-12-08  Murray Cumming <murrayc@murrayc.com>
+
+	* cairomm/pattern.cc:
+	* cairomm/pattern.h: Create a hierarchy of pattern
+	classes, as suggested by the C documentation, because
+	not all functions are meaningful for all pattern types.
+
+2005-12-07  Murray Cumming <murrayc@murrayc.com>
+
+	* cairomm/context.cc:
+	* cairomm/context.h: font_extents(), stroke_extents(),
+	glyph_extents(), fill_extents(): Add get_ prefix and
+	make them const.
+
+2005-12-07  Murray Cumming <murrayc@murrayc.com>
+
+	* cairomm/context.cc:
+	* cairomm/context.h: Add typedef for Matrix, though we
+	probably want to derive a class with a C++-like matrix
+	API, with operator overloading.
+
+2005-12-07  Murray Cumming <murrayc@murrayc.com>
+
+	* cairomm/exception.cc:
+	* cairomm/exception.h: Rename to logic_error, because
+	the cairo documentation says that most of them are
+	programming errors, not runtime errors. Derive from
+	std::logic_error because of this.
+	* cairomm/private.cc:
+	* cairomm/private.h: Throw std::bad_alloc for memory
+	errors, and std::io_base::failure for read/write runtime
+	errors, as suggested by the cairo language-binding
+	documentation.
+
+2005-12-07  Murray Cumming <murrayc@murrayc.com>
+
+	* cairomm/context.cc:
+	* cairomm/fontoptions.cc:
+	* cairomm/surface.cc: Check for errors in
+	constructors, as per the error-handling advice in the
+	language bindings section of the cairo documentation.
+
+2005-12-07  Murray Cumming <murrayc@murrayc.com>
+
+	* cairomm/context.cc:
+	* cairomm/context.h: Change mask_surface() to
+	mask() and set_source_surface() to set_source(),
+	as per the method overloading advice in the
+	language bindings section of the cairo documentation.
+
+0.2.0:
+
+2005-12-02  Murray Cumming <murrayc@murrayc.com>
+
+	* cairomm/cairomm.h: Put sensible stuff in here,
+	instead of my copy/paste stuff from libxml++.
+	* cairomm/context.cc:
+	* cairomm/context.h:
+	* cairomm/enums.h:
+	* cairomm/exception.cc:
+	* cairomm/exception.h:
+	* cairomm/fontface.cc:
+	* cairomm/fontface.h:
+	* cairomm/fontoptions.cc:
+	* cairomm/fontoptions.h:
+	* cairomm/path.cc:
+	* cairomm/path.h:
+	* cairomm/pattern.cc:
+	* cairomm/pattern.h:
+	* cairomm/private.cc:
+	* cairomm/private.h:
+	* cairomm/surface.cc:
+	* cairomm/surface.h: Add LGPL comment headings.

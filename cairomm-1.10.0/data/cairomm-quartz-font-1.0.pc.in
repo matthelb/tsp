@@ -1,0 +1,4 @@
+Name: cairomm-quartz-font
+Description: C++ wrapper for cairo - quartz font support
+Requires: cairomm-1.0 cairo-quartz-font
+Version: @PACKAGE_VERSION@

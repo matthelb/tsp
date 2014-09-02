@@ -1,0 +1,4 @@
+Name: cairomm-quartz
+Description: C++ wrapper for cairo - quartz support
+Requires: cairomm-1.0 cairo-quartz
+Version: @PACKAGE_VERSION@

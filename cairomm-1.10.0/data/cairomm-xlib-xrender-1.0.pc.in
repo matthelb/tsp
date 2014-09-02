@@ -1,0 +1,4 @@
+Name: cairomm-xlib-xrender
+Description: C++ wrapper for cairo - xlib-xrender support
+Requires: cairomm-1.0 cairo-xlib-xrender
+Version: @PACKAGE_VERSION@

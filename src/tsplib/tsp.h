@@ -48,6 +48,9 @@ class TSP {
   std::string GetTSPType() const {
     return kTSPTypeValues[static_cast<int>(tsp_type())];
   }
+  Coord** GetNodeCoords() const {
+    return node_coords_;
+  }
 
   std::string name() const { return name_; }
   TSPType tsp_type() const { return tsp_type_; }
@@ -60,6 +63,7 @@ class TSP {
   NodeCoordType node_coord_type() const { return node_coord_type_; }
   DisplayDataType display_data_type() const { return display_data_type_; }
   const Graph* graph() const { return graph_; }
+
 
  private:
   TSP(const TSP& tsp);

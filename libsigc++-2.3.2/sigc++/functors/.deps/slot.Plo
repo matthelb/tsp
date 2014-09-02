@@ -1,0 +1,125 @@
+functors/slot.lo: functors/slot.cc ../sigc++/functors/slot.h \
+ ../sigc++/trackable.h /usr/include/c++/4.8/list \
+ /usr/include/c++/4.8/bits/stl_algobase.h \
+ /usr/include/x86_64-linux-gnu/c++/4.8/bits/c++config.h \
+ /usr/include/x86_64-linux-gnu/c++/4.8/bits/os_defines.h \
+ /usr/include/features.h /usr/include/x86_64-linux-gnu/bits/predefs.h \
+ /usr/include/x86_64-linux-gnu/sys/cdefs.h \
+ /usr/include/x86_64-linux-gnu/bits/wordsize.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs-64.h \
+ /usr/include/x86_64-linux-gnu/c++/4.8/bits/cpu_defines.h \
+ /usr/include/c++/4.8/bits/functexcept.h \
+ /usr/include/c++/4.8/bits/exception_defines.h \
+ /usr/include/c++/4.8/bits/cpp_type_traits.h \
+ /usr/include/c++/4.8/ext/type_traits.h \
+ /usr/include/c++/4.8/ext/numeric_traits.h \
+ /usr/include/c++/4.8/bits/stl_pair.h /usr/include/c++/4.8/bits/move.h \
+ /usr/include/c++/4.8/bits/concept_check.h \
+ /usr/include/c++/4.8/bits/stl_iterator_base_types.h \
+ /usr/include/c++/4.8/bits/stl_iterator_base_funcs.h \
+ /usr/include/c++/4.8/debug/debug.h \
+ /usr/include/c++/4.8/bits/stl_iterator.h \
+ /usr/include/c++/4.8/bits/allocator.h \
+ /usr/include/x86_64-linux-gnu/c++/4.8/bits/c++allocator.h \
+ /usr/include/c++/4.8/ext/new_allocator.h /usr/include/c++/4.8/new \
+ /usr/include/c++/4.8/exception \
+ /usr/include/c++/4.8/bits/atomic_lockfree_defines.h \
+ /usr/include/c++/4.8/bits/memoryfwd.h \
+ /usr/include/c++/4.8/bits/range_access.h \
+ /usr/include/c++/4.8/bits/stl_list.h /usr/include/c++/4.8/bits/list.tcc \
+ ../sigc++config.h ../sigc++/visit_each.h ../sigc++/type_traits.h \
+ ../sigc++/adaptors/adaptor_trait.h ../sigc++/functors/functor_trait.h \
+ ../sigc++/functors/ptr_fun.h ../sigc++/functors/mem_fun.h \
+ ../sigc++/limit_reference.h ../sigc++/adaptors/deduce_result_type.h \
+ ../sigc++/functors/slot_base.h
+
+../sigc++/functors/slot.h:
+
+../sigc++/trackable.h:
+
+/usr/include/c++/4.8/list:
+
+/usr/include/c++/4.8/bits/stl_algobase.h:
+
+/usr/include/x86_64-linux-gnu/c++/4.8/bits/c++config.h:
+
+/usr/include/x86_64-linux-gnu/c++/4.8/bits/os_defines.h:
+
+/usr/include/features.h:
+
+/usr/include/x86_64-linux-gnu/bits/predefs.h:
+
+/usr/include/x86_64-linux-gnu/sys/cdefs.h:
+
+/usr/include/x86_64-linux-gnu/bits/wordsize.h:
+
+/usr/include/x86_64-linux-gnu/gnu/stubs.h:
+
+/usr/include/x86_64-linux-gnu/gnu/stubs-64.h:
+
+/usr/include/x86_64-linux-gnu/c++/4.8/bits/cpu_defines.h:
+
+/usr/include/c++/4.8/bits/functexcept.h:
+
+/usr/include/c++/4.8/bits/exception_defines.h:
+
+/usr/include/c++/4.8/bits/cpp_type_traits.h:
+
+/usr/include/c++/4.8/ext/type_traits.h:
+
+/usr/include/c++/4.8/ext/numeric_traits.h:
+
+/usr/include/c++/4.8/bits/stl_pair.h:
+
+/usr/include/c++/4.8/bits/move.h:
+
+/usr/include/c++/4.8/bits/concept_check.h:
+
+/usr/include/c++/4.8/bits/stl_iterator_base_types.h:
+
+/usr/include/c++/4.8/bits/stl_iterator_base_funcs.h:
+
+/usr/include/c++/4.8/debug/debug.h:
+
+/usr/include/c++/4.8/bits/stl_iterator.h:
+
+/usr/include/c++/4.8/bits/allocator.h:
+
+/usr/include/x86_64-linux-gnu/c++/4.8/bits/c++allocator.h:
+
+/usr/include/c++/4.8/ext/new_allocator.h:
+
+/usr/include/c++/4.8/new:
+
+/usr/include/c++/4.8/exception:
+
+/usr/include/c++/4.8/bits/atomic_lockfree_defines.h:
+
+/usr/include/c++/4.8/bits/memoryfwd.h:
+
+/usr/include/c++/4.8/bits/range_access.h:
+
+/usr/include/c++/4.8/bits/stl_list.h:
+
+/usr/include/c++/4.8/bits/list.tcc:
+
+../sigc++config.h:
+
+../sigc++/visit_each.h:
+
+../sigc++/type_traits.h:
+
+../sigc++/adaptors/adaptor_trait.h:
+
+../sigc++/functors/functor_trait.h:
+
+../sigc++/functors/ptr_fun.h:
+
+../sigc++/functors/mem_fun.h:
+
+../sigc++/limit_reference.h:
+
+../sigc++/adaptors/deduce_result_type.h:
+
+../sigc++/functors/slot_base.h:
