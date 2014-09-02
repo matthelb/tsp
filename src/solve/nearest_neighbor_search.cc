@@ -1,8 +1,8 @@
 #include "solve/nearest_neighbor_search.h"
 
+#include <string>
 #include <iostream>
 
-using namespace std;
 NearestNeighborSearch::~NearestNeighborSearch(){
 }
 
@@ -12,8 +12,8 @@ NearestNeighborSearch::NearestNeighborSearch(){
 Solution NearestNeighborSearch::ComputeSolution(const Graph* graph) {
   this->graph = graph;
   int distance = 0;
-  vector<int> result_path;
-  unordered_set<int> to_process, processed_nodes;
+  std::vector<int> result_path;
+  std::unordered_set<int> to_process, processed_nodes;
   
   result_path.push_back(0);
   processed_nodes.insert(0);
@@ -37,8 +37,8 @@ Solution NearestNeighborSearch::ComputeSolution(const Graph* graph) {
 }
 
 int NearestNeighborSearch::GetSmallestEdgeWeightNode(int node,
-                                                     const unordered_set<int> to_process) {
-  unordered_set<int>::const_iterator itr = to_process.begin();
+                                                     const std::unordered_set<int> to_process) {
+  std::unordered_set<int>::const_iterator itr = to_process.begin();
   int min_node = *itr, min = this->graph->GetEdgeWeight(node, min_node);
   int test_min = 0;
   ++itr;
