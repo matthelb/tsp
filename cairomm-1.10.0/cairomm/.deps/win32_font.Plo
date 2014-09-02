@@ -1,6 +1,0 @@
-win32_font.lo: win32_font.cc ../cairomm/win32_font.h \
- /usr/include/cairo/cairo-features.h
-
-../cairomm/win32_font.h:
-
-/usr/include/cairo/cairo-features.h:
