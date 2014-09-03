@@ -24,3 +24,5 @@
 *.app
 
 bin/*
+imgs/*
+include/*
