@@ -1,10 +1,13 @@
 BDIR = bin
+IDIR = include
 LDIR = lib
 ODIR = obj
 SDIR = src
 TDIR = test
 CAIROINCLUDE = $(shell pkg-config --cflags --libs cairomm-1.0)
-INCLUDE += -Isrc $(CAIROINCLUDE)
+INCLUDE += -Isrc -Iinclude $(CAIROINCLUDE)
+QSOPT_DIR ?= /usr/local/lib/qsopt
+EXTERN_INCLUDES = $(IDIR)/concorde.h
 
 CXX=g++
 CXXFLAGS=-Wall -g -std=c++11 -Wextra -pthread
@@ -17,6 +20,7 @@ SRCS = $(SDIR)/graph/graph.cc \
 			 $(SDIR)/graphics/image_generator.cc \
 			 $(SDIR)/solve/bellman_held_karp.cc \
 			 $(SDIR)/solve/brute_force_search.cc \
+			 $(SDIR)/solve/concorde_solver.cc \
 			 $(SDIR)/solve/nearest_neighbor_search.cc \
 			 $(SDIR)/solve/tsp_algorithm.cc \
 			 $(SDIR)/solve/tsp_algorithm_factory.cc \
@@ -45,16 +49,16 @@ test: tests
 
 ## Distributed Executables
 
-$(BDIR)/parse_tsp: $(OBJS) $(SDIR)/parse_tsp.cc
+$(BDIR)/parse_tsp: $(OBJS) $(SDIR)/parse_tsp.cc $(LDIR)/concorde.a $(QSOPT_DIR)/qsopt.a
 	$(CXX) $(CXXFLAGS) $(INCLUDE) $^ -o $@ $(CAIROINCLUDE)
 
-$(BDIR)/solve_tsp: $(OBJS) $(SDIR)/solve_tsp.cc
+$(BDIR)/solve_tsp: $(OBJS) $(SDIR)/solve_tsp.cc $(LDIR)/concorde.a $(QSOPT_DIR)/qsopt.a
 	$(CXX) $(CXXFLAGS) $(INCLUDE) $^ -o $@ $(CAIROINCLUDE)
 
-$(BDIR)/generate_tsp: $(OBJS) $(SDIR)/generate_tsp.cc
+$(BDIR)/generate_tsp: $(OBJS) $(SDIR)/generate_tsp.cc $(LDIR)/concorde.a $(QSOPT_DIR)/qsopt.a
 	$(CXX) $(CXXFLAGS) $(INCLUDE) $^ -o $@ $(CAIROINCLUDE)
 
-$(BDIR)/simulate_tsp: $(OBJS) $(SDIR)/simulate_tsp.cc
+$(BDIR)/simulate_tsp: $(OBJS) $(SDIR)/simulate_tsp.cc $(LDIR)/concorde.a $(QSOPT_DIR)/qsopt.a
 	$(CXX) $(CXXFLAGS) $(INCLUDE) $^ -o $@ $(CAIROINCLUDE)
 
 ###
@@ -91,9 +95,33 @@ $(LDIR)/gtest_main.a: $(ODIR)/gtest-all.o $(ODIR)/gtest_main.o
 
 ###
 
-$(ODIR)/%.o: $(SDIR)/%.cc
+## Concorde
+
+CONCORDE_DIR ?= /usr/local/src/concorde
+
+MAKE_CONCORDE = \
+	(cd  $(CONCORDE_DIR) && $(MAKE) clean && ./configure --with-qsopt=$(QSOPT_DIR)) && \
+	$(MAKE) -C $(CONCORDE_DIR)
+
+$(CONCORDE_DIR)/concorde.a:
+	$(MAKE_CONCORDE)
+
+$(CONCORDE_DIR)/concorde.h:
+	$(MAKE_CONCORDE)
+
+$(LDIR)/concorde.a: $(CONCORDE_DIR)/concorde.a
+	cp $^ $@
+
+$(IDIR)/concorde.h: $(CONCORDE_DIR)/concorde.h
+	cp  $^ $@
+	sed -i 's/new/new_/g' $@
+	sed -i 's/class/class_/g' $@
+
+###
+
+$(ODIR)/%.o: $(SDIR)/%.cc $(EXTERN_INCLUDES)
 	$(MKDIR)
 	$(COMPILE_OBJ)
 
 clean:
-	rm -Rf bin/* obj/*
+	rm -Rf bin/* obj/* lib/* include/*
