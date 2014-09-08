@@ -4,10 +4,12 @@ LDIR = lib
 ODIR = obj
 SDIR = src
 TDIR = test
-CAIROINCLUDE = $(shell pkg-config --cflags --libs cairomm-1.0)
-INCLUDE += -Isrc -Iinclude $(CAIROINCLUDE)
 QSOPT_DIR ?= /usr/local/lib/qsopt
-EXTERN_INCLUDES = $(IDIR)/concorde.h
+CAIRO_INCLUDES = $(shell pkg-config --cflags cairomm-1.0)
+INCLUDE += -I$(SDIR) -I$(IDIR) $(CAIRO_INCLUDES)
+OBJECT_INCLUDES = $(IDIR)/concorde.h
+CAIRO_LIBS = $(shell pkg-config --libs cairomm-1.0)
+LIBS = $(LDIR)/concorde.a $(QSOPT_DIR)/qsopt.a $(CAIRO_LIBS)
 
 CXX=g++
 CXXFLAGS=-Wall -g -std=c++11 -Wextra -pthread
@@ -49,26 +51,26 @@ test: tests
 
 ## Distributed Executables
 
-$(BDIR)/parse_tsp: $(OBJS) $(SDIR)/parse_tsp.cc $(LDIR)/concorde.a $(QSOPT_DIR)/qsopt.a
-	$(CXX) $(CXXFLAGS) $(INCLUDE) $^ -o $@ $(CAIROINCLUDE)
+$(BDIR)/parse_tsp: $(OBJS) $(SDIR)/parse_tsp.cc $(LIBS)
+	$(CXX) $(CXXFLAGS) $(INCLUDE) $^ -o $@
 
-$(BDIR)/solve_tsp: $(OBJS) $(SDIR)/solve_tsp.cc $(LDIR)/concorde.a $(QSOPT_DIR)/qsopt.a
-	$(CXX) $(CXXFLAGS) $(INCLUDE) $^ -o $@ $(CAIROINCLUDE)
+$(BDIR)/solve_tsp: $(OBJS) $(SDIR)/solve_tsp.cc $(LIBS)
+	$(CXX) $(CXXFLAGS) $(INCLUDE) $^ -o $@
 
-$(BDIR)/generate_tsp: $(OBJS) $(SDIR)/generate_tsp.cc $(LDIR)/concorde.a $(QSOPT_DIR)/qsopt.a
-	$(CXX) $(CXXFLAGS) $(INCLUDE) $^ -o $@ $(CAIROINCLUDE)
+$(BDIR)/generate_tsp: $(OBJS) $(SDIR)/generate_tsp.cc $(LIBS)
+	$(CXX) $(CXXFLAGS) $(INCLUDE) $^ -o $@
 
-$(BDIR)/simulate_tsp: $(OBJS) $(SDIR)/simulate_tsp.cc $(LDIR)/concorde.a $(QSOPT_DIR)/qsopt.a
-	$(CXX) $(CXXFLAGS) $(INCLUDE) $^ -o $@ $(CAIROINCLUDE)
+$(BDIR)/simulate_tsp: $(OBJS) $(SDIR)/simulate_tsp.cc $(LIBS)
+	$(CXX) $(CXXFLAGS) $(INCLUDE) $^ -o $@
 
 ###
 
 ## Unit Tests
 
-$(BDIR)/tsp_distance_calc_test: $(OBJS) $(TDIR)/tsp_distance_calc_test.cc lib/gtest_main.a
+$(BDIR)/tsp_distance_calc_test: $(OBJS) $(TDIR)/tsp_distance_calc_test.cc lib/gtest_main.a $(LIBS)
 	$(CXX) $(CXXFLAGS) $(INCLUDE) -lpthread $^ -o $@
 
-$(BDIR)/tsp_solution_test: $(OBJS) $(TDIR)/tsp_solution_test.cc lib/gtest_main.a
+$(BDIR)/tsp_solution_test: $(OBJS) $(TDIR)/tsp_solution_test.cc lib/gtest_main.a $(LIBS)
 	$(CXX) $(CXXFLAGS) $(INCLUDE) -lpthread $^ -o $@
 
 ###
@@ -119,9 +121,9 @@ $(IDIR)/concorde.h: $(CONCORDE_DIR)/concorde.h
 
 ###
 
-$(ODIR)/%.o: $(SDIR)/%.cc $(EXTERN_INCLUDES)
+$(ODIR)/%.o: $(SDIR)/%.cc $(OBJECT_INCLUDES)
 	$(MKDIR)
 	$(COMPILE_OBJ)
 
 clean:
-	rm -Rf bin/* obj/* lib/* include/*
+	rm -Rf $(BDIR)/* $(ODIR)/* $(LDIR)/* $(IDIR)/*
