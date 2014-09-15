@@ -26,3 +26,9 @@
 bin/*
 imgs/*.png
 include/*
+
+*.res
+*.sol
+*.mas
+*.sav
+*.pul
