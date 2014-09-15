@@ -28,3 +28,7 @@ imgs/*
 include/*
 
 *.res
+*.sol
+*.mas
+*.sav
+*.pul

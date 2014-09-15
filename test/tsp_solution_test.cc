@@ -3,6 +3,7 @@
 #include "graph/graph.h"
 #include "solve/bellman_held_karp.h"
 #include "solve/brute_force_search.h"
+#include "solve/concorde_solver.h"
 #include "solve/tsp_solver.h"
 #include "tsplib/tsp.h"
 
@@ -49,4 +50,12 @@ TEST_F(TSPSolutionTest, BellmanHeldKarp) {
   BellmanHeldKarp bellman_held_karp;
   TestTSPInstance("data/tsp/gr17.tsp", &bellman_held_karp, 2085);
   TestTSPInstance("data/tsp/gr21.tsp", &bellman_held_karp, 2707);
+}
+
+TEST_F(TSPSolutionTest, ConcordeSolver) {
+  ConcordeSolver concorde_solver;
+  TestTSPInstance("data/tsp/a280.tsp", &concorde_solver, 2579);
+  /*TestTSPInstance("data/tsp/pcb442.tsp", &concorde_solver, 50778);
+  TestTSPInstance("data/tsp/att532.tsp", &concorde_solver, 27686);
+  TestTSPInstance("data/tsp/ch130.tsp", &concorde_solver, 6110);*/
 }
