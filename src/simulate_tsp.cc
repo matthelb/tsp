@@ -16,10 +16,13 @@
 
 using namespace std;
 
-vector<pair<double, double>> GetCoordinatePath(Coord** coords,
-                                               vector<int> path) {
+vector<pair<double, double>> GetCoordinatePath(Coord** coords, int num_cities,
+                                               vector<int> path, int* replaced_node) {
   vector<pair<double, double>> to_return;
-  for(unsigned i = 0; i < path.size(); ++i) {
+  for(int i = 0; i < num_cities; ++i) {
+    if(path[i] == *replaced_node){
+      *replaced_node = i;
+    }
     to_return.push_back(pair<double, double>(
                                   coords[path[i]]->coordinates()[0],
                                   coords[path[i]]->coordinates()[1]));
@@ -65,11 +68,17 @@ int main(int argc, char* argv[]) {
 
     Solution s1 = solver.ComputeSolution();
     double d1 = s1.distance;
+
+    int replaced_node_1 = tsp->ChooseRandomCoord(random_gen);
+    int replaced_node_2 = replaced_node_1;
+
     vector<pair<double, double>> node_coords_1 = GetCoordinatePath(
                                                     tsp->GetNodeCoords(),
-                                                    s1.path);
-
-    tsp->ReplaceCoordRandomly(min_coord, max_coord, random_gen);
+                                                    num_cities,
+                                                    s1.path, &replaced_node_1);
+    cout << "Replaced Node 1: " << replaced_node_1 << endl;
+    cout << "Replaced Node 2: " << replaced_node_2 << endl;
+    tsp->ReplaceCoord(min_coord, max_coord, random_gen, replaced_node_2);
     tsp->BuildGraph(false);
     solver.set_graph(tsp->graph());
 
@@ -77,10 +86,12 @@ int main(int argc, char* argv[]) {
     double d2 = s2.distance;
     vector<pair<double, double>> node_coords_2 = GetCoordinatePath(
                                                     tsp->GetNodeCoords(),
-                                                    s2.path);
+                                                    num_cities,
+                                                    s2.path, &replaced_node_2);
 
-    image_generator.generate_image("trial" + to_string(i) + ".png",
-                                   node_coords_1, node_coords_2);
+    image_generator.generate_image("trial" + to_string(i+1) + ".png",
+                                   node_coords_1, node_coords_2,
+                                   replaced_node_1, replaced_node_2);
     differences[i] = abs(d1 - d2);
     delete tsp;
     cout << "Trial " << setw(static_cast<int>(log10(trials)) + 1) << i + 1 << endl;
