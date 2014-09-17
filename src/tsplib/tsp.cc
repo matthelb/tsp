@@ -213,15 +213,22 @@ bool TSP::ParseStream(istream& is) {
   return !name().empty();
 }
 
-bool TSP::ReplaceCoordRandomly(double min_coord, double max_coord,
-                               mt19937& random_gen) {
+int TSP::ChooseRandomCoord(mt19937& random_gen) {
   if (node_coords_) {
     uniform_int_distribution<int> uniform_dist(0, dimension() - 1);
-    int replaced_coord = uniform_dist(random_gen);
-    delete node_coords_[replaced_coord];
-    node_coords_[replaced_coord] = Coord::GenerateRandomCoord(
-        EdgeWeightTypeDimension(edge_weight_type()), min_coord, max_coord,
-        random_gen);
+    return uniform_dist(random_gen);
+  } else {
+    return -1;
+  }
+}
+
+bool TSP::ReplaceCoord(double min_coord, double max_coord, mt19937& random_gen,
+                             int node) {
+  if(node < dimension() && node >= 0){
+    delete node_coords_[node];
+    node_coords_[node] = Coord::GenerateRandomCoord(
+          EdgeWeightTypeDimension(edge_weight_type()), min_coord, max_coord,
+          random_gen);
     return true;
   } else {
     return false;
