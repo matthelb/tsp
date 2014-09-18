@@ -33,13 +33,13 @@ void ImageGenerator::generate_image(std::string filename,
   cr->rectangle(offsetX, offsetY, width, height);
   cr->stroke();
 
-  cr->set_source_rgb(0, 0, 1);
+  cr->set_source_rgba(0, 0, 1, .5);
   draw_graph(beforeCoordinates, replaced_node_1, std::vector<double>());
 
   cr->set_line_width(2.0);
   std::vector<double> dashes;
   dashes.push_back(4);
-  cr->set_source_rgba(1, 0, 0, .3);
+  cr->set_source_rgba(1, 0, 0, .5);
   draw_graph(afterCoordinates, replaced_node_2, dashes);
 
   surface->write_to_png(directory + filename);

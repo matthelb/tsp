@@ -30,6 +30,9 @@ vector<pair<double, double>> GetCoordinatePath(Coord** coords, int num_cities,
                                   coords[path[i]]->coordinates()[0],
                                   coords[path[i]]->coordinates()[1]));
   }
+  to_return.push_back(pair<double, double>(
+                                  coords[path[0]]->coordinates()[0],
+                                  coords[path[0]]->coordinates()[1]));
   return to_return;
 }
 
