@@ -126,4 +126,5 @@ $(ODIR)/%.o: $(SDIR)/%.cc $(OBJECT_INCLUDES)
 	$(COMPILE_OBJ)
 
 clean:
-	rm -Rf $(BDIR)/* $(ODIR)/* $(LDIR)/* $(IDIR)/*
+	rm -Rf $(BDIR)/* $(ODIR)/* $(LDIR)/* $(IDIR)/* $(CONCORDE_DIR)/concorde.a \
+				 $(CONCORDE_DIR)/concorde.h
