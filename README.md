@@ -7,7 +7,7 @@ A library for parsing TSPLIB files and solving instances of the [traveling sales
 The `Makefile` expects to find the googletest sources in `/usr/src/gtest`, but an alternate location can be specified with the `GTEST_DIR` environment variable. Debian-based systems can install googletest to the default location by running the command `sudo apt-get install libgtest-dev`.
 * [Concorde Solver](http://www.math.uwaterloo.ca/tsp/concorde.html)
 
-Download the source code from the Concorde website and unzip it in a directory on your system. The `Makefile` expects to find the Concorde sources in `/usr/local/src/concorde`, but an alternate location can be specified with the `CONCORDE_DIR` environment variable.
+Clone [this modified version](https://github.com/mburke13/concorde) of the Concorde source code to a directory on your system. The `Makefile` expects to find the Concorde sources in `/usr/local/src/concorde`, but an alternate location can be specified with the `CONCORDE_DIR` environment variable.
 * [QSopt](http://www.math.uwaterloo.ca/~bico/qsopt/)
 
 Download the static library (`qsopt.a`) and header file (`qsopt.h`) from the QSopt website and place them in a directory on your system. The `Makefile` expects to find these files in `/usr/local/lib/qsopt`, but an alternate location can be specified with the `QSOPT_DIR` environment variable.
