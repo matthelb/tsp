@@ -5,6 +5,8 @@
 #include <iostream>
 #include <cmath>
 #include <fstream>
+#include <sys/stat.h>
+#include <sys/types.h>
 
 #include "../solve/tsp_solver.h"
 #include "../tsplib/tsp.h"
