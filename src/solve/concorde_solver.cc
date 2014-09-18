@@ -1,6 +1,12 @@
 #include "solve/concorde_solver.h"
 
+#include <algorithm>
+#include <cstdio>
+#include <cstring>
 #include <ctime>
+#include <iostream>
+#include <sstream>
+#include <string>
 #include <vector>
 
 extern "C" {
@@ -48,21 +54,40 @@ Solution ConcordeSolver::ComputeSolution(const Graph* graph) {
   int success;                     // storage for whether computation terminated
                                    //   appropriately
   int foundtour;                   // storage for whether tour was found
-  char* name = NULL;               // name for files created during branch&bound
+  stringstream name_ss;
+  name_ss << graph->CanonicalTourLength();
+  string name_s = name_ss.str();
+  remove(name_s.begin(), name_s.end(), '.');
+  char* name = new char[name_s.length()];
+  strncpy(name, name_s.c_str(), name_s.length());
+                                   // name for files created during branch&bound
   double* timebound = NULL;        // upper bound for computation time
   int hit_timebound;               // storage for whether timebound was hit
   int silent = 1;                  // 0 for verbose output
   CCrandstate rstate;              // ??
-  CCutil_sprand (time(NULL), &rstate);
-  CCdatagroup dat;
-  CCutil_graph2dat_matrix(ncount, ecount, elist, elen, 1000000, &dat);
-  CCtsp_solve_dat(ncount, &dat, in_tour, out_tour, in_val,
-                     &optval, &success, &foundtour, name, timebound,
-                     &hit_timebound, silent, &rstate);
+  CCutil_sprand(time(NULL), &rstate);
+
+  fflush(stdout);
+  int stdout_copy = dup(fileno(stdout));
+  freopen(name, "w", stdout);
+
+  int result = CCtsp_solve_sparse(ncount, ecount, elist, elen, in_tour,
+                                  out_tour, in_val, &optval, &success,
+                                  &foundtour, name, timebound, &hit_timebound,
+                                  silent, &rstate);
+
+  fflush(stdout);
+  dup2(stdout_copy, fileno(stdout));
+  close(stdout_copy);
+
+  if (!success) {
+    cout << "Failed to find optimal tour" << endl;
+  }
   vector<int> optimal_tour;
   for (unsigned int i = 0; i < ncount; ++i) {
     optimal_tour.push_back(out_tour[i]);
   }
   delete [] out_tour;
+  delete [] name;
   return Solution(optval, optimal_tour);
 }
