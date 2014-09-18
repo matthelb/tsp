@@ -2,6 +2,7 @@
 
 #include "solve/bellman_held_karp.h"
 #include "solve/brute_force_search.h"
+#include "solve/concorde_solver.h"
 #include "solve/nearest_neighbor_search.h"
 
 using namespace std;
@@ -21,6 +22,9 @@ TSPAlgorithm* TSPAlgorithmFactory::GetTSPAlgorithm(
     }
     case TSPAlgorithmType::kNearestNeighborSearch: {
       return new NearestNeighborSearch();
+    }
+    case TSPAlgorithmType::kConcordeSolver: {
+      return new ConcordeSolver();
     }
     default: {
       break;

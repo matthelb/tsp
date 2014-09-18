@@ -1,6 +1,7 @@
 #include <algorithm>
 #include <cmath>
 #include <ctime>
+#include <functional>
 #include <iomanip>
 #include <iostream>
 #include <random>
@@ -8,16 +9,12 @@
 #include <utility>
 
 #include "solve/brute_force_search.h"
-#include "solve/bellman_held_karp.h"
+#include "solve/concorde_solver.h"
 #include "solve/tsp_solver.h"
 #include "tsplib/tsp.h"
 #include "graphics/image_generator.h"
 
 using namespace std;
-
-double SquaredDifference(double a, double b) {
-    return pow(a - b, 2);
-}
 
 vector<pair<double, double>> GetCoordinatePath(Coord** coords, int num_cities,
                                                vector<int> path, int* replaced_node) {
@@ -58,13 +55,13 @@ int main(int argc, char* argv[]) {
   int img_height = atoi(argv[6]);
 
   TSPSolver solver;
-  BellmanHeldKarp bhk;
-  solver.set_tsp_algorithm(&bhk);
+  ConcordeSolver cs;
+  solver.set_tsp_algorithm(&cs);
   mt19937 random_gen(time(NULL));
   vector<double> differences(trials, 0);
   ImageGenerator image_generator(img_width, img_height,
                                  min_coord, max_coord, "imgs/");
-  
+
   for (int i = 0; i < trials; ++i) {
     TSP* tsp = TSP::GenerateRandomTSP("", num_cities, min_coord, max_coord,
                                       random_gen);
@@ -76,17 +73,16 @@ int main(int argc, char* argv[]) {
 
     int replaced_node_1 = tsp->ChooseRandomCoord(random_gen);
     int replaced_node_2 = replaced_node_1;
-    
+
     vector<pair<double, double>> node_coords_1 = GetCoordinatePath(
                                                     tsp->GetNodeCoords(),
                                                     num_cities,
                                                     s1.path, &replaced_node_1);
 
     tsp->ReplaceCoord(min_coord, max_coord, random_gen, replaced_node_2);
-
     tsp->BuildGraph(false);
     solver.set_graph(tsp->graph());
-    
+
     Solution s2 = solver.ComputeSolution();
     double d2 = s2.distance;
     vector<pair<double, double>> node_coords_2 = GetCoordinatePath(
@@ -107,8 +103,12 @@ int main(int argc, char* argv[]) {
   double init = 0;
   double mean = accumulate(differences.begin(), differences.end(), init) / trials;
   cout << endl << "Mean Difference: " << mean << endl;
-  double std_dev = sqrt(accumulate(differences.begin(), differences.end(), init,
-                                   SquaredDifference) / trials);
+  function<double(double, double)> squared_difference = [&mean](double a, double b) {
+    return a + pow(mean - b, 2);
+  };
+  double std_dev = sqrt(
+    accumulate(differences.begin(), differences.end(), init, squared_difference) / trials
+  );
   cout << "Std. Dev. Difference: " << std_dev << endl;
   return 0;
 }
