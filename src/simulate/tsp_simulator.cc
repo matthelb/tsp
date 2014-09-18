@@ -13,6 +13,11 @@ void TSPSimulator::SimulateSingleNodeReplacement(TSPSolver& solver,
                                                  const double max_coord,
                                                  const int iterations,
                                                  const int trials) {
+  if(mkdir(folder.c_str(), 0777) == -1 && errno != EEXIST) {
+    cout << "Error creating directory" << endl;
+    return;
+  }
+
   mt19937 random_gen(time(NULL));
   
   for(int i = 0; i < iterations; ++i) {
@@ -47,12 +52,19 @@ void TSPSimulator::SimulateSingleNodeReplacement(TSPSolver& solver,
 }
 
 void TSPSimulator::SimulateMultipleNodeReplacement(TSPSolver& solver,
-                                                 string folder,
-                                                 const int num_cities,
-                                                 const double min_coord,
-                                                 const double max_coord,
-                                                 const int iterations,
-                                                 const int trials) {
+                                                   string folder,
+                                                   const int num_cities,
+                                                   const double min_coord,
+                                                   const double max_coord,
+                                                   const int iterations,
+                                                   const int trials) {
+  if(mkdir(folder.c_str(), 0777) == -1 && errno != EEXIST) {
+    cout << "Error creating directory." << endl;
+    return;
+  }
+  
+  mt19937 random_gen(time(NULL));
+  
   for(int i = 0; i < iterations; ++i) {
     ofstream os;
     os.open(folder + "/multi_node_" + to_string(i+1) + ".csv");
@@ -62,7 +74,6 @@ void TSPSimulator::SimulateMultipleNodeReplacement(TSPSolver& solver,
       return;
     }
     os << "trial,distance1,distance2,difference" << endl;
-    mt19937 random_gen(time(NULL));
     for(int j = 0; j < trials; ++j) {
       TSP* tsp = TSP::GenerateRandomTSP("", num_cities, min_coord, max_coord,
                                         random_gen);
