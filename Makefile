@@ -43,11 +43,13 @@ OBJS = $(patsubst $(SDIR)%.cc, $(ODIR)%.o, $(SRCS))
 
 all: $(BDIR)/parse_tsp $(BDIR)/solve_tsp $(BDIR)/generate_tsp $(BDIR)/simulate_tsp
 
-tests: $(BDIR)/tsp_distance_calc_test $(BDIR)/tsp_solution_test
+tests: $(BDIR)/tsp_distance_calc_test $(BDIR)/tsp_bf_test $(BDIR)/tsp_bhk_test $(BDIR)/tsp_concorde_test
 
 test: tests
 	$(BDIR)/tsp_distance_calc_test
-	$(BDIR)/tsp_solution_test
+	$(BDIR)/tsp_bf_test
+	$(BDIR)/tsp_bhk_test
+	$(BDIR)/tsp_concorde_test
 
 ## Distributed Executables
 
@@ -67,10 +69,20 @@ $(BDIR)/simulate_tsp: $(OBJS) $(SDIR)/simulate_tsp.cc $(LIBS)
 
 ## Unit Tests
 
+$(ODIR)/$(TDIR)/tsp_solution_test.o: $(TDIR)/tsp_solution_test.cc
+	$(MKDIR)
+	$(COMPILE_OBJ)
+
 $(BDIR)/tsp_distance_calc_test: $(OBJS) $(TDIR)/tsp_distance_calc_test.cc lib/gtest_main.a $(LIBS)
 	$(CXX) $(CXXFLAGS) $(INCLUDE) -lpthread $^ -o $@
 
-$(BDIR)/tsp_solution_test: $(OBJS) $(TDIR)/tsp_solution_test.cc lib/gtest_main.a $(LIBS)
+$(BDIR)/tsp_bf_test: $(OBJS) $(ODIR)/$(TDIR)/tsp_solution_test.o $(TDIR)/tsp_bf_test.cc lib/gtest_main.a $(LIBS)
+	$(CXX) $(CXXFLAGS) $(INCLUDE) -lpthread $^ -o $@
+
+$(BDIR)/tsp_bhk_test: $(OBJS) $(ODIR)/$(TDIR)/tsp_solution_test.o $(TDIR)/tsp_bhk_test.cc lib/gtest_main.a $(LIBS)
+	$(CXX) $(CXXFLAGS) $(INCLUDE) -lpthread $^ -o $@
+
+$(BDIR)/tsp_concorde_test: $(OBJS) $(ODIR)/$(TDIR)/tsp_solution_test.o $(TDIR)/tsp_concorde_test.cc lib/gtest_main.a $(LIBS)
 	$(CXX) $(CXXFLAGS) $(INCLUDE) -lpthread $^ -o $@
 
 ###
