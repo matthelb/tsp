@@ -8,7 +8,7 @@
 #include <string>
 
 class ImageGenerator {
-public: 
+public:
   ImageGenerator(int width, int height, double min_coord, double max_coord,
                  std::string directory);
   ~ImageGenerator();
@@ -24,8 +24,9 @@ private:
   std::pair<double, double>* scale_coordinates(const std::pair<double, double>&
                                                coordinates);
 
-  void draw_graph(const std::vector<std::pair<double, double>>& coordinates, 
-                  int replaced_node, const std::vector<double>& dashes);
+  void draw_graph(const std::vector<std::pair<double, double>>& coordinates,
+                  unsigned int replaced_node,
+                  const std::vector<double>& dashes);
   int width;
   int height;
   double min_coord;
