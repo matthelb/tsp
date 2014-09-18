@@ -8,9 +8,9 @@
 
 using namespace std;
 int main(int argc, char* argv[]) {
-  if(argc != 6) {
-    cout << "Usage: " << argv[0] << "<outfile> <num_cities> <min_coord>"
-    << " <max_coord> <num_trials>" << endl;
+  if(argc != 7) {
+    cout << "Usage: " << argv[0] << "<output_dir> <num_cities> <min_coord>"
+    << " <max_coord> <iterations> <num_trials_per_iteration>" << endl;
     return 1;
   }
   TSPSolver solver;
@@ -24,12 +24,17 @@ int main(int argc, char* argv[]) {
   }
   double min_coord = atof(argv[3]);
   double max_coord = atof(argv[4]);
-  int trials = atoi(argv[5]);
+  int iterations = atoi(argv[5]);
+  if (iterations <= 0) {
+    cout << "Iterations must be an integer greater than 0" << endl;
+    return 1;
+  }
+  int trials = atoi(argv[6]);
   if (trials <= 0) {
     cout << "Trials must be an integer greater than 0" << endl;
     return 1;
   }
 
   TSPSimulator::SimulateSingleNodeReplacement(solver, filename, num_cities,
-                                              min_coord, max_coord, trials);
+                                              min_coord, max_coord, iterations, trials);
 }

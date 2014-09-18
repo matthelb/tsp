@@ -13,17 +13,19 @@ class TSPSimulator {
 public:
   virtual ~TSPSimulator();
   static void SimulateSingleNodeReplacement(TSPSolver& solver,
-                                            std::string filename,
+                                            std::string folder,
                                             const int num_cities,
                                             const double min_coord,
                                             const double max_coord,
+                                            const int iterations,
                                             const int trials);
   
   static void SimulateMultipleNodeReplacement(TSPSolver& solver,
-                                              std::string filename,
+                                              std::string folder,
                                               const int num_cities,
                                               const double min_coord,
                                               const double max_coord,
+                                              const int iterations,
                                               const int trials);
 private:
   TSPSimulator(){}
