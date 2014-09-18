@@ -15,6 +15,7 @@ MKDIR = if [ ! -d "$(shell dirname $@)" ]; then mkdir -p $(shell dirname $@); fi
 
 SRCS = $(SDIR)/graph/graph.cc \
 			 $(SDIR)/graphics/image_generator.cc \
+			 $(SDIR)/simulate/tsp_simulator.cc \
 			 $(SDIR)/solve/bellman_held_karp.cc \
 			 $(SDIR)/solve/brute_force_search.cc \
 			 $(SDIR)/solve/nearest_neighbor_search.cc \
@@ -35,7 +36,7 @@ SRCS = $(SDIR)/graph/graph.cc \
 
 OBJS = $(patsubst $(SDIR)%.cc, $(ODIR)%.o, $(SRCS))
 
-all: $(BDIR)/parse_tsp $(BDIR)/solve_tsp $(BDIR)/generate_tsp $(BDIR)/simulate_tsp
+all: $(BDIR)/parse_tsp $(BDIR)/solve_tsp $(BDIR)/generate_tsp $(BDIR)/simulate_tsp $(BDIR)/generate_tsp_csv
 
 tests: $(BDIR)/tsp_distance_calc_test $(BDIR)/tsp_solution_test
 
@@ -57,6 +58,8 @@ $(BDIR)/generate_tsp: $(OBJS) $(SDIR)/generate_tsp.cc
 $(BDIR)/simulate_tsp: $(OBJS) $(SDIR)/simulate_tsp.cc
 	$(CXX) $(CXXFLAGS) $(INCLUDE) $^ -o $@ $(CAIROINCLUDE)
 
+$(BDIR)/generate_tsp_csv: $(OBJS) $(SDIR)/generate_tsp_csv.cc
+	$(CXX) $(CXXFLAGS) $(INCLUDE) $^ -o $@ $(CAIROINCLUDE)
 ###
 
 ## Unit Tests
