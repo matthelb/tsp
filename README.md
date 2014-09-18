@@ -12,11 +12,8 @@ Clone [this modified version](https://github.com/mburke13/concorde) of the Conco
 
 Download the static library (`qsopt.a`) and header file (`qsopt.h`) from the QSopt website and place them in a directory on your system. The `Makefile` expects to find these files in `/usr/local/lib/qsopt`, but an alternate location can be specified with the `QSOPT_DIR` environment variable.
 
-* [Concorde Solver](http://www.math.uwaterloo.ca/tsp/concorde.html)
-Download the source code from the Concorde website and unzip it in a directory on your system. The `Makefile` expects to find the Concorde sources in `/usr/local/src/concorde`, but an alternate location can be specified with the `CONCORDE_DIR` environment variable.
-* [QSopt](http://www.math.uwaterloo.ca/~bico/qsopt/)
-Download the static library (`qsopt.a`) and header file (`qsopt.h`) from the QSopt website and place them in a directory on your system. The `Makefile` expects to find these files in `/usr/local/lib/qsopt`, but an alternate location can be specified with the `QSOPT_DIR` environment variable.
 * [Cairomm](http://cairographics.org/cairomm/)
+
 Use `sudo apt-get install libcairomm-1.0-dev` to get and install Cairomm and its dependencies on your system. The `Makefile` will use the `pkg-config` utility to find and include the necessary files.
 
 ## Building
