@@ -27,8 +27,9 @@ class TSP {
   void Export(std::ostream& os);
   bool Parse(std::string file_name);
   bool ParseStream(std::istream& is);
-  bool ReplaceCoordRandomly(double min_coord, double max_coord,
-                            std::mt19937& random_gen);
+  int ChooseRandomCoord(std::mt19937& random_gen);
+  bool ReplaceCoord(double min_coord, double max_coord,
+                          std::mt19937& random_gen, int node);
 
   std::string GetEdgeDataFormat() const {
     return kEdgeDataFormatValues[static_cast<int>(edge_data_format())];
