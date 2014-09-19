@@ -2,8 +2,7 @@
 #include <string>
 
 #include "simulate/tsp_simulator.h"
-#include "solve/bellman_held_karp.h"
-#include "solve/brute_force_search.h"
+#include "solve/concorde_solver.h"
 #include "solve/tsp_solver.h"
 
 using namespace std;
@@ -14,8 +13,8 @@ int main(int argc, char* argv[]) {
     return 1;
   }
   TSPSolver solver;
-  BellmanHeldKarp bhk;
-  solver.set_tsp_algorithm(&bhk);
+  ConcordeSolver concorde_solver;
+  solver.set_tsp_algorithm(&concorde_solver);
   string filename = string(argv[1]);
   int num_cities = atoi(argv[2]);
   if (num_cities <= 0) {
