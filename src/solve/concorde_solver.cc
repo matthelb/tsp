@@ -7,11 +7,16 @@
 #include <iostream>
 #include <sstream>
 #include <string>
+#ifdef HAVE_UNISTD_H
+#include <unistd.h>
+#endif
 #include <vector>
 
 extern "C" {
 #include "concorde.h"
 }
+
+#include "util/io_util.h"
 
 using namespace std;
 
@@ -63,10 +68,22 @@ Solution ConcordeSolver::ComputeSolution(const Graph* graph) {
                                    // name for files created during branch&bound
   double* timebound = NULL;        // upper bound for computation time
   int hit_timebound;               // storage for whether timebound was hit
-  int silent = 1;                  // 0 for verbose output
+  int silent = !verbose();         // 0 for verbose output
   CCrandstate rstate;              // ??
   CCutil_sprand(time(NULL), &rstate);
 
+  char cwd[FILENAME_MAX];
+  char* cwd_ptr = cwd;
+  bool changed_dir = false;
+  if (out_dir().length() > 0) {
+    cwd_ptr = getcwd(cwd, FILENAME_MAX);
+    if (cwd_ptr == NULL || chdir(out_dir().c_str()) == - 1) {
+      cerr << "Unable to change current working directory to " <<
+              out_dir() << endl;
+    } else {
+      changed_dir = true;
+    }
+  }
   fflush(stdout);
   int stdout_copy = dup(fileno(stdout));
   freopen(name, "w", stdout);
@@ -79,9 +96,15 @@ Solution ConcordeSolver::ComputeSolution(const Graph* graph) {
   fflush(stdout);
   dup2(stdout_copy, fileno(stdout));
   close(stdout_copy);
+  if (changed_dir) {
+    if (chdir(cwd) == -1) {
+      cerr << "Unable to revert back to current working directory " <<
+              cwd << endl;
+    }
+  }
 
   if (result || !success || !foundtour) {
-    cout << "Failed to find optimal tour" << endl;
+    cerr << "Failed to find optimal tour" << endl;
   }
   vector<int> optimal_tour;
   for (unsigned int i = 0; i < ncount; ++i) {

@@ -2,6 +2,7 @@
 
 #include <chrono>
 #include <iostream>
+#include <sstream>
 #include <string>
 
 #include "util/io_util.h"
@@ -11,16 +12,38 @@ using namespace std;
 TSPSimulator::~TSPSimulator() {
 }
 
+string TSPSimulator::GetDataFile(int i) const {
+  return GetDataFolder() + "/" + to_string(i) + ".csv";
+}
+
+int TSPSimulator::Mkpaths() const {
+  int result = mkpath(folder().c_str(), 0777);
+  if (result != 0) {
+    return result;
+  }
+  result = mkpath(GetDataFolder().c_str(), 0777);
+  if (result != 0) {
+    return result;
+  }
+  return mkpath(GetAlgOutFolder().c_str(), 0777);
+}
+
 void TSPSimulator::Simulate(int iterations) {
   mt19937 random_gen(
     chrono::high_resolution_clock::now().time_since_epoch().count()
   );
-  if (mkpath(folder().c_str(), 0777) != 0) {
-    cerr << "Error creating directory " << folder() << endl;
+  if (Mkpaths() != 0) {
+    cerr << "Error creating directories in " << folder() << endl;
     return;
   }
+  tsp_algorithm()->set_out_dir(GetAlgOutFolder());
+  tsp_solver().set_tsp_algorithm(tsp_algorithm());
   for (int i = 0; i < iterations; ++i) {
-    ofstream data_out(folder() + "/" + to_string(i) + ".csv");
+    string data_file = GetDataFile(i);
+    ofstream data_out(data_file);
+    if (data_out.fail()) {
+      cerr << "Unable to open data output file " << data_file << endl;
+    }
     TSP* tsp = TSP::GenerateRandomTSP("", num_cities(), min_coord(), max_coord(),
                                       random_gen);
     RunSimulation(tsp, data_out, random_gen);

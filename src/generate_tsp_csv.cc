@@ -13,9 +13,6 @@ int main(int argc, char* argv[]) {
     << " <max_coord> <iterations> <num_trials_per_iteration>" << endl;
     return 1;
   }
-  TSPSolver solver;
-  ConcordeSolver concorde_solver;
-  solver.set_tsp_algorithm(&concorde_solver);
   string filename = string(argv[1]);
   int num_cities = atoi(argv[2]);
   if (num_cities <= 0) {
@@ -34,8 +31,9 @@ int main(int argc, char* argv[]) {
     cout << "Trials must be an integer greater than 0" << endl;
     return 1;
   }
+  ConcordeSolver concorde_solver;
   TwoNodeReplacement simulator(filename, num_cities, min_coord, max_coord,
-                               true, trials, &solver);
+                               true, trials, &concorde_solver);
   simulator.Simulate(iterations);
   return 0;
 }

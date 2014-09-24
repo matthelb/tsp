@@ -8,9 +8,9 @@ class TwoNodeReplacement : public TSPSimulator {
  public:
   TwoNodeReplacement(std::string folder, int num_cities, double min_coord,
                double max_coord, bool nearest_int_rounding, int trials,
-               TSPSolver* tsp_solver) :
+               TSPAlgorithm* tsp_algorithm) :
                TSPSimulator(folder, num_cities, min_coord, max_coord,
-                            nearest_int_rounding, trials, tsp_solver) {}
+                            nearest_int_rounding, trials, tsp_algorithm) {}
 	virtual ~TwoNodeReplacement();
 
  protected:
