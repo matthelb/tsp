@@ -2,13 +2,14 @@
 #include <string>
 
 #include "simulate/tsp_simulator.h"
+#include "simulate/two_node_replacement.h"
 #include "solve/concorde_solver.h"
 #include "solve/tsp_solver.h"
 
 using namespace std;
 int main(int argc, char* argv[]) {
   if(argc != 7) {
-    cout << "Usage: " << argv[0] << "<output_dir> <num_cities> <min_coord>"
+    cout << "Usage: " << argv[0] << " <output_dir> <num_cities> <min_coord>"
     << " <max_coord> <iterations> <num_trials_per_iteration>" << endl;
     return 1;
   }
@@ -33,7 +34,8 @@ int main(int argc, char* argv[]) {
     cout << "Trials must be an integer greater than 0" << endl;
     return 1;
   }
-
-  TSPSimulator::SimulateSingleNodeReplacement(solver, filename, num_cities,
-                                              min_coord, max_coord, iterations, trials);
+  TwoNodeReplacement simulator(filename, num_cities, min_coord, max_coord,
+                               true, trials, &solver);
+  simulator.Simulate(iterations);
+  return 0;
 }

@@ -80,7 +80,7 @@ Solution ConcordeSolver::ComputeSolution(const Graph* graph) {
   dup2(stdout_copy, fileno(stdout));
   close(stdout_copy);
 
-  if (!result || !success || !foundtour) {
+  if (result || !success || !foundtour) {
     cout << "Failed to find optimal tour" << endl;
   }
   vector<int> optimal_tour;

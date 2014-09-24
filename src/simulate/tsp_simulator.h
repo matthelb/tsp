@@ -17,7 +17,7 @@ class TSPSimulator {
  public:
   TSPSimulator(std::string folder, int num_cities, double min_coord,
                double max_coord, bool nearest_int_rounding, int trials,
-               TSPSolver* solver) :
+               TSPSolver* tsp_solver) :
                folder_(folder), num_cities_(num_cities), min_coord_(min_coord),
                max_coord_(max_coord),
                nearest_int_rounding_(nearest_int_rounding), trials_(trials),
@@ -30,7 +30,7 @@ class TSPSimulator {
   double min_coord() const { return min_coord_; }
   double max_coord() const { return max_coord_; }
   bool nearest_int_rounding() const { return nearest_int_rounding_; }
-  int trials() const { return trials_ };
+  int trials() const { return trials_; };
 
   void Simulate(int iterations);
 
@@ -52,7 +52,8 @@ class TSPSimulator {
  protected:
    TSPSolver* tsp_solver() { return tsp_solver_; }
 
-   virtual void RunSimulation(TSP* tsp, std::mt19937& random_gen) = 0;
+   virtual void RunSimulation(TSP* tsp, std::ofstream& data_out,
+                              std::mt19937& random_gen) = 0;
 
  private:
   TSPSimulator(const TSPSimulator& tsp_simulator);

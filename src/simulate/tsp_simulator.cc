@@ -1,6 +1,10 @@
 #include "tsp_simulator.h"
 
 #include <chrono>
+#include <iostream>
+#include <string>
+
+#include "util/io_util.h"
 
 using namespace std;
 
@@ -11,10 +15,16 @@ void TSPSimulator::Simulate(int iterations) {
   mt19937 random_gen(
     chrono::high_resolution_clock::now().time_since_epoch().count()
   );
+  if (mkpath(folder().c_str(), 0777) != 0) {
+    cerr << "Error creating directory " << folder() << endl;
+    return;
+  }
   for (int i = 0; i < iterations; ++i) {
-    TSP* tsp = TSP::GenerateRandomTSP("", num_cities, min_coord, max_coord,
+    ofstream data_out(folder() + "/" + to_string(i) + ".csv");
+    TSP* tsp = TSP::GenerateRandomTSP("", num_cities(), min_coord(), max_coord(),
                                       random_gen);
-    RunSimulation(tsp, random_gen);
+    RunSimulation(tsp, data_out, random_gen);
+    data_out.close();
     delete tsp;
   }
 }
@@ -51,7 +61,8 @@ void TSPSimulator::SimulateSingleNodeReplacement(TSPSolver& solver,
     int replaced_node = tsp->ChooseRandomCoord(random_gen);
 
     for(int j = 0; j < trials; ++j) {
-      tsp->ReplaceCoord(min_coord, max_coord, random_gen, replaced_node);
+      delete tsp->ReplaceCoordRandomly(min_coord, max_coord, random_gen,
+                                       replaced_node);
       tsp->BuildGraph(false);
       solver.set_graph(tsp->graph());
       Solution solution = solver.ComputeSolution();
@@ -96,7 +107,8 @@ void TSPSimulator::SimulateMultipleNodeReplacement(TSPSolver& solver,
       double distance1 = s1.distance;
 
       int replaced_node = tsp->ChooseRandomCoord(random_gen);
-      tsp->ReplaceCoord(min_coord, max_coord, random_gen, replaced_node);
+      delete tsp->ReplaceCoordRandomly(min_coord, max_coord, random_gen,
+                                       replaced_node);
       tsp->BuildGraph(false);
       solver.set_graph(tsp->graph());
 

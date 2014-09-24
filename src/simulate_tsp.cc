@@ -79,7 +79,7 @@ int main(int argc, char* argv[]) {
                                                     num_cities,
                                                     s1.path, &replaced_node_1);
 
-    tsp->ReplaceCoord(min_coord, max_coord, random_gen, replaced_node_2);
+    //tsp->ReplaceCoord(min_coord, max_coord, random_gen, replaced_node_2);
     tsp->BuildGraph(false);
     solver.set_graph(tsp->graph());
 

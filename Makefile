@@ -21,6 +21,7 @@ MKDIR = if [ ! -d "$(shell dirname $@)" ]; then mkdir -p $(shell dirname $@); fi
 SRCS = $(SDIR)/graph/graph.cc \
 			 $(SDIR)/graphics/image_generator.cc \
 			 $(SDIR)/simulate/tsp_simulator.cc \
+			 $(SDIR)/simulate/two_node_replacement.cc \
 			 $(SDIR)/solve/bellman_held_karp.cc \
 			 $(SDIR)/solve/brute_force_search.cc \
 			 $(SDIR)/solve/concorde_solver.cc \
@@ -38,7 +39,8 @@ SRCS = $(SDIR)/graph/graph.cc \
 			 $(SDIR)/tsplib/coord/geo_distance.cc \
 			 $(SDIR)/tsplib/coord/manhattan_distance.cc \
 			 $(SDIR)/tsplib/coord/max_distance.cc \
-			 $(SDIR)/tsplib/coord/pseudo_euclidean_distance.cc
+			 $(SDIR)/tsplib/coord/pseudo_euclidean_distance.cc \
+			 $(SDIR)/util/io_util.cc
 
 OBJS = $(patsubst $(SDIR)%.cc, $(ODIR)%.o, $(SRCS))
 
