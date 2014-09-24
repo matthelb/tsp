@@ -66,8 +66,8 @@ $(BDIR)/generate_tsp: $(OBJS) $(SDIR)/generate_tsp.cc $(LIBS)
 $(BDIR)/simulate_tsp: $(OBJS) $(SDIR)/simulate_tsp.cc $(LIBS)
 	$(CXX) $(CXXFLAGS) $(INCLUDE) $^ -o $@
 
-$(BDIR)/generate_tsp_csv: $(OBJS) $(SDIR)/generate_tsp_csv.cc
-	$(CXX) $(CXXFLAGS) $(INCLUDE) $^ -o $@ $(CAIROINCLUDE)
+$(BDIR)/generate_tsp_csv: $(OBJS) $(SDIR)/generate_tsp_csv.cc $(LIBS)
+	$(CXX) $(CXXFLAGS) $(INCLUDE) $^ -o $@
 ###
 
 ## Unit Tests

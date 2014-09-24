@@ -50,10 +50,10 @@ Solution ConcordeSolver::ComputeSolution(const Graph* graph) {
   int* in_tour = NULL;             // partially computed input tour
   int* out_tour = new int[ncount]; // storage for output tour nodes
   double* in_val = NULL;           // upper bound for tsp tour
-  double optval;                   // storage for output tour distance
-  int success;                     // storage for whether computation terminated
+  double optval = 0;               // storage for output tour distance
+  int success = 0;                 // storage for whether computation terminated
                                    //   appropriately
-  int foundtour;                   // storage for whether tour was found
+  int foundtour = 0;               // storage for whether tour was found
   stringstream name_ss;
   name_ss << graph->CanonicalTourLength();
   string name_s = name_ss.str();
@@ -71,7 +71,7 @@ Solution ConcordeSolver::ComputeSolution(const Graph* graph) {
   int stdout_copy = dup(fileno(stdout));
   freopen(name, "w", stdout);
 
-  CCtsp_solve_sparse(ncount, ecount, elist, elen, in_tour,
+  int result = CCtsp_solve_sparse(ncount, ecount, elist, elen, in_tour,
                                   out_tour, in_val, &optval, &success,
                                   &foundtour, name, timebound, &hit_timebound,
                                   silent, &rstate);
@@ -80,7 +80,7 @@ Solution ConcordeSolver::ComputeSolution(const Graph* graph) {
   dup2(stdout_copy, fileno(stdout));
   close(stdout_copy);
 
-  if (!success) {
+  if (!result || !success || !foundtour) {
     cout << "Failed to find optimal tour" << endl;
   }
   vector<int> optimal_tour;
