@@ -32,7 +32,7 @@ void TSPSimulator::SimulateSingleNodeReplacement(TSPSolver& solver,
   }
 
   mt19937 random_gen(time(NULL));
-  
+
   for(int i = 0; i < iterations; ++i) {
     ofstream os;
     os.open(folder + "/single_node_" + to_string(i+1) + ".csv");
@@ -75,9 +75,9 @@ void TSPSimulator::SimulateMultipleNodeReplacement(TSPSolver& solver,
     cout << "Error creating directory." << endl;
     return;
   }
-  
+
   mt19937 random_gen(time(NULL));
-  
+
   for(int i = 0; i < iterations; ++i) {
     ofstream os;
     os.open(folder + "/multi_node_" + to_string(i+1) + ".csv");
@@ -99,7 +99,7 @@ void TSPSimulator::SimulateMultipleNodeReplacement(TSPSolver& solver,
       tsp->ReplaceCoord(min_coord, max_coord, random_gen, replaced_node);
       tsp->BuildGraph(false);
       solver.set_graph(tsp->graph());
-      
+
       Solution s2 = solver.ComputeSolution();
       double distance2 = s2.distance;
       double diff = abs(distance1 - distance2);
