@@ -1,9 +1,22 @@
 #include "tsp_simulator.h"
 
+#include <chrono>
+
 using namespace std;
 
 TSPSimulator::~TSPSimulator() {
+}
 
+void TSPSimulator::Simulate(int iterations) {
+  mt19937 random_gen(
+    chrono::high_resolution_clock::now().time_since_epoch().count()
+  );
+  for (int i = 0; i < iterations; ++i) {
+    TSP* tsp = TSP::GenerateRandomTSP("", num_cities, min_coord, max_coord,
+                                      random_gen);
+    RunSimulation(tsp, random_gen);
+    delete tsp;
+  }
 }
 
 void TSPSimulator::SimulateSingleNodeReplacement(TSPSolver& solver,
