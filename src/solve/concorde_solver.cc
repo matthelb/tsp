@@ -84,18 +84,18 @@ Solution ConcordeSolver::ComputeSolution(const Graph* graph) {
       changed_dir = true;
     }
   }
-  fflush(stdout);
+  /*fflush(stdout);
   int stdout_copy = dup(fileno(stdout));
-  freopen(name, "w", stdout);
+  freopen(name, "w", stdout);*/
 
   int result = CCtsp_solve_sparse(ncount, ecount, elist, elen, in_tour,
                                   out_tour, in_val, &optval, &success,
                                   &foundtour, name, timebound, &hit_timebound,
                                   silent, &rstate);
 
-  fflush(stdout);
+  /*fflush(stdout);
   dup2(stdout_copy, fileno(stdout));
-  close(stdout_copy);
+  close(stdout_copy);*/
   if (changed_dir) {
     if (chdir(cwd) == -1) {
       cerr << "Unable to revert back to current working directory " <<
@@ -112,5 +112,7 @@ Solution ConcordeSolver::ComputeSolution(const Graph* graph) {
   }
   delete [] out_tour;
   delete [] name;
+  delete [] elen;
+  delete [] elist;
   return Solution(optval, optimal_tour);
 }
