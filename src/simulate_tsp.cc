@@ -15,7 +15,7 @@
 #include "graphics/image_generator.h"
 
 using namespace std;
-
+// 
 vector<pair<double, double>> GetCoordinatePath(Coord** coords, int num_cities,
                                                vector<int> path, int* replaced_node) {
   vector<pair<double, double>> to_return;
@@ -78,8 +78,8 @@ int main(int argc, char* argv[]) {
                                                     tsp->GetNodeCoords(),
                                                     num_cities,
                                                     s1.path, &replaced_node_1);
-
-    //tsp->ReplaceCoord(min_coord, max_coord, random_gen, replaced_node_2);
+    
+    // tsp->ReplaceCoord(min_coord, max_coord, random_gen, replaced_node_2);
     tsp->BuildGraph(false);
     solver.set_graph(tsp->graph());
 
@@ -90,7 +90,7 @@ int main(int argc, char* argv[]) {
                                                     num_cities,
                                                     s2.path, &replaced_node_2);
 
-    image_generator.generate_image("trial" + to_string(i+1) + ".png",
+    image_generator.GenerateImage("trial" + to_string(i+1) + ".png",
                                    node_coords_1, node_coords_2,
                                    replaced_node_1, replaced_node_2);
     differences[i] = abs(d1 - d2);

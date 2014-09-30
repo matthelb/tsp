@@ -6,10 +6,12 @@
 #include <iostream>
 #include <random>
 #include <string>
+#include <vector>
 
 #include <sys/stat.h>
 #include <sys/types.h>
 
+#include "graphics/image_generator.h"
 #include "solve/tsp_algorithm.h"
 #include "solve/tsp_solver.h"
 #include "tsplib/tsp.h"
@@ -35,6 +37,7 @@ class TSPSimulator {
 
   std::string GetDataFolder() const { return folder() + "/data"; }
   std::string GetAlgOutFolder() const { return folder() + "/alg_out"; }
+  std::string GetImgFolder() const { return folder() + "/imgs"; }
   std::string GetDataFile(int i) const;
   void Simulate(int iterations);
 
@@ -59,7 +62,8 @@ class TSPSimulator {
 
    int Mkpaths() const;
    virtual void RunSimulation(TSP* tsp, std::ofstream& data_out,
-                              std::mt19937& random_gen) = 0;
+                              std::mt19937& random_gen, ImageGenerator& img_gen,
+                              int img_to_generate, int itr_num) = 0;
 
  private:
   TSPSimulator(const TSPSimulator& tsp_simulator);

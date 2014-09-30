@@ -2,6 +2,7 @@
 #define TSP_SIMULATE_TWO_NODE_REPLACEMENT_H_
 
 #include "simulate/tsp_simulator.h"
+#include "graphics/image_generator.h"
 #include "tsplib/tsp.h"
 
 class TwoNodeReplacement : public TSPSimulator {
@@ -14,7 +15,8 @@ class TwoNodeReplacement : public TSPSimulator {
 	virtual ~TwoNodeReplacement();
 
  protected:
-	void RunSimulation(TSP* tsp, std::ofstream& data_out, std::mt19937& random_gen);
+	void RunSimulation(TSP* tsp, std::ofstream& data_out, std::mt19937& random_gen,
+                     ImageGenerator& img_gen, int img_to_generate, int itr_num);
 
  private:
 	TwoNodeReplacement(TwoNodeReplacement& two_node_replacement);

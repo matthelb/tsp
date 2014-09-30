@@ -6,25 +6,36 @@
 #include <cmath>
 #include <iostream>
 #include <string>
+#include <vector>
+
+#include "../tsplib/coord/coord.h"
 
 class ImageGenerator {
 public:
   ImageGenerator(int width, int height, double min_coord, double max_coord,
                  std::string directory);
   ~ImageGenerator();
-  void generate_image(std::string filename,
-                      const std::vector<std::pair<double, double>>& beforeCoordinates,
-                      const std::vector<std::pair<double, double>>& afterCoordinates,
-                      int replaced_node_1, int replaced_node_2);
+  void GenerateImage(std::string filename,
+                      const std::vector<std::pair<double, double>>&
+                      beforeCoordinates,
+                      const std::vector<std::pair<double, double>>&
+                      afterCoordinates,
+                      unsigned int replaced_node_1,
+                      unsigned int replaced_node_2);
 
+  std::vector<std::pair<double, double>> GetCoordinatePath(Coord** coords,
+                                                           int num_cities,
+                                                           const std::vector<int>& path,
+                                                           int* replaced_node);
 private:
   ImageGenerator(const ImageGenerator& image_generator);
   void operator=(const ImageGenerator& image_generator);
 
-  std::pair<double, double>* scale_coordinates(const std::pair<double, double>&
-                                               coordinates);
 
-  void draw_graph(const std::vector<std::pair<double, double>>& coordinates,
+  std::pair<double, double>* ScaleCoordinates(const std::pair<double, double>&
+                                              coordinates);
+
+  void DrawGraph(const std::vector<std::pair<double, double>>& coordinates,
                   unsigned int replaced_node,
                   const std::vector<double>& dashes);
   int width;
@@ -33,8 +44,8 @@ private:
   double max_coord;
   Cairo::RefPtr<Cairo::Context> cr;
   Cairo::RefPtr<Cairo::ImageSurface> surface;
-  double offsetX;
-  double offsetY;
+  double offset_x;
+  double offset_y;
   std::string directory;
 };
 

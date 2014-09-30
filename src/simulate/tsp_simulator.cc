@@ -25,7 +25,11 @@ int TSPSimulator::Mkpaths() const {
   if (result != 0) {
     return result;
   }
-  return mkpath(GetAlgOutFolder().c_str(), 0777);
+  result = mkpath(GetAlgOutFolder().c_str(), 0777);
+  if (result != 0) {
+    return result;
+  }
+  return mkpath(GetImgFolder().c_str(), 0777);
 }
 
 void TSPSimulator::Simulate(int iterations) {
@@ -38,7 +42,11 @@ void TSPSimulator::Simulate(int iterations) {
   }
   tsp_algorithm()->set_out_dir(GetAlgOutFolder());
   tsp_solver().set_tsp_algorithm(tsp_algorithm());
+  ImageGenerator img_gen(1000, 1000, min_coord(), max_coord(), GetImgFolder());
+  int num_imgs = 4;
+  uniform_int_distribution<int> uniform_trial_dist(0, trials() - 1);
   for (int i = 0; i < iterations; ++i) {
+    uniform_int_distribution<int> uniform_itr_dist(0, iterations - i - 1);
     string data_file = GetDataFile(i);
     ofstream data_out(data_file);
     if (data_out.fail()) {
@@ -46,7 +54,12 @@ void TSPSimulator::Simulate(int iterations) {
     }
     TSP* tsp = TSP::GenerateRandomTSP("", num_cities(), min_coord(), max_coord(),
                                       random_gen);
-    RunSimulation(tsp, data_out, random_gen);
+    int img_to_generate = -1;
+    if(uniform_itr_dist(random_gen) < num_imgs) {
+      num_imgs--;
+      img_to_generate = uniform_trial_dist(random_gen);
+    }
+    RunSimulation(tsp, data_out, random_gen, img_gen, img_to_generate, i);
     data_out.close();
     delete tsp;
   }
