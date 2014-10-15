@@ -5,6 +5,7 @@
 #include <cstring>
 #include <ctime>
 #include <iostream>
+#include <iomanip>
 #include <sstream>
 #include <string>
 #ifdef HAVE_UNISTD_H
@@ -32,9 +33,9 @@ Solution ConcordeSolver::ComputeSolution(const Graph* graph) {
   vector<int> edge_list;
   vector<int> edge_lengths;
   for (unsigned int i = 0; i < ncount; ++i) {
-    for (unsigned int j = i + 1; j < ncount; ++j) {
+    for (unsigned int j = 0; j < i; ++j) {
       int weight = graph->GetEdgeWeight(i, j);
-      if (weight) {
+      if (weight != 0) {
         edge_list.push_back(i);
         edge_list.push_back(j);
         edge_lengths.push_back(weight);
@@ -52,6 +53,8 @@ Solution ConcordeSolver::ComputeSolution(const Graph* graph) {
     elist[2*i+1] = edge_list[2*i+1];
     elen[i] = edge_lengths[i];
   }
+  CCdatagroup dat;
+  CCutil_graph2dat_matrix(ncount, ecount, elist, elen, 0, &dat);
   int* in_tour = NULL;             // partially computed input tour
   int* out_tour = new int[ncount]; // storage for output tour nodes
   double* in_val = NULL;           // upper bound for tsp tour
@@ -88,7 +91,7 @@ Solution ConcordeSolver::ComputeSolution(const Graph* graph) {
   int stdout_copy = dup(fileno(stdout));
   freopen(name, "w", stdout);*/
 
-  int result = CCtsp_solve_sparse(ncount, ecount, elist, elen, in_tour,
+  int result = CCtsp_solve_dat(ncount, &dat, in_tour,
                                   out_tour, in_val, &optval, &success,
                                   &foundtour, name, timebound, &hit_timebound,
                                   silent, &rstate);
