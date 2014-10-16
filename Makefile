@@ -20,6 +20,7 @@ MKDIR = if [ ! -d "$(shell dirname $@)" ]; then mkdir -p $(shell dirname $@); fi
 
 SRCS = $(SDIR)/graph/graph.cc \
 			 $(SDIR)/graphics/image_generator.cc \
+			 $(SDIR)/simulate/single_node_replacement.cc \
 			 $(SDIR)/simulate/tsp_simulator.cc \
 			 $(SDIR)/simulate/two_node_replacement.cc \
 			 $(SDIR)/solve/bellman_held_karp.cc \

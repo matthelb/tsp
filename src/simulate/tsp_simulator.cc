@@ -12,56 +12,89 @@ using namespace std;
 TSPSimulator::~TSPSimulator() {
 }
 
-string TSPSimulator::GetDataFile(int i) const {
-  return GetDataFolder() + "/" + to_string(i) + ".csv";
+string TSPSimulator::GetDataFile(int i, int j) const {
+  return GetDataFolder(i) + "/" + to_string(j) + ".csv";
 }
 
-int TSPSimulator::Mkpaths() const {
+string TSPSimulator::GetDataFolder(int i) const {
+  return folder() + "/data/" + to_string(i);
+}
+
+string TSPSimulator::GetAlgOutFolder(int i) const {
+  return folder() + "/alg_out/" + to_string(i);
+}
+
+string TSPSimulator::GetImgFolder(int i) const {
+  return folder() + "/imgs/" + to_string(i);
+}
+
+int TSPSimulator::Mkpaths(int num_subdirs) const {
   int result = mkpath(folder().c_str(), 0777);
   if (result != 0) {
     return result;
   }
-  result = mkpath(GetDataFolder().c_str(), 0777);
-  if (result != 0) {
-    return result;
+  for (int i = 0; i < num_subdirs; ++i) {
+    result = mkpath(GetDataFolder(i).c_str(), 0777);
+    if (result != 0) {
+      return result;
+    }
+    result = mkpath(GetAlgOutFolder(i).c_str(), 0777);
+    if (result != 0) {
+      return result;
+    }
+    result = mkpath(GetImgFolder(i).c_str(), 0777);
+    if (result != 0) {
+      return result;
+    }
   }
-  result = mkpath(GetAlgOutFolder().c_str(), 0777);
-  if (result != 0) {
-    return result;
-  }
-  return mkpath(GetImgFolder().c_str(), 0777);
+  return result;
 }
 
-void TSPSimulator::Simulate(int iterations) {
-  mt19937 random_gen(
-    chrono::high_resolution_clock::now().time_since_epoch().count()
-  );
-  if (Mkpaths() != 0) {
+void TSPSimulator::Simulate(vector<TSP*> tsp_instances, int iterations) {
+  Simulate(tsp_instances, iterations,
+           chrono::high_resolution_clock::now().time_since_epoch().count());
+}
+
+void TSPSimulator::Simulate(vector<TSP*> tsp_instances, int iterations,
+                            long seed) {
+  if (Mkpaths(tsp_instances.size()) != 0) {
     cerr << "Error creating directories in " << folder() << endl;
     return;
   }
-  tsp_algorithm()->set_out_dir(GetAlgOutFolder());
+  mt19937 random_gen(seed);
+  ofstream seed_out(folder() + "/seed.txt");
+  if (seed_out.fail()) {
+    cout << "Unable to open seed output file " << (folder() + "/seed.txt") << endl;
+    return;
+  }
+  seed_out << seed << endl;
+  seed_out.close();
+
   tsp_solver().set_tsp_algorithm(tsp_algorithm());
-  ImageGenerator img_gen(1000, 1000, min_coord(), max_coord(), GetImgFolder());
+
   int num_imgs = 4;
-  uniform_int_distribution<int> uniform_trial_dist(0, trials() - 1);
-  for (int i = 0; i < iterations; ++i) {
-    uniform_int_distribution<int> uniform_itr_dist(0, iterations - i - 1);
-    string data_file = GetDataFile(i);
-    ofstream data_out(data_file);
-    if (data_out.fail()) {
-      cerr << "Unable to open data output file " << data_file << endl;
+
+  uniform_int_distribution<int> uniform_trial_dist(trials_start(), trials_end() - 1);
+  for (unsigned int i = 0; i < tsp_instances.size(); ++i) {
+    tsp_algorithm()->set_out_dir(GetAlgOutFolder(i));
+    ImageGenerator img_gen(1000, 1000, min_coord(), max_coord(), GetImgFolder(i));
+    for (int j = 0; j < iterations; ++j) {
+      string data_file = GetDataFile(i, j);
+      ofstream data_out(data_file);
+      if (data_out.fail()) {
+        cerr << "Unable to open data output file " << data_file << endl;
+      }
+
+      uniform_int_distribution<int> uniform_itr_dist(0, iterations - j - 1);
+      int img_to_generate = -1;
+      if(uniform_itr_dist(random_gen) < num_imgs) {
+        num_imgs--;
+        img_to_generate = uniform_trial_dist(random_gen);
+      }
+
+      RunSimulation(tsp_instances[i], data_out, random_gen, img_gen, img_to_generate, j);
+      data_out.close();
     }
-    TSP* tsp = TSP::GenerateRandomTSP("", num_cities(), min_coord(), max_coord(),
-                                      random_gen);
-    int img_to_generate = -1;
-    if(uniform_itr_dist(random_gen) < num_imgs) {
-      num_imgs--;
-      img_to_generate = uniform_trial_dist(random_gen);
-    }
-    RunSimulation(tsp, data_out, random_gen, img_gen, img_to_generate, i);
-    data_out.close();
-    delete tsp;
   }
 }
 

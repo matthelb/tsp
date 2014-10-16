@@ -19,11 +19,12 @@
 class TSPSimulator {
  public:
   TSPSimulator(std::string folder, int num_cities, double min_coord,
-               double max_coord, bool nearest_int_rounding, int trials,
-               TSPAlgorithm* tsp_algorithm) :
+               double max_coord, bool nearest_int_rounding, int trials_start,
+               int trials_end, TSPAlgorithm* tsp_algorithm) :
                folder_(folder), num_cities_(num_cities), min_coord_(min_coord),
                max_coord_(max_coord),
-               nearest_int_rounding_(nearest_int_rounding), trials_(trials),
+               nearest_int_rounding_(nearest_int_rounding),
+               trials_start_(trials_start), trials_end_(trials_end),
                tsp_algorithm_(tsp_algorithm) { }
 
   virtual ~TSPSimulator();
@@ -33,13 +34,16 @@ class TSPSimulator {
   double min_coord() const { return min_coord_; }
   double max_coord() const { return max_coord_; }
   bool nearest_int_rounding() const { return nearest_int_rounding_; }
-  int trials() const { return trials_; };
+  int trials_end() const { return trials_end_; };
+  int trials_start() const { return trials_start_; };
 
-  std::string GetDataFolder() const { return folder() + "/data"; }
-  std::string GetAlgOutFolder() const { return folder() + "/alg_out"; }
-  std::string GetImgFolder() const { return folder() + "/imgs"; }
-  std::string GetDataFile(int i) const;
-  void Simulate(int iterations);
+  std::string GetAlgOutFolder(int i) const;
+  std::string GetDataFile(int i, int j) const;
+  std::string GetDataFolder(int i) const;
+  std::string GetImgFolder(int i) const;
+
+  void Simulate(std::vector<TSP*> tsp_instances, int iterations);
+  void Simulate(std::vector<TSP*> tsp_instances, int iterations, long seed);
 
   static void SimulateSingleNodeReplacement(TSPSolver& solver,
                                             std::string folder,
@@ -60,7 +64,7 @@ class TSPSimulator {
    TSPAlgorithm* tsp_algorithm() { return tsp_algorithm_; }
    TSPSolver& tsp_solver() { return tsp_solver_; }
 
-   int Mkpaths() const;
+   int Mkpaths(int num_subdirs) const;
    virtual void RunSimulation(TSP* tsp, std::ofstream& data_out,
                               std::mt19937& random_gen, ImageGenerator& img_gen,
                               int img_to_generate, int itr_num) = 0;
@@ -74,7 +78,8 @@ class TSPSimulator {
   double min_coord_;
   double max_coord_;
   bool nearest_int_rounding_;
-  int trials_;
+  int trials_end_;
+  int trials_start_;
   TSPAlgorithm* tsp_algorithm_;
 
   TSPSolver tsp_solver_;

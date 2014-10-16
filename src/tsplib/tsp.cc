@@ -94,6 +94,7 @@ void TSP::Export(ostream& os) {
       for (int j = 0; j < node_coords_[i]->dimension(); ++j) {
         os << node_coords_[i]->coordinates()[j] << ' ';
       }
+      os << endl;
     }
   }
   if (display_data_type() != DisplayDataType::kNone &&

@@ -17,7 +17,7 @@ void TwoNodeReplacement::RunSimulation(TSP* tsp, ofstream& data_out,
 	tsp->BuildGraph(nearest_int_rounding());
 	tsp_solver().set_graph(tsp->graph());
 	Solution T = tsp_solver().ComputeSolution();
-	for (int i = 0; i < trials(); ++i) {
+	for (int i = trials_start(); i < trials_end(); ++i) {
 		vector<int> node_list(tsp->dimension());
 		iota(node_list.begin(), node_list.end(), 0);
 		uniform_int_distribution<int> uniform_dist(0, node_list.size() - 1);
@@ -34,7 +34,7 @@ void TwoNodeReplacement::RunSimulation(TSP* tsp, ofstream& data_out,
 		Coord* coord_1 = tsp->ReplaceCoordRandomly(min_coord(), max_coord(),
 																							random_gen, replaced_1);
 		tsp->BuildGraph(nearest_int_rounding());
-		tsp_solver().set_graph(tsp->graph());	
+		tsp_solver().set_graph(tsp->graph());
 		Solution T_prime = tsp_solver().ComputeSolution();
 		int path_node_2 = replaced_1;
 		vector<pair<double, double>> coordinate_path_2;
