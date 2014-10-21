@@ -21,7 +21,9 @@ public:
                       const std::vector<std::pair<double, double>>&
                       afterCoordinates,
                       unsigned int replaced_node_1,
-                      unsigned int replaced_node_2);
+                      unsigned int replaced_node_2,
+                      double t_dist,
+                      double t_p_dist);
 
   std::vector<std::pair<double, double>> GetCoordinatePath(Coord** coords,
                                                            int num_cities,

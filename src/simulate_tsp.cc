@@ -90,9 +90,9 @@ int main(int argc, char* argv[]) {
                                                     num_cities,
                                                     s2.path, &replaced_node_2);
 
-    image_generator.GenerateImage("trial" + to_string(i+1) + ".png",
-                                   node_coords_1, node_coords_2,
-                                   replaced_node_1, replaced_node_2);
+    // image_generator.GenerateImage("trial" + to_string(i+1) + ".png",
+    //                                node_coords_1, node_coords_2,
+    //                                replaced_node_1, replaced_node_2);
     differences[i] = abs(d1 - d2);
     delete tsp;
     cout << "Trial " << setw(static_cast<int>(log10(trials)) + 1) << i + 1 << endl;

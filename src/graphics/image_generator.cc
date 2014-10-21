@@ -42,7 +42,9 @@ void ImageGenerator::GenerateImage(string filename,
                                     const vector<pair<double, double>>&
                                     afterCoordinates,
                                     unsigned int replaced_node_1,
-                                    unsigned int replaced_node_2){
+                                    unsigned int replaced_node_2,
+                                    double t_dist,
+                                    double t_p_dist){
   surface =
         Cairo::ImageSurface::create(Cairo::FORMAT_ARGB32, width * 1.2, height * 1.2);
 
@@ -50,11 +52,19 @@ void ImageGenerator::GenerateImage(string filename,
   cr->set_source_rgb(1, 1, 1);
   cr->paint();
 
+  cr->set_source_rgb(0, 0, 1);
+  cr->move_to(offset_x, offset_y / 2);
+  cr->set_font_size(18);
+  cr->show_text("T Distance: " + to_string((int) t_dist));
+
   cr->set_source_rgb(0, 0, 0);
   cr->set_line_width(1.0);
   cr->rectangle(offset_x, offset_y, width, height);
   cr->stroke();
 
+  cr->set_source_rgb(1, 0, 0);
+  cr->move_to(width - offset_x, offset_y / 2);
+  cr->show_text("T' Distance: " + to_string((int) t_p_dist));
   cr->set_source_rgba(0, 0, 1, .5);
   DrawGraph(beforeCoordinates, replaced_node_1, vector<double>());
 
