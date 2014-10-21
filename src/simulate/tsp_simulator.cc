@@ -72,12 +72,13 @@ void TSPSimulator::Simulate(vector<TSP*> tsp_instances, int iterations,
 
   tsp_solver().set_tsp_algorithm(tsp_algorithm());
 
-  int num_imgs = 4;
-
-  uniform_int_distribution<int> uniform_trial_dist(trials_start(), trials_end() - 1);
   for (unsigned int i = 0; i < tsp_instances.size(); ++i) {
+    int num_imgs = 4;
+    uniform_int_distribution<int> uniform_trial_dist(trials_start(), trials_end() - 1);
+    
     tsp_algorithm()->set_out_dir(GetAlgOutFolder(i));
     ImageGenerator img_gen(1000, 1000, min_coord(), max_coord(), GetImgFolder(i));
+    
     for (int j = 0; j < iterations; ++j) {
       string data_file = GetDataFile(i, j);
       ofstream data_out(data_file);
