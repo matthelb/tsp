@@ -18,9 +18,9 @@
 
 class TSPSimulator {
  public:
-  TSPSimulator(std::string folder, int num_cities, double min_coord,
+  TSPSimulator(int run_id, std::string folder, int num_cities, double min_coord,
                double max_coord, bool nearest_int_rounding, int trials_start,
-               int trials_end, TSPAlgorithm* tsp_algorithm) :
+               int trials_end, TSPAlgorithm* tsp_algorithm) : run_id_(run_id),
                folder_(folder), num_cities_(num_cities), min_coord_(min_coord),
                max_coord_(max_coord),
                nearest_int_rounding_(nearest_int_rounding),
@@ -29,6 +29,7 @@ class TSPSimulator {
 
   virtual ~TSPSimulator();
 
+  int run_id() const { return run_id_; }
   std::string folder() const { return folder_; }
   int num_cities() const { return num_cities_; }
   double min_coord() const { return min_coord_; }
@@ -37,13 +38,13 @@ class TSPSimulator {
   int trials_end() const { return trials_end_; };
   int trials_start() const { return trials_start_; };
 
-  std::string GetAlgOutFolder(int i) const;
-  std::string GetDataFile(int i, int j) const;
-  std::string GetDataFolder(int i) const;
-  std::string GetImgFolder(int i) const;
+  std::string GetAlgOutFolder() const;
+  std::string GetDataFile() const;
+  std::string GetDataFolder() const;
+  std::string GetImgFolder() const;
 
-  void Simulate(std::vector<TSP*> tsp_instances, int iterations);
-  void Simulate(std::vector<TSP*> tsp_instances, int iterations, long seed);
+  void Simulate(TSP* tsp_instance, int iterations);
+  void Simulate(TSP* tsp_instance, int iterations, long seed);
 
   static void SimulateSingleNodeReplacement(TSPSolver& solver,
                                             std::string folder,
@@ -64,22 +65,23 @@ class TSPSimulator {
    TSPAlgorithm* tsp_algorithm() { return tsp_algorithm_; }
    TSPSolver& tsp_solver() { return tsp_solver_; }
 
-   int Mkpaths(int num_subdirs) const;
+   int Mkpaths() const;
    virtual void RunSimulation(TSP* tsp, std::ofstream& data_out,
                               std::mt19937& random_gen, ImageGenerator& img_gen,
-                              int img_to_generate, int itr_num) = 0;
+                              int img_to_generate, int itr_num, long seed) = 0;
 
  private:
   TSPSimulator(const TSPSimulator& tsp_simulator);
   void operator=(const TSPSimulator& tsp_simulator);
 
+  int run_id_;
   const std::string folder_;
   int num_cities_;
   double min_coord_;
   double max_coord_;
   bool nearest_int_rounding_;
-  int trials_end_;
   int trials_start_;
+  int trials_end_;
   TSPAlgorithm* tsp_algorithm_;
 
   TSPSolver tsp_solver_;

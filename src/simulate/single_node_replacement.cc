@@ -8,7 +8,8 @@ SingleNodeReplacement::~SingleNodeReplacement() {
 void SingleNodeReplacement::RunSimulation(TSP* tsp, ofstream& data_out,
 																					mt19937& random_gen,
 																					ImageGenerator& img_gen,
-																					int img_to_generate, int itr_num) {
+																					int img_to_generate, int itr_num,
+																					long seed) {
 	data_out << "trial,T,T'" << endl;
 	tsp->BuildGraph(nearest_int_rounding());
 	tsp_solver().set_graph(tsp->graph());
