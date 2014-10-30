@@ -1,6 +1,6 @@
 #ifndef TSP_TSPLIB_GRAPHICS_IMAGE_GENERATOR_H_
 #define TSP_TSPLIB_GRAPHICS_IMAGE_GENERATOR_H_
-#include <cairommconfig.h>
+
 #include <cairomm/context.h>
 #include <cairomm/surface.h>
 #include <cmath>
