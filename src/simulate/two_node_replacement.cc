@@ -30,7 +30,7 @@ void TwoNodeReplacement::RunSimulation(TSP* tsp, ofstream& data_out,
 		vector<pair<double, double>> coordinate_path_1;
 		if (k == img_to_generate) {
 			Coord** node_coords = tsp->GetNodeCoords();
-			coordinate_path_1 = img_gen.GetCoordinatePath(node_coords, num_cities(),
+			coordinate_path_1 = img_gen.GetCoordinatePath(node_coords, tsp->dimension(),
 																										T.path, &path_node_1);
 		}
 		// END Image Generation
@@ -48,7 +48,7 @@ void TwoNodeReplacement::RunSimulation(TSP* tsp, ofstream& data_out,
 		vector<pair<double, double>> coordinate_path_2;
 		if(k == img_to_generate) {
 			Coord** node_coords = tsp->GetNodeCoords();
-			coordinate_path_2 = img_gen.GetCoordinatePath(node_coords, num_cities(),
+			coordinate_path_2 = img_gen.GetCoordinatePath(node_coords, tsp->dimension(),
 																										T_prime.path, &path_node_2);
 			img_gen.GenerateImage("/itr_" + to_string(itr_num) +
 														"_trial_" + to_string(i+1) + ".png",

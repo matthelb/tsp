@@ -16,9 +16,9 @@ public:
                  std::string directory);
   ~ImageGenerator();
   void GenerateImage(std::string filename,
-                      const std::vector<std::pair<double, double>>&
+                      std::vector<std::pair<double, double>>&
                       beforeCoordinates,
-                      const std::vector<std::pair<double, double>>&
+                      std::vector<std::pair<double, double>>&
                       afterCoordinates,
                       unsigned int replaced_node_1,
                       unsigned int replaced_node_2,
@@ -37,9 +37,9 @@ private:
   std::pair<double, double>* ScaleCoordinates(const std::pair<double, double>&
                                               coordinates);
 
-  void DrawGraph(const std::vector<std::pair<double, double>>& coordinates,
+  void DrawGraph(std::vector<std::pair<double, double>>& coordinates,
                   unsigned int replaced_node,
-                  const std::vector<double>& dashes);
+                  std::vector<double> dashes);
   int width;
   int height;
   double min_coord;

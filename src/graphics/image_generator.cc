@@ -37,9 +37,9 @@ vector<pair<double, double>> ImageGenerator::GetCoordinatePath(Coord** coords,
 }
 
 void ImageGenerator::GenerateImage(string filename,
-                                    const vector<pair<double, double>>&
+                                    vector<pair<double, double>>&
                                     beforeCoordinates,
-                                    const vector<pair<double, double>>&
+                                    vector<pair<double, double>>&
                                     afterCoordinates,
                                     unsigned int replaced_node_1,
                                     unsigned int replaced_node_2,
@@ -72,6 +72,7 @@ void ImageGenerator::GenerateImage(string filename,
   vector<double> dashes;
   dashes.push_back(4);
   cr->set_source_rgba(1, 0, 0, .5);
+  cr->scale(.99, .99);
   DrawGraph(afterCoordinates, replaced_node_2, dashes);
 
   surface->write_to_png(directory + filename);
@@ -90,9 +91,9 @@ pair<double, double>* ImageGenerator::ScaleCoordinates(const
   return new pair<double, double>(x, y);
 }
 
-void ImageGenerator::DrawGraph(const vector<pair<double, double>>&
+void ImageGenerator::DrawGraph(vector<pair<double, double>>&
                                coordinates, unsigned int replaced_node,
-                               const vector<double>& dashes) {
+                               vector<double> dashes) {
   vector<double> empty;
   pair<double, double>* currPair = NULL;
   pair<double, double>* prevPair = NULL;
@@ -111,7 +112,17 @@ void ImageGenerator::DrawGraph(const vector<pair<double, double>>&
 
     cr->set_dash(empty, 0);
     if(i == replaced_node) {
-        cr->rectangle(currPair->first - 5, currPair->second - 5, 10, 10);
+        if(dashes.empty()) {
+          cr->rectangle(currPair->first - 5, currPair->second - 5, 10, 10);
+        }
+        else {
+          cr->move_to(currPair->first - 6, currPair->second + 6);
+          cr->line_to(currPair->first + 6, currPair->second + 6);
+          cr->line_to(currPair->first, currPair->second - 8);
+          cr->move_to(currPair->first - 6, currPair->second + 6);
+          cr->line_to(currPair->first, currPair->second - 8);
+          cr->stroke();
+        }
     }
     cr->arc(currPair->first, currPair->second, 2, 0, 2 * M_PI);
     cr->arc(currPair->first, currPair->second, 1, 0, 2 * M_PI);
