@@ -1,6 +1,7 @@
 #include "simulate/two_node_replacement.h"
 
 #include <algorithm>
+#include <fstream>
 #include <numeric>
 
 #include "solve/solution.h"
@@ -8,6 +9,35 @@
 using namespace std;
 
 TwoNodeReplacement::~TwoNodeReplacement() {
+}
+
+Solution TwoNodeReplacement::GetOriginalSolution() {
+	Solution solution;
+	ifstream in(GetOriginalSolutionFile());
+	if (in.good()) {
+		in >> solution.distance;
+		unsigned int n =  tsp_solver().graph()->num_nodes();
+		solution.path = vector<int>(n, 0);
+		for (unsigned int i = 0; i < n; ++i) {
+			in >> solution.path[i];
+		}
+	} else {
+		solution = tsp_solver().ComputeSolution();
+		SaveOriginalSolution(solution);
+	}
+	in.close();
+	return solution;
+}
+
+void TwoNodeReplacement::SaveOriginalSolution(const Solution& solution) const {
+	ofstream out(GetOriginalSolutionFile());
+	if (out.good()) {
+		out << solution.distance << endl;
+		for (unsigned int i = 0; i < solution.path.size(); ++i) {
+			out << solution.path[i] << endl;
+		}
+	}
+	out.close();
 }
 
 void TwoNodeReplacement::RunSimulation(TSP* tsp, ofstream& data_out,
@@ -18,12 +48,12 @@ void TwoNodeReplacement::RunSimulation(TSP* tsp, ofstream& data_out,
 	data_out << "trial,T,T',T'',T''',seed" << endl;
 	tsp->BuildGraph(nearest_int_rounding());
 	tsp_solver().set_graph(tsp->graph());
-	Solution T = tsp_solver().ComputeSolution();
+	Solution T = GetOriginalSolution();
 	vector<int> node_list(tsp->dimension());
 	iota(node_list.begin(), node_list.end(), 0);
 	shuffle(node_list.begin(), node_list.end(), random_gen);
 	int i = node_list[0];
-	int j = node_list[1];;
+	int j = node_list[1];
 	for (int k = trials_start(); k < trials_end(); ++k) {
 		// BEGIN Image Generation
 		int path_node_1 = i;

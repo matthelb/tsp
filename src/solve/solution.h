@@ -4,7 +4,9 @@
 #include <vector>
 
 struct Solution {
-  Solution(double distance, std::vector<int> path) : distance(distance), path(path) { }
+  Solution() { }
+  Solution(double distance, std::vector<int> path) : distance(distance),
+                                                     path(path) { }
   double distance;
   std::vector<int> path;
 };
