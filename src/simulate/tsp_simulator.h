@@ -46,21 +46,6 @@ class TSPSimulator {
   void Simulate(TSP* tsp_instance, int iterations);
   void Simulate(TSP* tsp_instance, int iterations, long seed);
 
-  static void SimulateSingleNodeReplacement(TSPSolver& solver,
-                                            std::string folder,
-                                            const int num_cities,
-                                            const double min_coord,
-                                            const double max_coord,
-                                            const int iterations,
-                                            const int trials);
-
-  static void SimulateMultipleNodeReplacement(TSPSolver& solver,
-                                              std::string folder,
-                                              const int num_cities,
-                                              const double min_coord,
-                                              const double max_coord,
-                                              const int iterations,
-                                              const int trials);
  protected:
    TSPAlgorithm* tsp_algorithm() { return tsp_algorithm_; }
    TSPSolver& tsp_solver() { return tsp_solver_; }
