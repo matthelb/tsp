@@ -55,6 +55,7 @@ void TwoNodeReplacement::RunSimulation(TSP* tsp, ofstream& data_out,
 	int i = node_list[0];
 	int j = node_list[1];
 	for (int k = trials_start(); k < trials_end(); ++k) {
+		data_out << k + 1 << ',' << T.distance << ',';
 		// BEGIN Image Generation
 		int path_node_1 = i;
 		vector<pair<double, double>> coordinate_path_1;
@@ -71,6 +72,7 @@ void TwoNodeReplacement::RunSimulation(TSP* tsp, ofstream& data_out,
 		tsp->BuildGraph(nearest_int_rounding());
 		tsp_solver().set_graph(tsp->graph());
 		Solution T_prime = tsp_solver().ComputeSolution();
+		data_out << T_prime.distance << ',';
     // END Compute T'
 
 		// BEGIN Image Generation
@@ -98,6 +100,7 @@ void TwoNodeReplacement::RunSimulation(TSP* tsp, ofstream& data_out,
 		tsp->BuildGraph(nearest_int_rounding());
 		tsp_solver().set_graph(tsp->graph());
 		Solution T_double_prime = tsp_solver().ComputeSolution();
+		data_out << T_double_prime.distance << ',';
 		// END Compute T''
 
 		// BEGIN Replace New City i
@@ -108,13 +111,8 @@ void TwoNodeReplacement::RunSimulation(TSP* tsp, ofstream& data_out,
 		tsp->BuildGraph(nearest_int_rounding());
 		tsp_solver().set_graph(tsp->graph());
 		Solution T_triple_prime = tsp_solver().ComputeSolution();
+		data << T_triple_prime.distance << ',' << seed << endl;
 		// END Computer T'''
-
-		// BEGIN Data Output
-		data_out << k + 1 << ',' << T.distance << ',' << T_prime.distance << ','
-						 << T_double_prime.distance << ',' << T_triple_prime.distance
-						 << ',' << seed << endl;
-    // END Data Output
 
 		// BEGIN Cleanup
 		delete tsp->ReplaceCoord(original_1, i);
