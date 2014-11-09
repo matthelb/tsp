@@ -111,7 +111,7 @@ void TwoNodeReplacement::RunSimulation(TSP* tsp, ofstream& data_out,
 		tsp->BuildGraph(nearest_int_rounding());
 		tsp_solver().set_graph(tsp->graph());
 		Solution T_triple_prime = tsp_solver().ComputeSolution();
-		data << T_triple_prime.distance << ',' << seed << endl;
+		data_out << T_triple_prime.distance << ',' << seed << endl;
 		// END Computer T'''
 
 		// BEGIN Cleanup

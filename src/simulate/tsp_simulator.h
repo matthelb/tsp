@@ -20,12 +20,14 @@ class TSPSimulator {
  public:
   TSPSimulator(int run_id, std::string folder, int num_cities, double min_coord,
                double max_coord, bool nearest_int_rounding, int trials_start,
-               int trials_end, TSPAlgorithm* tsp_algorithm) : run_id_(run_id),
-               folder_(folder), num_cities_(num_cities), min_coord_(min_coord),
+               int trials_end, TSPAlgorithm* tsp_algorithm,
+               double max_compute_time) : run_id_(run_id), folder_(folder),
+               num_cities_(num_cities), min_coord_(min_coord),
                max_coord_(max_coord),
                nearest_int_rounding_(nearest_int_rounding),
                trials_start_(trials_start), trials_end_(trials_end),
-               tsp_algorithm_(tsp_algorithm) { }
+               tsp_algorithm_(tsp_algorithm),
+               max_compute_time_(max_compute_time) { }
 
   virtual ~TSPSimulator();
 
@@ -34,6 +36,7 @@ class TSPSimulator {
   int num_cities() const { return num_cities_; }
   double min_coord() const { return min_coord_; }
   double max_coord() const { return max_coord_; }
+  double max_compute_time() const { return max_compute_time_; }
   bool nearest_int_rounding() const { return nearest_int_rounding_; }
   int trials_end() const { return trials_end_; };
   int trials_start() const { return trials_start_; };
@@ -68,6 +71,7 @@ class TSPSimulator {
   int trials_start_;
   int trials_end_;
   TSPAlgorithm* tsp_algorithm_;
+  double max_compute_time_;
 
   TSPSolver tsp_solver_;
 };

@@ -94,7 +94,7 @@ Solution ConcordeSolver::ComputeSolution(const Graph* graph) {
   int result = CCtsp_solve_dat(ncount, &dat, in_tour,
                                   out_tour, in_val, &optval, &success,
                                   &foundtour, name, timebound, &hit_timebound,
-                                  silent, &rstate);
+                                  silent, &rstate, maxchunksize());
 
   /*fflush(stdout);
   dup2(stdout_copy, fileno(stdout));
@@ -109,9 +109,9 @@ Solution ConcordeSolver::ComputeSolution(const Graph* graph) {
   if (result || !success || !foundtour) {
     cerr << "Failed to find optimal tour" << endl;
   }
-  vector<int> optimal_tour;
+  vector<int> optimal_tour(ncount, 0);
   for (unsigned int i = 0; i < ncount; ++i) {
-    optimal_tour.push_back(out_tour[i]);
+    optimal_tour[i] = out_tour[i];
   }
   delete [] out_tour;
   delete [] name;

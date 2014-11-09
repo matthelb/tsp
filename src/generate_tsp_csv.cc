@@ -8,9 +8,10 @@
 
 using namespace std;
 int main(int argc, char* argv[]) {
-  if(argc != 9) {
+  if(argc != 11) {
     cerr << "Usage: " << argv[0] << " <output_dir> <iterations> <min_coord> <max_coord>"
-         << " <trials_start> <trials_end> <input_file> <run_id>" << endl;
+         << " <trials_start> <trials_end> <input_file> <run_id>"
+         << " <max_compute_time> <max_chunk_size>" << endl;
     return 1;
   }
   string filename = string(argv[1]);
@@ -30,15 +31,18 @@ int main(int argc, char* argv[]) {
     return 1;
   }
   int run_id = atoi(argv[8]);
-  ConcordeSolver concorde_solver;
-  TwoNodeReplacement simulator(run_id, filename, 0, min_coord, max_coord,
-                               true, trials_start, trials_end,
-                               &concorde_solver);
+  double max_compute_time = atoi(argv[9]);
+  int maxchunksize = atoi(argv[10]);
   TSP tsp;
   if (!tsp.Parse(argv[7])) {
     cerr << "Unable to parse TSPLIB file " << argv[7] << endl;
     return 1;
   }
+  ConcordeSolver concorde_solver;
+  concorde_solver.set_maxchunksize(maxchunksize);
+  TwoNodeReplacement simulator(run_id, filename, 0, min_coord, max_coord,
+                               true, trials_start, trials_end,
+                               &concorde_solver, max_compute_time);
   simulator.Simulate(&tsp, iterations);
   return 0;
 }
