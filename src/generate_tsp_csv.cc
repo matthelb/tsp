@@ -2,38 +2,47 @@
 #include <string>
 
 #include "simulate/tsp_simulator.h"
+#include "simulate/two_node_replacement.h"
 #include "solve/concorde_solver.h"
 #include "solve/tsp_solver.h"
 
 using namespace std;
 int main(int argc, char* argv[]) {
-  if(argc != 7) {
-    cout << "Usage: " << argv[0] << "<output_dir> <num_cities> <min_coord>"
-    << " <max_coord> <iterations> <num_trials_per_iteration>" << endl;
+  if(argc != 11) {
+    cerr << "Usage: " << argv[0] << " <output_dir> <iterations> <min_coord> <max_coord>"
+         << " <trials_start> <trials_end> <input_file> <run_id>"
+         << " <max_compute_time> <max_chunk_size>" << endl;
     return 1;
   }
-  TSPSolver solver;
-  ConcordeSolver concorde_solver;
-  solver.set_tsp_algorithm(&concorde_solver);
   string filename = string(argv[1]);
-  int num_cities = atoi(argv[2]);
-  if (num_cities <= 0) {
-    cout << "Number of cities must be an integer greater than 0" << endl;
-    return 1;
-  }
-  double min_coord = atof(argv[3]);
-  double max_coord = atof(argv[4]);
-  int iterations = atoi(argv[5]);
+  int iterations = atoi(argv[2]);
   if (iterations <= 0) {
     cout << "Iterations must be an integer greater than 0" << endl;
     return 1;
   }
-  int trials = atoi(argv[6]);
-  if (trials <= 0) {
-    cout << "Trials must be an integer greater than 0" << endl;
+  int min_coord = atoi(argv[3]);
+  int max_coord = atoi(argv[4]);
+
+  int trials_start = atoi(argv[5]);
+  int trials_end = atoi(argv[6]);
+  if (trials_start < 0 || trials_end <= trials_start) {
+    cout << "Trials start must be an integer greater than 0 and less than "
+         << "trials end" << endl;
     return 1;
   }
-
-  TSPSimulator::SimulateSingleNodeReplacement(solver, filename, num_cities,
-                                              min_coord, max_coord, iterations, trials);
+  int run_id = atoi(argv[8]);
+  double max_compute_time = atoi(argv[9]);
+  int maxchunksize = atoi(argv[10]);
+  TSP tsp;
+  if (!tsp.Parse(argv[7])) {
+    cerr << "Unable to parse TSPLIB file " << argv[7] << endl;
+    return 1;
+  }
+  ConcordeSolver concorde_solver;
+  concorde_solver.set_maxchunksize(maxchunksize);
+  TwoNodeReplacement simulator(run_id, filename, 0, min_coord, max_coord,
+                               true, trials_start, trials_end,
+                               &concorde_solver, max_compute_time);
+  simulator.Simulate(&tsp, iterations);
+  return 0;
 }

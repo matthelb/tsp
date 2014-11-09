@@ -94,6 +94,7 @@ void TSP::Export(ostream& os) {
       for (int j = 0; j < node_coords_[i]->dimension(); ++j) {
         os << node_coords_[i]->coordinates()[j] << ' ';
       }
+      os << endl;
     }
   }
   if (display_data_type() != DisplayDataType::kNone &&
@@ -222,16 +223,20 @@ int TSP::ChooseRandomCoord(mt19937& random_gen) {
   }
 }
 
-bool TSP::ReplaceCoord(double min_coord, double max_coord, mt19937& random_gen,
+Coord* TSP::ReplaceCoordRandomly(double min_coord, double max_coord, mt19937& random_gen,
                              int node) {
+  return ReplaceCoord(
+    Coord::GenerateRandomCoord(EdgeWeightTypeDimension(edge_weight_type()),
+                               min_coord, max_coord, random_gen), node);
+}
+
+Coord* TSP::ReplaceCoord(Coord* new_coord, int node) {
   if(node < dimension() && node >= 0){
-    delete node_coords_[node];
-    node_coords_[node] = Coord::GenerateRandomCoord(
-          EdgeWeightTypeDimension(edge_weight_type()), min_coord, max_coord,
-          random_gen);
-    return true;
+    Coord* replaced = node_coords_[node];
+    node_coords_[node] = new_coord;
+    return replaced;
   } else {
-    return false;
+    return NULL;
   }
 }
 

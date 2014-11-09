@@ -9,7 +9,8 @@ CAIRO_INCLUDES = $(shell pkg-config --cflags cairomm-1.0)
 INCLUDE += -I$(SDIR) -I$(IDIR) $(CAIRO_INCLUDES)
 OBJECT_INCLUDES = $(IDIR)/concorde.h
 CAIRO_LIBS = $(shell pkg-config --libs cairomm-1.0)
-LIBS = $(LDIR)/concorde.a $(QSOPT_DIR)/qsopt.a $(CAIRO_LIBS)
+TARGET_LIBS = $(LDIR)/concorde.a
+LIBS = $(QSOPT_DIR)/qsopt.a $(CAIRO_LIBS)
 
 CXX=g++
 CXXFLAGS=-Wall -g -std=c++11 -Wextra -pthread
@@ -20,7 +21,9 @@ MKDIR = if [ ! -d "$(shell dirname $@)" ]; then mkdir -p $(shell dirname $@); fi
 
 SRCS = $(SDIR)/graph/graph.cc \
 			 $(SDIR)/graphics/image_generator.cc \
+			 $(SDIR)/simulate/single_node_replacement.cc \
 			 $(SDIR)/simulate/tsp_simulator.cc \
+			 $(SDIR)/simulate/two_node_replacement.cc \
 			 $(SDIR)/solve/bellman_held_karp.cc \
 			 $(SDIR)/solve/brute_force_search.cc \
 			 $(SDIR)/solve/concorde_solver.cc \
@@ -38,7 +41,8 @@ SRCS = $(SDIR)/graph/graph.cc \
 			 $(SDIR)/tsplib/coord/geo_distance.cc \
 			 $(SDIR)/tsplib/coord/manhattan_distance.cc \
 			 $(SDIR)/tsplib/coord/max_distance.cc \
-			 $(SDIR)/tsplib/coord/pseudo_euclidean_distance.cc
+			 $(SDIR)/tsplib/coord/pseudo_euclidean_distance.cc \
+			 $(SDIR)/util/io_util.cc
 
 OBJS = $(patsubst $(SDIR)%.cc, $(ODIR)%.o, $(SRCS))
 
@@ -54,20 +58,20 @@ test: tests
 
 ## Distributed Executables
 
-$(BDIR)/parse_tsp: $(OBJS) $(SDIR)/parse_tsp.cc $(LIBS)
-	$(CXX) $(CXXFLAGS) $(INCLUDE) $^ -o $@
+$(BDIR)/parse_tsp: $(OBJS) $(SDIR)/parse_tsp.cc $(TARGET_LIBS)
+	$(CXX) $(CXXFLAGS) $(INCLUDE) $^ $(LIBS) -o $@
 
-$(BDIR)/solve_tsp: $(OBJS) $(SDIR)/solve_tsp.cc $(LIBS)
-	$(CXX) $(CXXFLAGS) $(INCLUDE) $^ -o $@
+$(BDIR)/solve_tsp: $(OBJS) $(SDIR)/solve_tsp.cc $(TARGET_LIBS)
+	$(CXX) $(CXXFLAGS) $(INCLUDE) $^ $(LIBS) -o $@
 
-$(BDIR)/generate_tsp: $(OBJS) $(SDIR)/generate_tsp.cc $(LIBS)
-	$(CXX) $(CXXFLAGS) $(INCLUDE) $^ -o $@
+$(BDIR)/generate_tsp: $(OBJS) $(SDIR)/generate_tsp.cc $(TARGET_LIBS)
+	$(CXX) $(CXXFLAGS) $(INCLUDE) $^ $(LIBS) -o $@
 
-$(BDIR)/simulate_tsp: $(OBJS) $(SDIR)/simulate_tsp.cc $(LIBS)
-	$(CXX) $(CXXFLAGS) $(INCLUDE) $^ -o $@
+$(BDIR)/simulate_tsp: $(OBJS) $(SDIR)/simulate_tsp.cc $(TARGET_LIBS)
+	$(CXX) $(CXXFLAGS) $(INCLUDE) $^ $(LIBS) -o $@
 
-$(BDIR)/generate_tsp_csv: $(OBJS) $(SDIR)/generate_tsp_csv.cc $(LIBS)
-	$(CXX) $(CXXFLAGS) $(INCLUDE) $^ -o $@
+$(BDIR)/generate_tsp_csv: $(OBJS) $(SDIR)/generate_tsp_csv.cc $(TARGET_LIBS)
+	$(CXX) $(CXXFLAGS) $(INCLUDE) $^ $(LIBS) -o $@
 ###
 
 ## Unit Tests

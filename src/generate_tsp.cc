@@ -20,19 +20,19 @@ int main(int argc, char* argv[]) {
     return 1;
   }
   double min_coord = atof(argv[3]);
-  if (min_coord <= 0) {
+  if (min_coord < 0) {
     cout << "Min coord must be a real number greater than 0" << endl;
     return 1;
   }
   double max_coord = atof(argv[4]);
-  if (max_coord <= 0) {
+  if (max_coord < 0) {
     cout << "Max coord must be a real number greater than 0" << endl;
     return 1;
   }
   mt19937 random_gen(time(NULL));
   TSP* tsp = TSP::GenerateRandomTSP(argv[1], num_cities, min_coord, max_coord,
                                     random_gen);
-  ofstream out(argv[4]);
+  ofstream out(argv[5]);
   if (out.fail()) {
     cout << "Output file " << argv[5] << " could not be written" << endl;
     return 1;

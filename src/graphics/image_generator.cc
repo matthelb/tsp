@@ -1,72 +1,105 @@
 #include "image_generator.h"
 
+using namespace std;
+
 ImageGenerator::ImageGenerator(int width, int height,
                                double min_coord, double max_coord,
-                               std::string directory){
+                               string directory){
   this->width = width;
   this->height = height;
   this->min_coord = min_coord;
   this->max_coord = max_coord;
   this->directory = directory;
-  this->offsetX = (double) width / 10;
-  this->offsetY = (double) height / 10;
+  this->offset_x = (double) width / 10;
+  this->offset_y = (double) height / 10;
 }
 
 ImageGenerator::~ImageGenerator(){
 }
 
-void ImageGenerator::generate_image(std::string filename,
-                                    const std::vector<std::pair<double, double>>&
+vector<pair<double, double>> ImageGenerator::GetCoordinatePath(Coord** coords,
+                                                       int num_cities,
+                                                       const vector<int>& path,
+                                                       int* replaced_node) {
+  vector<pair<double, double>> to_return;
+  for(int i = 0; i < num_cities; ++i) {
+    if(path[i] == *replaced_node){
+      *replaced_node = i;
+    }
+    to_return.push_back(pair<double, double>(
+                                  coords[path[i]]->coordinates()[0],
+                                  coords[path[i]]->coordinates()[1]));
+  }
+  to_return.push_back(pair<double, double>(
+                                  coords[path[0]]->coordinates()[0],
+                                  coords[path[0]]->coordinates()[1]));
+  return to_return;
+}
+
+void ImageGenerator::GenerateImage(string filename,
+                                    vector<pair<double, double>>&
                                     beforeCoordinates,
-                                    const std::vector<std::pair<double, double>>&
+                                    vector<pair<double, double>>&
                                     afterCoordinates,
-                                    int replaced_node_1, int replaced_node_2){
-  this->surface =
+                                    unsigned int replaced_node_1,
+                                    unsigned int replaced_node_2,
+                                    double t_dist,
+                                    double t_p_dist){
+  surface =
         Cairo::ImageSurface::create(Cairo::FORMAT_ARGB32, width * 1.2, height * 1.2);
 
-  this->cr = Cairo::Context::create(surface);
-  this->cr->set_source_rgb(1, 1, 1);
-  this->cr->paint();
+  cr = Cairo::Context::create(surface);
+  cr->set_source_rgb(1, 1, 1);
+  cr->paint();
+
+  cr->set_source_rgb(0, 0, 1);
+  cr->move_to(offset_x, offset_y / 2);
+  cr->set_font_size(18);
+  cr->show_text("T Distance: " + to_string((int) t_dist));
 
   cr->set_source_rgb(0, 0, 0);
   cr->set_line_width(1.0);
-  cr->rectangle(offsetX, offsetY, width, height);
+  cr->rectangle(offset_x, offset_y, width, height);
   cr->stroke();
 
+  cr->set_source_rgb(1, 0, 0);
+  cr->move_to(width - offset_x, offset_y / 2);
+  cr->show_text("T' Distance: " + to_string((int) t_p_dist));
   cr->set_source_rgba(0, 0, 1, .5);
-  draw_graph(beforeCoordinates, replaced_node_1, std::vector<double>());
+  DrawGraph(beforeCoordinates, replaced_node_1, vector<double>());
 
   cr->set_line_width(2.0);
-  std::vector<double> dashes;
+  vector<double> dashes;
   dashes.push_back(4);
   cr->set_source_rgba(1, 0, 0, .5);
-  draw_graph(afterCoordinates, replaced_node_2, dashes);
+  cr->scale(.99, .99);
+  DrawGraph(afterCoordinates, replaced_node_2, dashes);
 
   surface->write_to_png(directory + filename);
 }
 
-std::pair<double, double>* ImageGenerator::scale_coordinates(const
-                                                           std::pair<double, double>&
-                                                           coordinates) {
+pair<double, double>* ImageGenerator::ScaleCoordinates(const
+                                                       pair<double, double>&
+                                                       coordinates) {
   double x = ((double) this->width * (coordinates.first - this->min_coord))
              / (double) (this->max_coord - this->min_coord);
   double y = ((double) this->height * (coordinates.second - this->min_coord))
              / (double)(this->max_coord - this->min_coord);
 
-  x = x + this->offsetX;
-  y = this->height - y + this->offsetY;
-  return new std::pair<double, double>(x, y);
+  x = x + this->offset_x;
+  y = this->height - y + this->offset_y;
+  return new pair<double, double>(x, y);
 }
 
-void ImageGenerator::draw_graph(const std::vector<std::pair<double, double>>&
-                                coordinates, unsigned int replaced_node,
-                                const std::vector<double>& dashes) {
-  std::vector<double> empty;
-  std::pair<double, double>* currPair = NULL;
-  std::pair<double, double>* prevPair = NULL;
+void ImageGenerator::DrawGraph(vector<pair<double, double>>&
+                               coordinates, unsigned int replaced_node,
+                               vector<double> dashes) {
+  vector<double> empty;
+  pair<double, double>* currPair = NULL;
+  pair<double, double>* prevPair = NULL;
   for(unsigned int i = 0; i < coordinates.size(); ++i) {
     cr->set_dash(dashes, 0);
-    currPair = scale_coordinates(coordinates[i]);
+    currPair = ScaleCoordinates(coordinates[i]);
     if(prevPair != NULL && currPair != prevPair) {
       cr->move_to(prevPair->first, prevPair->second);
       cr->line_to(currPair->first, currPair->second);
@@ -79,7 +112,17 @@ void ImageGenerator::draw_graph(const std::vector<std::pair<double, double>>&
 
     cr->set_dash(empty, 0);
     if(i == replaced_node) {
-        cr->rectangle(currPair->first - 5, currPair->second - 5, 10, 10);
+        if(dashes.empty()) {
+          cr->rectangle(currPair->first - 5, currPair->second - 5, 10, 10);
+        }
+        else {
+          cr->move_to(currPair->first - 6, currPair->second + 6);
+          cr->line_to(currPair->first + 6, currPair->second + 6);
+          cr->line_to(currPair->first, currPair->second - 8);
+          cr->move_to(currPair->first - 6, currPair->second + 6);
+          cr->line_to(currPair->first, currPair->second - 8);
+          cr->stroke();
+        }
     }
     cr->arc(currPair->first, currPair->second, 2, 0, 2 * M_PI);
     cr->arc(currPair->first, currPair->second, 1, 0, 2 * M_PI);

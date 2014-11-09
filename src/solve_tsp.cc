@@ -43,7 +43,7 @@ int main(int argc, char* argv[]) {
   if (!tsp_instance.Parse(argv[1])) {
     cout << "Failed to parse " << argv[1] << " as TSPLIB file" << endl;
     return 1;
-  } else if (!tsp_instance.BuildGraph(atoi(argv[1])) == 1) {
+  } else if (!tsp_instance.BuildGraph(atoi(argv[3]))) {
     cout << "Failed to build graph for " << argv[1] << endl;
     return 1;
   }
