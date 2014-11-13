@@ -14,7 +14,7 @@ Solution NearestNeighborSearch::ComputeSolution(const Graph* graph) {
   int distance = 0;
   std::vector<int> result_path;
   std::unordered_set<int> to_process, processed_nodes;
-  
+
   result_path.push_back(0);
   processed_nodes.insert(0);
 
@@ -29,11 +29,11 @@ Solution NearestNeighborSearch::ComputeSolution(const Graph* graph) {
     distance += this->graph->GetEdgeWeight(begin_node, best_node);
     result_path.push_back(best_node);
     to_process.erase(best_node);
-    processed_nodes.insert(best_node);                                    
+    processed_nodes.insert(best_node);
   }
 
   result_path.push_back(*to_process.begin());
-  return Solution(distance, result_path);
+  return Solution(distance, false, result_path);
 }
 
 int NearestNeighborSearch::GetSmallestEdgeWeightNode(int node,

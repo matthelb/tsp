@@ -5,9 +5,12 @@
 
 struct Solution {
   Solution() { }
-  Solution(double distance, std::vector<int> path) : distance(distance),
+  Solution(double distance, bool optimal, std::vector<int> path) :
+                                                     distance(distance),
+	                                                   optimal(optimal),
                                                      path(path) { }
-  double distance;
+  double distance = 0;
+  bool optimal = false;
   std::vector<int> path;
 };
 

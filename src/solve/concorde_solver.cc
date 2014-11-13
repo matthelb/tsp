@@ -105,9 +105,10 @@ Solution ConcordeSolver::ComputeSolution(const Graph* graph) {
               cwd << endl;
     }
   }
-
+  bool optimal = true;
   if (result || !success || !foundtour) {
     cerr << "Failed to find optimal tour" << endl;
+    optimal = false;
   }
   vector<int> optimal_tour(ncount, 0);
   for (unsigned int i = 0; i < ncount; ++i) {
@@ -117,5 +118,5 @@ Solution ConcordeSolver::ComputeSolution(const Graph* graph) {
   delete [] name;
   delete [] elen;
   delete [] elist;
-  return Solution(optval, optimal_tour);
+  return Solution(optval, optimal, optimal_tour);
 }

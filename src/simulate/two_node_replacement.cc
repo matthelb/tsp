@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <fstream>
+#include <iostream>
 #include <numeric>
 
 #include "solve/solution.h"
@@ -21,9 +22,12 @@ Solution TwoNodeReplacement::GetOriginalSolution() {
 		for (unsigned int i = 0; i < n; ++i) {
 			in >> solution.path[i];
 		}
+		solution.optimal = true;
 	} else {
 		solution = tsp_solver().ComputeSolution();
-		SaveOriginalSolution(solution);
+		if (solution.optimal) {
+			SaveOriginalSolution(solution);
+		}
 	}
 	in.close();
 	return solution;
@@ -49,13 +53,16 @@ void TwoNodeReplacement::RunSimulation(TSP* tsp, ofstream& data_out,
 	tsp->BuildGraph(nearest_int_rounding());
 	tsp_solver().set_graph(tsp->graph());
 	Solution T = GetOriginalSolution();
+	if (!T.optimal) {
+		cerr << "Unable to find optimal solution for TSP " << tsp->name() << endl;
+		return;
+	}
 	vector<int> node_list(tsp->dimension());
 	iota(node_list.begin(), node_list.end(), 0);
 	shuffle(node_list.begin(), node_list.end(), random_gen);
 	int i = node_list[0];
 	int j = node_list[1];
 	for (int k = trials_start(); k < trials_end(); ++k) {
-		data_out << k + 1 << ',' << T.distance << ',';
 		// BEGIN Image Generation
 		int path_node_1 = i;
 		vector<pair<double, double>> coordinate_path_1;
@@ -72,7 +79,10 @@ void TwoNodeReplacement::RunSimulation(TSP* tsp, ofstream& data_out,
 		tsp->BuildGraph(nearest_int_rounding());
 		tsp_solver().set_graph(tsp->graph());
 		Solution T_prime = tsp_solver().ComputeSolution();
-		data_out << T_prime.distance << ',';
+		if (!T_prime.optimal) {
+			cerr << "Unable to find optimal solution in trial " << k + 1 << endl;
+			continue;
+		}
     // END Compute T'
 
 		// BEGIN Image Generation
@@ -100,7 +110,10 @@ void TwoNodeReplacement::RunSimulation(TSP* tsp, ofstream& data_out,
 		tsp->BuildGraph(nearest_int_rounding());
 		tsp_solver().set_graph(tsp->graph());
 		Solution T_double_prime = tsp_solver().ComputeSolution();
-		data_out << T_double_prime.distance << ',';
+		if (!T_double_prime.optimal) {
+			cerr << "Unable to find optimal solution in trial " << k + 1 << endl;
+			continue;
+		}
 		// END Compute T''
 
 		// BEGIN Replace New City i
@@ -111,8 +124,15 @@ void TwoNodeReplacement::RunSimulation(TSP* tsp, ofstream& data_out,
 		tsp->BuildGraph(nearest_int_rounding());
 		tsp_solver().set_graph(tsp->graph());
 		Solution T_triple_prime = tsp_solver().ComputeSolution();
-		data_out << T_triple_prime.distance << ',' << seed << endl;
-		// END Computer T'''
+		if (!T_triple_prime.optimal) {
+			cerr << "Unable to find optimal solution in trial " << k + 1 << endl;
+			continue;
+		}
+		// END Compute T'''
+
+		data_out << k + 1 << ',' << T.distance << ',' << T_prime.distance << ','
+		         << T_double_prime.distance << ',' << T_triple_prime.distance << ','
+						 << seed << endl;
 
 		// BEGIN Cleanup
 		delete tsp->ReplaceCoord(original_1, i);

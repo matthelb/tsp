@@ -53,7 +53,7 @@ Solution BruteForceSearch::ComputeSolution(const Graph* graph) {
     unvisited_nodes.insert(i);
   }
   SearchPermutations(current_path, current_distance, unvisited_nodes);
-  return Solution(shortest_distance_, shortest_path_);
+  return Solution(shortest_distance_, true, shortest_path_);
 }
 
 void BruteForceSearch::Reset(const Graph* graph) {
