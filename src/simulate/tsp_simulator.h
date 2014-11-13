@@ -47,7 +47,7 @@ class TSPSimulator {
   std::string GetImgFolder() const;
 
   void Simulate(TSP* tsp_instance, int iterations);
-  void Simulate(TSP* tsp_instance, int iterations, long seed);
+  virtual void Simulate(TSP* tsp_instance, int iterations, long seed);
 
  protected:
    TSPAlgorithm* tsp_algorithm() { return tsp_algorithm_; }

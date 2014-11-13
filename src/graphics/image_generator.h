@@ -7,6 +7,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <unordered_set>
 
 #include "../tsplib/coord/coord.h"
 
@@ -17,13 +18,26 @@ public:
   ~ImageGenerator();
   void GenerateImage(std::string filename,
                       std::vector<std::pair<double, double>>&
-                      beforeCoordinates,
+                      initial_coords,
                       std::vector<std::pair<double, double>>&
-                      afterCoordinates,
+                      after_coords,
                       unsigned int replaced_node_1,
                       unsigned int replaced_node_2,
                       double t_dist,
                       double t_p_dist);
+
+  void GenerateMultiReplaceImage(std::string filename,
+                     std::vector<std::pair<double, double>>& inital_coords,
+                     std::vector<std::pair<double, double>>& after_coords,
+                     std::unordered_set<int>& initial_replaced,
+                     std::unordered_set<int>& after_replaced,
+                     double t_dist, double t_p_dist);
+
+  std::vector<std::pair<double, double>> GetCoordinatePath(Coord** coords,
+                                                           int num_cities,
+                                                           const std::vector<int>& path,
+                                                           std:: unordered_set<int>*
+                                                           replaced_nodes);
 
   std::vector<std::pair<double, double>> GetCoordinatePath(Coord** coords,
                                                            int num_cities,
@@ -37,9 +51,11 @@ private:
   std::pair<double, double>* ScaleCoordinates(const std::pair<double, double>&
                                               coordinates);
 
+  void SetupSurface(double t_dist, double t_p_dist);
+
   void DrawGraph(std::vector<std::pair<double, double>>& coordinates,
-                  unsigned int replaced_node,
-                  std::vector<double> dashes);
+                 std::unordered_set<int>& replaced_nodes,
+                 std::vector<double> dashes);
   int width;
   int height;
   double min_coord;
