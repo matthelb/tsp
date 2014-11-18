@@ -99,7 +99,7 @@ Solution ConcordeSolver::ComputeSolution(const Graph* graph) {
       cerr << "Unable to revert back to current working directory " <<
               cwd << endl;
     }
-  } 
+  }
   bool optimal = true;
   if (result || !success || !foundtour) {
     cerr << "Failed to find optimal tour" << endl;
@@ -109,6 +109,7 @@ Solution ConcordeSolver::ComputeSolution(const Graph* graph) {
   for (unsigned int i = 0; i < ncount; ++i) {
     optimal_tour[i] = out_tour[i];
   }
+  CCutil_freedatagroup(&dat);
   delete [] out_tour;
   delete [] name;
   delete [] elen;
