@@ -63,9 +63,8 @@ Solution ConcordeSolver::ComputeSolution(const Graph* graph) {
                                    //   appropriately
   int foundtour = 0;               // storage for whether tour was found
   stringstream name_ss;
-  name_ss << graph->CanonicalTourLength();
-  string name_s = name_ss.str();
-  remove(name_s.begin(), name_s.end(), '.');
+  name_ss << graph
+  string name_s = name_ss.str().substr(2);
   char* name = new char[name_s.length()];
   strncpy(name, name_s.c_str(), name_s.length());
                                    // name for files created during branch&bound

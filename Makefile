@@ -13,7 +13,7 @@ TARGET_LIBS = $(LDIR)/concorde.a
 LIBS = $(QSOPT_DIR)/qsopt.a $(CAIRO_LIBS)
 
 CXX=g++
-CXXFLAGS=-Wall -g -std=c++11 -Wextra -pthread -static-libstdc++
+CXXFLAGS=-Wall -Wextra -Weffc++ -ggdb -std=c++11 -pthread -static-libstdc++
 
 COMPILE_OBJ = $(CXX) $(CXXFLAGS) $(INCLUDE) -c $< -o $@
 
