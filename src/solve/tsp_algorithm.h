@@ -9,7 +9,7 @@
 class TSPAlgorithm {
  public:
    TSPAlgorithm();
-   TSPAlgorithm(bool verbose) : verbose_(verbose) { }
+   TSPAlgorithm(bool verbose) : out_dir_(), verbose_(verbose) { }
    virtual ~TSPAlgorithm();
 
    std::string out_dir() const { return out_dir_; }
