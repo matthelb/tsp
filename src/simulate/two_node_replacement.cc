@@ -36,7 +36,7 @@ Solution TwoNodeReplacement::GetOriginalSolution() {
 void TwoNodeReplacement::SaveOriginalSolution(const Solution& solution) const {
 	ofstream out(GetOriginalSolutionFile());
 	if (out.good()) {
-		out << solution.distance << endl;
+		out << fixed << solution.distance << endl;
 		for (unsigned int i = 0; i < solution.path.size(); ++i) {
 			out << solution.path[i] << endl;
 		}
@@ -130,7 +130,7 @@ void TwoNodeReplacement::RunSimulation(TSP* tsp, ofstream& data_out,
 		}
 		// END Compute T'''
 
-		data_out << k + 1 << ',' << T.distance << ',' << T_prime.distance << ','
+		data_out << fixed << k + 1 << ',' << T.distance << ',' << T_prime.distance << ','
 		         << T_double_prime.distance << ',' << T_triple_prime.distance << ','
 						 << seed << endl;
 
