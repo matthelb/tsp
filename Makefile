@@ -5,12 +5,13 @@ ODIR = obj
 SDIR = src
 TDIR = test
 QSOPT_DIR ?= /usr/local/lib/qsopt
+CPLEX_DIR ?= /usr/local/lib/cplex
 CAIRO_INCLUDES = $(shell pkg-config --cflags cairomm-1.0)
 INCLUDE += -I$(SDIR) -I$(IDIR) $(CAIRO_INCLUDES)
 OBJECT_INCLUDES = $(IDIR)/concorde.h
 CAIRO_LIBS = $(shell pkg-config --libs cairomm-1.0)
 TARGET_LIBS = $(LDIR)/concorde.a
-LIBS = $(QSOPT_DIR)/qsopt.a $(CAIRO_LIBS)
+LIBS = $(CPLEX_DIR)/libcplex.a $(QSOPT_DIR)/qsopt.a $(CAIRO_LIBS)
 
 CXX=g++
 CXXFLAGS=-Wall -Wextra -Weffc++ -ggdb -std=c++11 -pthread -static-libstdc++
