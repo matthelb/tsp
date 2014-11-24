@@ -3,7 +3,7 @@
 
 #include "simulate/tsp_simulator.h"
 #include "simulate/two_node_replacement.h"
-#include "solve/concorde_solver.h"
+#include "solve/parallel_concorde_solver.h"
 #include "solve/tsp_solver.h"
 
 using namespace std;
@@ -38,8 +38,9 @@ int main(int argc, char* argv[]) {
     cerr << "Unable to parse TSPLIB file " << argv[7] << endl;
     return 1;
   }
-  ConcordeSolver concorde_solver;
+  ParallelConcordeSolver concorde_solver;
   concorde_solver.set_maxchunksize(maxchunksize);
+  concorde_solver.set_processors(4);
   TwoNodeReplacement simulator(run_id, filename, 0, min_coord, max_coord,
                                true, trials_start, trials_end,
                                &concorde_solver, max_compute_time);

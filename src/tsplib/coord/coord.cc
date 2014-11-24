@@ -4,11 +4,10 @@
 
 using namespace std;
 
-Coord::Coord() {
+Coord::Coord() : dimension_(0) {
 }
 
-Coord::Coord(int dimension) {
-  dimension_ = dimension;
+Coord::Coord(int dimension) : dimension_(dimension) {
   coordinates_ = new double[dimension];
 }
 
