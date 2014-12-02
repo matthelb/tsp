@@ -1,7 +1,5 @@
 #include "tsp_algorithm.h"
 
-TSPAlgorithm::TSPAlgorithm() {
-}
+TSPAlgorithm::TSPAlgorithm() : out_dir_() { }
 
-TSPAlgorithm::~TSPAlgorithm() {
-}
+TSPAlgorithm::~TSPAlgorithm() { }

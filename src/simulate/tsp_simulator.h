@@ -27,7 +27,7 @@ class TSPSimulator {
                nearest_int_rounding_(nearest_int_rounding),
                trials_start_(trials_start), trials_end_(trials_end),
                tsp_algorithm_(tsp_algorithm),
-               max_compute_time_(max_compute_time) { }
+               max_compute_time_(max_compute_time), tsp_solver_() { }
 
   virtual ~TSPSimulator();
 

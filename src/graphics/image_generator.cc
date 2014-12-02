@@ -184,4 +184,7 @@ void ImageGenerator::DrawGraph(vector<pair<double, double>>&
     cr->arc(curr_pair->first, curr_pair->second, 1, 0, 2 * M_PI);
     cr->stroke();
   }
+  if (currPair != NULL) {
+    delete currPair;
+  }
 }

@@ -75,7 +75,7 @@ Solution BellmanHeldKarp::ComputeSolution(const Graph* graph) {
   }
   delete [] distance;
   delete [] path;
-  return Solution(minimum_distance, optimal_path);
+  return Solution(minimum_distance, true, optimal_path);
 }
 
 unsigned int BellmanHeldKarp::NextBitPermutation(unsigned int curr_permutation) {

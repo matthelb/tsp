@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <fstream>
+#include <iostream>
 #include <numeric>
 
 #include "solve/solution.h"
@@ -21,9 +22,12 @@ Solution TwoNodeReplacement::GetOriginalSolution() {
 		for (unsigned int i = 0; i < n; ++i) {
 			in >> solution.path[i];
 		}
+		solution.optimal = true;
 	} else {
 		solution = tsp_solver().ComputeSolution();
-		SaveOriginalSolution(solution);
+		if (solution.optimal) {
+			SaveOriginalSolution(solution);
+		}
 	}
 	in.close();
 	return solution;
@@ -32,7 +36,7 @@ Solution TwoNodeReplacement::GetOriginalSolution() {
 void TwoNodeReplacement::SaveOriginalSolution(const Solution& solution) const {
 	ofstream out(GetOriginalSolutionFile());
 	if (out.good()) {
-		out << solution.distance << endl;
+		out << fixed << solution.distance << endl;
 		for (unsigned int i = 0; i < solution.path.size(); ++i) {
 			out << solution.path[i] << endl;
 		}
@@ -48,14 +52,17 @@ void TwoNodeReplacement::RunSimulation(TSP* tsp, ofstream& data_out,
 	data_out << "trial,T,T',T'',T''',seed" << endl;
 	tsp->BuildGraph(nearest_int_rounding());
 	tsp_solver().set_graph(tsp->graph());
-	Solution T = GetOriginalSolution();
+	Solution T(GetOriginalSolution());
+	if (!T.optimal) {
+		cerr << "Unable to find optimal solution for TSP " << tsp->name() << endl;
+		return;
+	}
 	vector<int> node_list(tsp->dimension());
 	iota(node_list.begin(), node_list.end(), 0);
 	shuffle(node_list.begin(), node_list.end(), random_gen);
 	int i = node_list[0];
 	int j = node_list[1];
 	for (int k = trials_start(); k < trials_end(); ++k) {
-		data_out << k + 1 << ',' << T.distance << ',';
 		// BEGIN Image Generation
 		int path_node_1 = i;
 		vector<pair<double, double>> coordinate_path_1;
@@ -71,8 +78,11 @@ void TwoNodeReplacement::RunSimulation(TSP* tsp, ofstream& data_out,
 																								  random_gen, i);
 		tsp->BuildGraph(nearest_int_rounding());
 		tsp_solver().set_graph(tsp->graph());
-		Solution T_prime = tsp_solver().ComputeSolution();
-		data_out << T_prime.distance << ',';
+		Solution T_prime(tsp_solver().ComputeSolution());
+		if (!T_prime.optimal) {
+			cerr << "Unable to find optimal solution in trial " << k + 1 << endl;
+			continue;
+		}
     // END Compute T'
 
 		// BEGIN Image Generation
@@ -83,7 +93,7 @@ void TwoNodeReplacement::RunSimulation(TSP* tsp, ofstream& data_out,
 			coordinate_path_2 = img_gen.GetCoordinatePath(node_coords, tsp->dimension(),
 																										T_prime.path, &path_node_2);
 			img_gen.GenerateImage("/itr_" + to_string(itr_num) +
-														"_trial_" + to_string(i+1) + ".png",
+														"_trial_" + to_string(k+1) + ".png",
 														coordinate_path_1, coordinate_path_2,
 														path_node_1, path_node_2,
 														T.distance, T_prime.distance);
@@ -99,8 +109,11 @@ void TwoNodeReplacement::RunSimulation(TSP* tsp, ofstream& data_out,
 																							 	  random_gen, j);
 		tsp->BuildGraph(nearest_int_rounding());
 		tsp_solver().set_graph(tsp->graph());
-		Solution T_double_prime = tsp_solver().ComputeSolution();
-		data_out << T_double_prime.distance << ',';
+		Solution T_double_prime(tsp_solver().ComputeSolution());
+		if (!T_double_prime.optimal) {
+			cerr << "Unable to find optimal solution in trial " << k + 1 << endl;
+			continue;
+		}
 		// END Compute T''
 
 		// BEGIN Replace New City i
@@ -110,9 +123,16 @@ void TwoNodeReplacement::RunSimulation(TSP* tsp, ofstream& data_out,
 		// BEGIN Compute T'''
 		tsp->BuildGraph(nearest_int_rounding());
 		tsp_solver().set_graph(tsp->graph());
-		Solution T_triple_prime = tsp_solver().ComputeSolution();
-		data_out << T_triple_prime.distance << ',' << seed << endl;
-		// END Computer T'''
+		Solution T_triple_prime(tsp_solver().ComputeSolution());
+		if (!T_triple_prime.optimal) {
+			cerr << "Unable to find optimal solution in trial " << k + 1 << endl;
+			continue;
+		}
+		// END Compute T'''
+
+		data_out << fixed << k + 1 << ',' << T.distance << ',' << T_prime.distance << ','
+		         << T_double_prime.distance << ',' << T_triple_prime.distance << ','
+						 << seed << endl;
 
 		// BEGIN Cleanup
 		delete tsp->ReplaceCoord(original_1, i);

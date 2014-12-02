@@ -63,12 +63,9 @@ Solution ConcordeSolver::ComputeSolution(const Graph* graph) {
                                    //   appropriately
   int foundtour = 0;               // storage for whether tour was found
   stringstream name_ss;
-  name_ss << graph->CanonicalTourLength();
-  string name_s = name_ss.str();
-  remove(name_s.begin(), name_s.end(), '.');
-  char* name = new char[name_s.length()];
-  strncpy(name, name_s.c_str(), name_s.length());
-                                   // name for files created during branch&bound
+  name_ss << graph;
+  string name_s(name_ss.str().substr(2));
+  char* name = strdup(name_s.c_str()); // name for files created during branch&bound
   double* timebound = NULL;        // upper bound for computation time
   int hit_timebound;               // storage for whether timebound was hit
   int silent = !verbose();         // 0 for verbose output
@@ -87,35 +84,35 @@ Solution ConcordeSolver::ComputeSolution(const Graph* graph) {
       changed_dir = true;
     }
   }
-  /*fflush(stdout);
-  int stdout_copy = dup(fileno(stdout));
-  freopen(name, "w", stdout);*/
-
+  cout << "Calling CCtsp_solve_dat with: " << endl;
+  cout << "  name = " << name << endl;
+  cout << "  ncount = " << ncount << endl;
+  cout << "  timebound = " << timebound << endl;
+  cout << "  silent = " << silent << endl;
+  cout << "  maxchunksize = " << maxchunksize() << endl;
   int result = CCtsp_solve_dat(ncount, &dat, in_tour,
                                   out_tour, in_val, &optval, &success,
                                   &foundtour, name, timebound, &hit_timebound,
                                   silent, &rstate, maxchunksize());
-
-  /*fflush(stdout);
-  dup2(stdout_copy, fileno(stdout));
-  close(stdout_copy);*/
   if (changed_dir) {
     if (chdir(cwd) == -1) {
       cerr << "Unable to revert back to current working directory " <<
               cwd << endl;
     }
   }
-
+  bool optimal = true;
   if (result || !success || !foundtour) {
     cerr << "Failed to find optimal tour" << endl;
+    optimal = false;
   }
   vector<int> optimal_tour(ncount, 0);
   for (unsigned int i = 0; i < ncount; ++i) {
     optimal_tour[i] = out_tour[i];
   }
+  CCutil_freedatagroup(&dat);
   delete [] out_tour;
   delete [] name;
   delete [] elen;
   delete [] elist;
-  return Solution(optval, optimal_tour);
+  return Solution(optval, optimal, optimal_tour);
 }
