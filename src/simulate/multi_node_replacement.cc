@@ -18,7 +18,7 @@ void MultiNodeReplacement::Simulate(TSP* tsp, int iterations, long seed) {
   tsp->BuildGraph(nearest_int_rounding());
   tsp_solver().set_graph(tsp->graph());
 
-  ImageGenerator img_gen(500, 500, min_coord(), max_coord(), GetImgFolder());
+  ImageGenerator img_gen(400, 400, min_coord(), max_coord(), GetImgFolder());
     
   Solution T = tsp_solver().ComputeSolution();
 
@@ -58,8 +58,9 @@ void MultiNodeReplacement::Simulate(TSP* tsp, int iterations, long seed) {
                                               node_coords, tsp->dimension(),
                                               T_prime.path, &after_replaced);
 
-    img_gen.GenerateMultiReplaceImage(to_string(i + 1) + "_replaced.png",
+    img_gen.GenerateImage(to_string(i + 1) + "_replaced.png",
                           before_path, after_path,
+                          T.path, T_prime.path,
                           initial_replaced, after_replaced,
                           T.distance, T_prime.distance);
 
