@@ -78,7 +78,7 @@ void ImageGenerator::GenerateImage(string filename,
   DrawGraph(initial_coords, initial_replaced, vector<double>());
 
   cr->translate(width() + offset_x(), 0);
-  vector<double> dashes = {4.0};
+  vector<double> dashes = {2.0};
   cr->set_source_rgba(0, 0, 0, .75);
   DrawGraph(after_coords, after_replaced, dashes);
 
@@ -195,18 +195,16 @@ void ImageGenerator::DrawCombinedGraph(vector<pair<double, double>>&
     else {
       use_dash[i + 1] = true;
     }
-    // cout << "(" << after_pair.first << ", " << after_pair.second << ")" << endl;
   }
 
   pair<double, double>* curr_pair = NULL;
   pair<double, double>* prev_pair = NULL;
 
   cr->unset_dash();
-  vector<double> dashes = {4.0};
+  vector<double> dashes = {2.0};
 
   for(unsigned i = 0; i < after_coords.size(); ++i) {
     curr_pair = ScaleCoordinates(after_coords[i]);
-    // cout << "Dashes " << i << ":" << use_dash[i] << endl;
     if(use_dash[i]) cr->set_dash(dashes, 0);
     if(prev_pair != NULL && curr_pair != prev_pair) {
       cr->move_to(prev_pair->first, prev_pair->second);
