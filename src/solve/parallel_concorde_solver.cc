@@ -1,5 +1,6 @@
 #include "solve/parallel_concorde_solver.h"
 
+#include <cstdlib>
 #include <iostream>
 #include <fstream>
 #ifdef HAVE_UNISTD_H
@@ -41,7 +42,11 @@ int ParallelConcordeSolver::RunConcorde(int ncount, CCdatagroup* dat,
 			res_check.open(res_file);
 		}
 		cout << "Starting grunt" << endl;
+		//char* argv[] = {"/usr/local/src/concorde/TSP/concorde","-g","127.0.0.1", NULL};
+		//execvp(argv[0], argv);
 		CCtsp_grunt("127.0.0.1", CCtsp_HOST_PORT, NULL, NULL, NULL, 0, &rstate);
+		cerr << "Ending grunt" << endl;
+		_exit(0);
 		return -1;
 	} else {
 		cout << "Starting boss" << endl;

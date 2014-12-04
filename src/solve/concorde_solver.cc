@@ -40,7 +40,7 @@ Solution ConcordeSolver::ComputeSolution(const Graph* graph) {
                                    //   appropriately
   int foundtour = 0;               // storage for whether tour was found
   stringstream name_ss;
-  name_ss << graph;
+  name_ss << graph << out_file_num_++;
   string name_s(name_ss.str().substr(2));
   char* name = strdup(name_s.c_str()); // name for files created during branch&bound
   double* timebound = NULL;        // upper bound for computation time

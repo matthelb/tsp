@@ -33,6 +33,7 @@ class ConcordeSolver : public TSPAlgorithm {
 
   long seed_ = 0;
   int maxchunksize_ = 0;
+  int out_file_num_ = 0;
 
 };
 
