@@ -10,8 +10,7 @@ CAIRO_INCLUDES = $(shell pkg-config --cflags cairomm-1.0)
 INCLUDE += -I$(SDIR) -I$(IDIR) $(CAIRO_INCLUDES)
 OBJECT_INCLUDES = $(IDIR)/concorde.h
 CAIRO_LIBS = $(shell pkg-config --libs cairomm-1.0)
-TARGET_LIBS = $(LDIR)/concorde.a
-LIBS = $(CPLEX_DIR)/libcplex.a $(QSOPT_DIR)/qsopt.a $(CAIRO_LIBS)
+LIBS = $(LDIR)/concorde.a $(QSOPT_DIR)/qsopt.a
 
 CXX=g++
 CXXFLAGS=-Wall -Wextra -Weffc++ -ggdb -std=c++11 -pthread -static-libstdc++
@@ -23,6 +22,7 @@ MKDIR = if [ ! -d "$(shell dirname $@)" ]; then mkdir -p $(shell dirname $@); fi
 SRCS = $(SDIR)/graph/graph.cc \
 			 $(SDIR)/graphics/image_generator.cc \
 			 $(SDIR)/simulate/single_node_replacement.cc \
+			 $(SDIR)/simulate/multi_node_replacement.cc \
 			 $(SDIR)/simulate/tsp_simulator.cc \
 			 $(SDIR)/simulate/two_node_replacement.cc \
 			 $(SDIR)/solve/bellman_held_karp.cc \
@@ -60,20 +60,20 @@ test: tests
 
 ## Distributed Executables
 
-$(BDIR)/parse_tsp: $(OBJS) $(SDIR)/parse_tsp.cc $(TARGET_LIBS)
-	$(CXX) $(CXXFLAGS) $(INCLUDE) $^ $(LIBS) -o $@
+$(BDIR)/parse_tsp: $(OBJS) $(SDIR)/parse_tsp.cc $(LIBS)
+	$(CXX) $(CXXFLAGS) $(INCLUDE) $^ -o $@ $(CAIRO_LIBS)
 
-$(BDIR)/solve_tsp: $(OBJS) $(SDIR)/solve_tsp.cc $(TARGET_LIBS)
-	$(CXX) $(CXXFLAGS) $(INCLUDE) $^ $(LIBS) -o $@
+$(BDIR)/solve_tsp: $(OBJS) $(SDIR)/solve_tsp.cc $(LIBS)
+	$(CXX) $(CXXFLAGS) $(INCLUDE) $^ -o $@ $(CAIRO_LIBS)
 
-$(BDIR)/generate_tsp: $(OBJS) $(SDIR)/generate_tsp.cc $(TARGET_LIBS)
-	$(CXX) $(CXXFLAGS) $(INCLUDE) $^ $(LIBS) -o $@
+$(BDIR)/generate_tsp: $(OBJS) $(SDIR)/generate_tsp.cc $(LIBS)
+	$(CXX) $(CXXFLAGS) $(INCLUDE) $^ -o $@ $(CAIRO_LIBS)
 
-$(BDIR)/simulate_tsp: $(OBJS) $(SDIR)/simulate_tsp.cc $(TARGET_LIBS)
-	$(CXX) $(CXXFLAGS) $(INCLUDE) $^ $(LIBS) -o $@
+$(BDIR)/simulate_tsp: $(OBJS) $(SDIR)/simulate_tsp.cc $(LIBS)
+	$(CXX) $(CXXFLAGS) $(INCLUDE) $^ -o $@ $(CAIRO_LIBS)
 
-$(BDIR)/generate_tsp_csv: $(OBJS) $(SDIR)/generate_tsp_csv.cc $(TARGET_LIBS)
-	$(CXX) $(CXXFLAGS) $(INCLUDE) $^ $(LIBS) -o $@
+$(BDIR)/generate_tsp_csv: $(OBJS) $(SDIR)/generate_tsp_csv.cc $(LIBS)
+	$(CXX) $(CXXFLAGS) $(INCLUDE) $^ -o $@ $(CAIRO_LIBS)
 ###
 
 ## Unit Tests

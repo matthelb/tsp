@@ -95,6 +95,7 @@ void TwoNodeReplacement::RunSimulation(TSP* tsp, ofstream& data_out,
 			img_gen.GenerateImage("/itr_" + to_string(itr_num) +
 														"_trial_" + to_string(k+1) + ".png",
 														coordinate_path_1, coordinate_path_2,
+														T.path, T_prime.path,
 														path_node_1, path_node_2,
 														T.distance, T_prime.distance);
 		}
