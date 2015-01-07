@@ -1,5 +1,7 @@
+#include <fstream>
 #include <iostream>
 #include <string>
+#include <vector>
 
 #include "simulate/tsp_simulator.h"
 #include "simulate/two_node_replacement.h"
@@ -8,10 +10,11 @@
 
 using namespace std;
 int main(int argc, char* argv[]) {
-  if(argc != 12) {
+  if(argc != 14) {
     cerr << "Usage: " << argv[0] << " <output_dir> <iterations> <min_coord> <max_coord>"
          << " <trials_start> <trials_end> <input_file> <run_id>"
-         << " <max_compute_time> <max_chunk_size> <processors>" << endl;
+         << " <max_compute_time> <max_chunk_size> <processors> <host> <nodes>"
+         << endl;
     return 1;
   }
   string filename = string(argv[1]);
@@ -43,6 +46,15 @@ int main(int argc, char* argv[]) {
   if (processors > 1) {
     algorithm = new ParallelConcordeSolver();
     static_cast<ParallelConcordeSolver*>(algorithm)->set_processors(processors);
+    static_cast<ParallelConcordeSolver*>(algorithm)->set_host(argv[12]);
+    ifstream node_in(argv[13]);
+    vector<string> nodes;
+    while(!node_in.fail()) {
+      string node;
+      node_in >> node;
+      nodes.push_back(node);
+    }
+    static_cast<ParallelConcordeSolver*>(algorithm)->set_nodes(nodes);
   } else {
     algorithm = new ConcordeSolver();
   }
