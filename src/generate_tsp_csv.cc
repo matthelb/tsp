@@ -3,6 +3,8 @@
 #include <string>
 #include <vector>
 
+#include <mpi.h>
+
 #include "simulate/tsp_simulator.h"
 #include "simulate/two_node_replacement.h"
 #include "solve/parallel_concorde_solver.h"
@@ -10,14 +12,14 @@
 
 using namespace std;
 int main(int argc, char* argv[]) {
-  if(argc != 14) {
+  if(argc != 15) {
     cerr << "Usage: " << argv[0] << " <output_dir> <iterations> <min_coord> <max_coord>"
          << " <trials_start> <trials_end> <input_file> <run_id>"
-         << " <max_compute_time> <max_chunk_size> <processors> <host> <nodes>"
+         << " <max_compute_time> <max_chunk_size> <processors> <concorde_exec> <mpi_wrapper_exec> <hostfile>"
          << endl;
     return 1;
   }
-  string filename = string(argv[1]);
+  string filename(argv[1]);
   int iterations = atoi(argv[2]);
   if (iterations <= 0) {
     cerr << "Iterations must be an integer greater than 0" << endl;
@@ -46,15 +48,10 @@ int main(int argc, char* argv[]) {
   if (processors > 1) {
     algorithm = new ParallelConcordeSolver();
     static_cast<ParallelConcordeSolver*>(algorithm)->set_processors(processors);
-    static_cast<ParallelConcordeSolver*>(algorithm)->set_host(argv[12]);
-    ifstream node_in(argv[13]);
-    vector<string> nodes;
-    while(!node_in.fail()) {
-      string node;
-      node_in >> node;
-      nodes.push_back(node);
-    }
-    static_cast<ParallelConcordeSolver*>(algorithm)->set_nodes(nodes);
+    static_cast<ParallelConcordeSolver*>(algorithm)->set_concorde_executable(argv[12]);
+    static_cast<ParallelConcordeSolver*>(algorithm)->set_mpi_wrapper_executable(argv[13]);
+    static_cast<ParallelConcordeSolver*>(algorithm)->set_hostfile(argv[14]);
+    MPI_Init(&argc, &argv);
   } else {
     algorithm = new ConcordeSolver();
   }
@@ -64,5 +61,8 @@ int main(int argc, char* argv[]) {
                                max_compute_time);
   simulator.Simulate(&tsp, iterations);
   delete algorithm;
+  if (processors > 1) {
+    MPI_Finalize();
+  }
   return 0;
 }

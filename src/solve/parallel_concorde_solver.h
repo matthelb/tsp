@@ -15,12 +15,16 @@ class ParallelConcordeSolver : public ConcordeSolver {
 
 	int processors() const { return processors_; }
 	void set_processors(int processors) { processors_ = processors; }
-  const char* host() const { return host_; }
-  void set_host(char* host) { host_ = host; }
-  const std::vector<std::string> nodes() const { return nodes_; }
-  void set_nodes(std::vector<std::string> nodes) { nodes_ = nodes; }
-
-  std::string GetNodeForProcessor(int processor);
+  char* concorde_executable() const { return concorde_executable_; }
+  void set_concorde_executable(char* concorde_executable) {
+    concorde_executable_ = concorde_executable;
+  }
+  char* mpi_wrapper_executable() const { return mpi_wrapper_executable_; }
+  void set_mpi_wrapper_executable(char* mpi_wrapper_executable) {
+    mpi_wrapper_executable_ = mpi_wrapper_executable;
+  }
+  char* hostfile() const { return hostfile_; }
+  void set_hostfile(char* hostfile) { hostfile_ = hostfile; }
 
  protected:
 	virtual int RunConcorde(int ncount, CCdatagroup* dat, int* in_tour,
@@ -32,7 +36,8 @@ class ParallelConcordeSolver : public ConcordeSolver {
 	void operator=(ParallelConcordeSolver& parallel_concorde_solver);
 
 	int processors_;
-  char* host_;
-  std::vector<std::string> nodes_;
+  char* concorde_executable_;
+  char* mpi_wrapper_executable_;
+  char* hostfile_;
 };
 #endif

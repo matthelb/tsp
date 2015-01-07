@@ -13,8 +13,8 @@ CAIRO_LIBS = $(shell pkg-config --libs cairomm-1.0)
 TARGET_LIBS = $(LDIR)/concorde.a
 LIBS = $(CPLEX_DIR)/libcplex.a $(QSOPT_DIR)/qsopt.a $(CAIRO_LIBS)
 
-CXX=g++
-CXXFLAGS=-Wall -Wextra -Weffc++ -ggdb -std=c++11 -pthread -static-libstdc++
+CXX=mpic++
+CXXFLAGS=-Wall -Wextra -Weffc++ -ggdb -std=c++11 -pthread
 
 COMPILE_OBJ = $(CXX) $(CXXFLAGS) $(INCLUDE) -c $< -o $@
 
@@ -49,7 +49,7 @@ SRCS = $(SDIR)/graph/graph.cc \
 
 OBJS = $(patsubst $(SDIR)%.cc, $(ODIR)%.o, $(SRCS))
 
-all: $(BDIR)/parse_tsp $(BDIR)/solve_tsp $(BDIR)/generate_tsp $(BDIR)/simulate_tsp $(BDIR)/generate_tsp_csv
+all: $(BDIR)/parse_tsp $(BDIR)/solve_tsp $(BDIR)/generate_tsp $(BDIR)/simulate_tsp $(BDIR)/generate_tsp_csv $(BDIR)/mpi_wrapper
 
 tests: $(BDIR)/tsp_distance_calc_test $(BDIR)/tsp_bf_test $(BDIR)/tsp_bhk_test $(BDIR)/tsp_concorde_test
 
@@ -75,7 +75,11 @@ $(BDIR)/simulate_tsp: $(OBJS) $(SDIR)/simulate_tsp.cc $(TARGET_LIBS)
 
 $(BDIR)/generate_tsp_csv: $(OBJS) $(SDIR)/generate_tsp_csv.cc $(TARGET_LIBS)
 	$(CXX) $(CXXFLAGS) $(INCLUDE) $^ $(LIBS) -o $@
+
 ###
+
+$(BDIR)/mpi_wrapper: $(SDIR)/mpi_wrapper.cc
+	$(CXX) $(CXXFLAGS) $(INCLUDE) $^ -o $@
 
 ## Unit Tests
 
