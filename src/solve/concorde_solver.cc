@@ -134,5 +134,5 @@ int ConcordeSolver::RunConcorde(int ncount, CCdatagroup* dat, int* in_tour,
   CCutil_sprand(seed(), &rstate);
   return CCtsp_solve_dat(ncount, dat, in_tour,out_tour, in_val, optval,
                          success, foundtour, name, timebound, hit_timebound,
-                         silent, &rstate, maxchunksize(), 0);
+                         silent, &rstate, maxchunksize(), 0, 0, 0);
 }

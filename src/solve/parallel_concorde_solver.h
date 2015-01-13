@@ -27,6 +27,8 @@ class ParallelConcordeSolver : public ConcordeSolver {
   void set_hostfile(char* hostfile) { hostfile_ = hostfile; }
 
  protected:
+  static void SpawnGruntsWrapper(void* data);
+  void SpawnGrunts();
 	virtual int RunConcorde(int ncount, CCdatagroup* dat, int* in_tour,
 													int* out_tour, double* in_val, double* optval,
 													int* success, int* foundtour, char* name,
