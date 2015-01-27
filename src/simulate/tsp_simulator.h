@@ -18,10 +18,10 @@
 
 class TSPSimulator {
  public:
-  TSPSimulator(int run_id, std::string folder, int num_cities, double min_coord,
+  TSPSimulator(std::string folder, int num_cities, double min_coord,
                double max_coord, bool nearest_int_rounding, int trials_start,
                int trials_end, TSPAlgorithm* tsp_algorithm,
-               double max_compute_time) : run_id_(run_id), folder_(folder),
+               double max_compute_time) : folder_(folder),
                num_cities_(num_cities), min_coord_(min_coord),
                max_coord_(max_coord),
                nearest_int_rounding_(nearest_int_rounding),
@@ -31,7 +31,6 @@ class TSPSimulator {
 
   virtual ~TSPSimulator();
 
-  int run_id() const { return run_id_; }
   std::string folder() const { return folder_; }
   int num_cities() const { return num_cities_; }
   double min_coord() const { return min_coord_; }
@@ -62,7 +61,6 @@ class TSPSimulator {
   TSPSimulator(const TSPSimulator& tsp_simulator);
   void operator=(const TSPSimulator& tsp_simulator);
 
-  int run_id_;
   const std::string folder_;
   int num_cities_;
   double min_coord_;

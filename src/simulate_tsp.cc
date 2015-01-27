@@ -32,7 +32,7 @@ int main(int argc, char* argv[]) {
     return 1;
   }
 
-  MultiNodeReplacement simulator(0, string(argv[1]), tsp.dimension(),
+  MultiNodeReplacement simulator(string(argv[1]), tsp.dimension(),
                        atoi(argv[3]), atoi(argv[4]),
                        true, 0, 0,
                        &concorde_solver, atoi(argv[6]));

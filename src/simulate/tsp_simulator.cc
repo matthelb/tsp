@@ -13,7 +13,7 @@ TSPSimulator::~TSPSimulator() {
 }
 
 string TSPSimulator::GetDataFile() const {
-  return GetDataFolder() + "/" + to_string(run_id()) + ".csv";
+  return GetDataFolder() + "/" + to_string(trials_start()) + ".csv";
 }
 
 string TSPSimulator::GetDataFolder() const {
@@ -21,11 +21,11 @@ string TSPSimulator::GetDataFolder() const {
 }
 
 string TSPSimulator::GetAlgOutFolder() const {
-  return folder() + "/alg_out/" + to_string(run_id());
+  return folder() + "/alg_out/" + to_string(trials_start());
 }
 
 string TSPSimulator::GetImgFolder() const {
-  return folder() + "/imgs/" + to_string(run_id());
+  return folder() + "/imgs/" + to_string(trials_start());
 }
 
 int TSPSimulator::Mkpaths() const {

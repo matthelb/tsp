@@ -10,11 +10,11 @@
 
 class TwoNodeReplacement : public TSPSimulator {
  public:
-  TwoNodeReplacement(int run_id, std::string folder, int num_cities,
+  TwoNodeReplacement(std::string folder, int num_cities,
                      double min_coord, double max_coord,
                      bool nearest_int_rounding, int trial_start, int trial_end,
                      TSPAlgorithm* tsp_algorithm, double max_compute_time) :
-               TSPSimulator(run_id, folder, num_cities, min_coord, max_coord,
+               TSPSimulator(folder, num_cities, min_coord, max_coord,
                             nearest_int_rounding, trial_start, trial_end,
                             tsp_algorithm, max_compute_time) {}
 	virtual ~TwoNodeReplacement();

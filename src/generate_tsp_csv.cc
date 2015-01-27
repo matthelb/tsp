@@ -12,11 +12,11 @@
 
 using namespace std;
 int main(int argc, char* argv[]) {
-  if(argc != 15) {
+  if(argc != 14) {
     cerr << "Usage: " << argv[0] << " <output_dir> <iterations> <min_coord> <max_coord>"
-         << " <trials_start> <trials_end> <input_file> <run_id>"
-         << " <max_compute_time> <max_chunk_size> <processors> <concorde_exec> <mpi_wrapper_exec> <hostfile>"
-         << endl;
+         << " <trials_start> <trials_end> <input_file> <max_compute_time>"
+         << "<max_chunk_size> <processors> <concorde_exec> <mpi_wrapper_exec>"
+         << "<hostfile>" << endl;
     return 1;
   }
   string filename(argv[1]);
@@ -35,10 +35,9 @@ int main(int argc, char* argv[]) {
          << "trials end" << endl;
     return 1;
   }
-  int run_id = atoi(argv[8]);
-  double max_compute_time = atoi(argv[9]);
-  int maxchunksize = atoi(argv[10]);
-  int processors = atoi(argv[11]);
+  double max_compute_time = atoi(argv[8]);
+  int maxchunksize = atoi(argv[9]);
+  int processors = atoi(argv[10]);
   TSP tsp;
   if (!tsp.Parse(argv[7])) {
     cerr << "Unable to parse TSPLIB file " << argv[7] << endl;
@@ -48,15 +47,15 @@ int main(int argc, char* argv[]) {
   if (processors > 1) {
     algorithm = new ParallelConcordeSolver();
     static_cast<ParallelConcordeSolver*>(algorithm)->set_processors(processors);
-    static_cast<ParallelConcordeSolver*>(algorithm)->set_concorde_executable(argv[12]);
-    static_cast<ParallelConcordeSolver*>(algorithm)->set_mpi_wrapper_executable(argv[13]);
-    static_cast<ParallelConcordeSolver*>(algorithm)->set_hostfile(argv[14]);
+    static_cast<ParallelConcordeSolver*>(algorithm)->set_concorde_executable(argv[11]);
+    static_cast<ParallelConcordeSolver*>(algorithm)->set_mpi_wrapper_executable(argv[12]);
+    static_cast<ParallelConcordeSolver*>(algorithm)->set_hostfile(argv[13]);
     MPI_Init(&argc, &argv);
   } else {
     algorithm = new ConcordeSolver();
   }
   algorithm->set_maxchunksize(maxchunksize);
-  TwoNodeReplacement simulator(run_id, filename, 0, min_coord, max_coord,
+  TwoNodeReplacement simulator(filename, 0, min_coord, max_coord,
                                true, trials_start, trials_end, algorithm,
                                max_compute_time);
   simulator.Simulate(&tsp, iterations);
