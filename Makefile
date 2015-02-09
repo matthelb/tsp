@@ -29,6 +29,7 @@ SRCS = $(SDIR)/graph/graph.cc \
 			 $(SDIR)/solve/bellman_held_karp.cc \
 			 $(SDIR)/solve/brute_force_search.cc \
 			 $(SDIR)/solve/concorde_solver.cc \
+			 $(SDIR)/solve/linkern_approximation.cc \
 			 $(SDIR)/solve/nearest_neighbor_search.cc \
 			 $(SDIR)/solve/parallel_concorde_solver.cc \
 			 $(SDIR)/solve/tsp_algorithm.cc \

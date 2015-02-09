@@ -29,10 +29,11 @@ class ParallelConcordeSolver : public ConcordeSolver {
  protected:
   static void SpawnGruntsWrapper(void* data);
   void SpawnGrunts();
-	virtual int RunConcorde(int ncount, CCdatagroup* dat, int* in_tour,
-													int* out_tour, double* in_val, double* optval,
-													int* success, int* foundtour, char* name,
-													double* timebound, int* hit_timebound, int silent);
+	virtual int CallTSPSolveDat(int ncount, CCdatagroup* dat, int* in_tour,
+                              int* out_tour, double* in_val, double* optval,
+                              int* success, int* foundtour, char* name,
+                              double* timebound, int* hit_timebound, int silent,
+                              CCrandstate* rstate);
  private:
 	ParallelConcordeSolver(ParallelConcordeSolver& parallel_concorde_solver);
 	void operator=(ParallelConcordeSolver& parallel_concorde_solver);

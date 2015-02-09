@@ -4,6 +4,7 @@
 #include "solve/tsp_algorithm.h"
 
 struct CCdatagroup;
+struct CCrandstate;
 
 class ConcordeSolver : public TSPAlgorithm {
  public:
@@ -22,10 +23,13 @@ class ConcordeSolver : public TSPAlgorithm {
                                 int*& elist, int*& elen);
   static void InitializeDat(const Graph* graph, int& ncount, CCdatagroup& dat);
 
-  virtual int RunConcorde(int ncount, CCdatagroup* dat, int* in_tour,
-                          int* out_tour, double* in_val, double* optval,
-                          int* success, int* foundtour, char* name,
-                          double* timebound, int* hit_timebound, int silent);
+  virtual int RunConcorde(int ncount, CCdatagroup* dat, int* out_tour,
+                          double& val, char* name, bool& optimal);
+  virtual int CallTSPSolveDat(int ncount, CCdatagroup* dat, int* in_tour,
+                              int* out_tour, double* in_val, double* optval,
+                              int* success, int* foundtour, char* name,
+                              double* timebound, int* hit_timebound, int silent,
+                              CCrandstate* rstate);
 
  private:
   ConcordeSolver(ConcordeSolver& concorde_solver);

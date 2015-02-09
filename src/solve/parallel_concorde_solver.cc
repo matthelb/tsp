@@ -41,15 +41,13 @@ void ParallelConcordeSolver::SpawnGrunts() {
 	delete [] errcodes;
 }
 
-int ParallelConcordeSolver::RunConcorde(int ncount, CCdatagroup* dat,
+int ParallelConcordeSolver::CallTSPSolveDat(int ncount, CCdatagroup* dat,
 																				int* in_tour, int* out_tour,
 																				double* in_val, double* optval,
 																				int* success, int* foundtour,
 																				char* name, double* timebound,
-																				int* hit_timebound, int silent) {
-	CCrandstate rstate;
-	CCutil_sprand(seed(), &rstate);
+																				int* hit_timebound, int silent, CCrandstate* rstate) {
 	return CCtsp_solve_dat(ncount, dat, in_tour,out_tour, in_val, optval,
 											 	 success, foundtour, name, timebound, hit_timebound,
-												 silent, &rstate, maxchunksize(), CCtsp_HOST_PORT, SpawnGruntsWrapper, this);
+												 silent, rstate, maxchunksize(), CCtsp_HOST_PORT, SpawnGruntsWrapper, this);
 }

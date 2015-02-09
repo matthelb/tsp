@@ -7,16 +7,17 @@
 
 #include "simulate/tsp_simulator.h"
 #include "simulate/two_node_replacement.h"
+#include "solve/linkern_approximation.h"
 #include "solve/parallel_concorde_solver.h"
 #include "solve/tsp_solver.h"
 
 using namespace std;
 int main(int argc, char* argv[]) {
-  if(argc != 14) {
+  if(argc < 14 || argc > 15) {
     cerr << "Usage: " << argv[0] << " <output_dir> <iterations> <min_coord> <max_coord>"
          << " <trials_start> <trials_end> <input_file> <max_compute_time>"
-         << "<max_chunk_size> <processors> <concorde_exec> <mpi_wrapper_exec>"
-         << "<hostfile>" << endl;
+         << " <max_chunk_size> <processors> <concorde_exec> <mpi_wrapper_exec>"
+         << " <hostfile> [approx]" << endl;
     return 1;
   }
   string filename(argv[1]);
@@ -43,8 +44,11 @@ int main(int argc, char* argv[]) {
     cerr << "Unable to parse TSPLIB file " << argv[7] << endl;
     return 1;
   }
+  bool approx = argc == 15 && atoi(argv[14]);
   ConcordeSolver* algorithm = NULL;
-  if (processors > 1) {
+  if (approx) {
+    algorithm = new LinkernApproximation();
+  } else if (processors > 1) {
     algorithm = new ParallelConcordeSolver();
     static_cast<ParallelConcordeSolver*>(algorithm)->set_processors(processors);
     static_cast<ParallelConcordeSolver*>(algorithm)->set_concorde_executable(argv[11]);

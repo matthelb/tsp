@@ -32,21 +32,6 @@ Solution ConcordeSolver::ComputeSolution(const Graph* graph) {
   int ncount = 0;
   InitializeDat(graph, ncount, dat);
 
-  int* in_tour = NULL;             // partially computed input tour
-  int* out_tour = new int[ncount]; // storage for output tour nodes
-  double* in_val = NULL;           // upper bound for tsp tour
-  double optval = 0;               // storage for output tour distance
-  int success = 0;                 // storage for whether computation terminated
-                                   //   appropriately
-  int foundtour = 0;               // storage for whether tour was found
-  stringstream name_ss;
-  name_ss << graph << out_file_num_++;
-  string name_s(name_ss.str().substr(2));
-  char* name = strdup(name_s.c_str()); // name for files created during branch&bound
-  double* timebound = NULL;        // upper bound for computation time
-  int hit_timebound;               // storage for whether timebound was hit
-  int silent = !verbose();         // 0 for verbose output
-
   char cwd[FILENAME_MAX];
   char* cwd_ptr = cwd;
   bool changed_dir = false;
@@ -59,34 +44,30 @@ Solution ConcordeSolver::ComputeSolution(const Graph* graph) {
       changed_dir = true;
     }
   }
-  cout << "Calling CCtsp_solve_dat with: " << endl;
-  cout << "  name = " << name << endl;
-  cout << "  ncount = " << ncount << endl;
-  cout << "  timebound = " << timebound << endl;
-  cout << "  silent = " << silent << endl;
-  cout << "  maxchunksize = " << maxchunksize() << endl;
-  int result = RunConcorde(ncount, &dat, in_tour,out_tour, in_val,
-                           &optval, &success, &foundtour, name, timebound,
-                           &hit_timebound, silent);
+
+  stringstream name_ss;
+  name_ss << graph << out_file_num_++;
+  string name_s(name_ss.str().substr(2));
+  char* name = strdup(name_s.c_str());
+
+  int* out_tour = new int[ncount];
+  double val;
+  bool optimal;
+  RunConcorde(ncount, &dat, out_tour, val, name, optimal);
+
   if (changed_dir) {
     if (chdir(cwd) == -1) {
       cerr << "Unable to revert back to current working directory " <<
               cwd << endl;
     }
   }
-  bool optimal = true;
-  if (result || !success || !foundtour) {
-    cerr << "Failed to find optimal tour" << endl;
-    optimal = false;
-  }
+
   vector<int> optimal_tour(ncount, 0);
   for (int i = 0; i < ncount; ++i) {
     optimal_tour[i] = out_tour[i];
   }
   CCutil_freedatagroup(&dat);
-  delete [] out_tour;
-  delete [] name;
-  return Solution(optval, optimal, optimal_tour);
+  return Solution(val, optimal, optimal_tour);
 }
 
 void ConcordeSolver::ConvertToEdgeList(const Graph* graph, int& ncount,
@@ -125,14 +106,35 @@ void ConcordeSolver::InitializeDat(const Graph* graph, int& ncount,
   delete[] elen;
 }
 
-int ConcordeSolver::RunConcorde(int ncount, CCdatagroup* dat, int* in_tour,
-                                 int* out_tour, double* in_val, double* optval,
-                                 int* success, int* foundtour, char* name,
-                                 double* timebound, int* hit_timebound,
-                                 int silent) {
+int ConcordeSolver::RunConcorde(int ncount, CCdatagroup* dat, int* out_tour,
+                                double& val, char* name, bool& optimal) {
+  int* in_tour = NULL;             // partially computed input tour
+  double* in_val = NULL;           // upper bound for tsp tour
+  int success = 0;                 // storage for whether computation terminated
+                                   //   appropriately
+  int foundtour = 0;               // storage for whether tour was found
+  double* timebound = NULL;        // upper bound for computation time
+  int hit_timebound;               // storage for whether timebound was hit
+  int silent = !verbose();         // 0 for verbose output
   CCrandstate rstate;
   CCutil_sprand(seed(), &rstate);
-  return CCtsp_solve_dat(ncount, dat, in_tour,out_tour, in_val, optval,
+  int result = CallTSPSolveDat(ncount, dat, in_tour, out_tour, in_val, &val,
+                         &success, &foundtour, name, timebound, &hit_timebound,
+                         silent, &rstate);
+  if (result || !success || !foundtour) {
+    cerr << "Failed to find optimal tour" << endl;
+    optimal = false;
+  }
+  delete [] out_tour;
+  delete [] name;
+  return result;
+}
+
+int ConcordeSolver::CallTSPSolveDat(int ncount, CCdatagroup* dat, int* in_tour,
+                                    int* out_tour, double* in_val, double* val,
+                                    int* success, int* foundtour, char* name,
+                                    double* timebound, int* hit_timebound, int silent, CCrandstate* rstate) {
+  return CCtsp_solve_dat(ncount, dat, in_tour, out_tour, in_val, val,
                          success, foundtour, name, timebound, hit_timebound,
-                         silent, &rstate, maxchunksize(), 0, 0, 0);
+                         silent, rstate, maxchunksize(), 0, 0, 0);
 }
