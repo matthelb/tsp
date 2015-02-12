@@ -124,6 +124,8 @@ int ConcordeSolver::RunConcorde(int ncount, CCdatagroup* dat, int* out_tour,
   if (result || !success || !foundtour) {
     cerr << "Failed to find optimal tour" << endl;
     optimal = false;
+  } else {
+    optimal = true;
   }
   delete [] out_tour;
   delete [] name;
