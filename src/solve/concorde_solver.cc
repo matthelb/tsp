@@ -67,6 +67,8 @@ Solution ConcordeSolver::ComputeSolution(const Graph* graph) {
     optimal_tour[i] = out_tour[i];
   }
   CCutil_freedatagroup(&dat);
+  delete [] out_tour;
+  delete [] name;
   return Solution(val, optimal, optimal_tour);
 }
 
@@ -127,8 +129,6 @@ int ConcordeSolver::RunConcorde(int ncount, CCdatagroup* dat, int* out_tour,
   } else {
     optimal = true;
   }
-  delete [] out_tour;
-  delete [] name;
   return result;
 }
 
