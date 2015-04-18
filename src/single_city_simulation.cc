@@ -21,7 +21,7 @@ using namespace std;
 int main(int argc, char* argv[]) {
   if (argc != 8) {
     cout << "Usage: " << argv[0] << " <output_dir> <iterations> <min_coord>"
-         << " <max_coord> <input_file> <max_compute_time> <max_chunk_size>" << endl;
+         << " <max_coord> <input_file> <max_chunk_size>" << endl;
     return 1;
   }
   ConcordeSolver concorde_solver;
@@ -35,7 +35,7 @@ int main(int argc, char* argv[]) {
   MultiNodeReplacement simulator(string(argv[1]), tsp.dimension(),
                        atoi(argv[3]), atoi(argv[4]),
                        true, 0, 0,
-                       &concorde_solver, atoi(argv[6]));
+                       &concorde_solver, 0);
 
   simulator.Simulate(&tsp, atoi(argv[2]), chrono::high_resolution_clock::now().time_since_epoch().count());
   return 0;

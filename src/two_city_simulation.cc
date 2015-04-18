@@ -13,11 +13,11 @@
 
 using namespace std;
 int main(int argc, char* argv[]) {
-  if(argc < 14 || argc > 15) {
+  if(argc < 15 || argc > 16) {
     cerr << "Usage: " << argv[0] << " <output_dir> <iterations> <min_coord> <max_coord>"
          << " <trials_start> <trials_end> <input_file> <max_compute_time>"
          << " <max_chunk_size> <processors> <concorde_exec> <mpi_wrapper_exec>"
-         << " <hostfile> [approx]" << endl;
+         << " <hostfile> <approx> [seed]" << endl;
     return 1;
   }
   string filename(argv[1]);
@@ -44,7 +44,7 @@ int main(int argc, char* argv[]) {
     cerr << "Unable to parse TSPLIB file " << argv[7] << endl;
     return 1;
   }
-  bool approx = argc == 15 && atoi(argv[14]);
+  bool approx = atoi(argv[14]);
   ConcordeSolver* algorithm = NULL;
   if (approx) {
     algorithm = new LinkernApproximation();
@@ -62,7 +62,12 @@ int main(int argc, char* argv[]) {
   TwoNodeReplacement simulator(filename, 0, min_coord, max_coord,
                                true, trials_start, trials_end, algorithm,
                                max_compute_time);
-  simulator.Simulate(&tsp, iterations);
+  long seed = argc == 16 ? atol(argv[15]) : -1;
+  if (seed != -1) {
+    simulator.Simulate(&tsp, iterations, seed);
+  } else {
+    simulator.Simulate(&tsp, iterations);
+  }
   delete algorithm;
   if (processors > 1) {
     MPI_Finalize();

@@ -50,7 +50,7 @@ SRCS = $(SDIR)/graph/graph.cc \
 
 OBJS = $(patsubst $(SDIR)%.cc, $(ODIR)%.o, $(SRCS))
 
-all: $(BDIR)/parse_tsp $(BDIR)/solve_tsp $(BDIR)/generate_tsp $(BDIR)/simulate_tsp $(BDIR)/generate_tsp_csv $(BDIR)/mpi_wrapper
+all: $(BDIR)/parse_tsp $(BDIR)/solve_tsp $(BDIR)/generate_tsp $(BDIR)/single_city_simulation $(BDIR)/two_city_simulation $(BDIR)/mpi_wrapper
 
 tests: $(BDIR)/tsp_distance_calc_test $(BDIR)/tsp_bf_test $(BDIR)/tsp_bhk_test $(BDIR)/tsp_concorde_test
 
@@ -71,10 +71,10 @@ $(BDIR)/solve_tsp: $(OBJS) $(SDIR)/solve_tsp.cc $(TARGET_LIBS)
 $(BDIR)/generate_tsp: $(OBJS) $(SDIR)/generate_tsp.cc $(TARGET_LIBS)
 	$(CXX) $(CXXFLAGS) $(INCLUDE) $^ $(LIBS) -o $@
 
-$(BDIR)/simulate_tsp: $(OBJS) $(SDIR)/simulate_tsp.cc $(TARGET_LIBS)
+$(BDIR)/single_city_simulation: $(OBJS) $(SDIR)/single_city_simulation.cc $(TARGET_LIBS)
 	$(CXX) $(CXXFLAGS) $(INCLUDE) $^ $(LIBS) -o $@
 
-$(BDIR)/generate_tsp_csv: $(OBJS) $(SDIR)/generate_tsp_csv.cc $(TARGET_LIBS)
+$(BDIR)/two_city_simulation: $(OBJS) $(SDIR)/two_city_simulation.cc $(TARGET_LIBS)
 	$(CXX) $(CXXFLAGS) $(INCLUDE) $^ $(LIBS) -o $@
 
 ###
